@@ -13,6 +13,16 @@ public class User extends BaseModel{
 	protected String email;
 	protected String encrypted_password;
 	
+	public User(){
+	}
+	
+	public User(Long id, String name, String email, String encrypted_password){
+		super(id);
+		this.name = name;
+		this.email = email;
+		this.encrypted_password = encrypted_password;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -37,6 +47,6 @@ public class User extends BaseModel{
 	 */
 	public static interface DAO extends BaseModel.DAO<User>{
 		public User getByEmail(String email); //Same as get, but by email
-		public User getByName(String email); //Same as get, but by email
+		public User getByName(String name); //Same as get, but by email
 	}
 }

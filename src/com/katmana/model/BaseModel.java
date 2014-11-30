@@ -1,6 +1,7 @@
 package com.katmana.model;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * A class that represent model base. 
@@ -18,9 +19,15 @@ public abstract class BaseModel {
 	/*
 	 * For report keeping purposes
 	 */
-	protected Date created_at;
-	protected Date updated_at;
+	protected Date created_at = new Date(Calendar.getInstance().getTimeInMillis());
+	protected Date updated_at = new Date(Calendar.getInstance().getTimeInMillis());
 	
+	public BaseModel(){
+	}
+	
+	public BaseModel(Long id){
+		this.id = id;
+	}
 	
 	public Long getId() {
 		return id;
@@ -48,8 +55,8 @@ public abstract class BaseModel {
 	 *
 	 * @author asdacap
 	 */
-	public static interface DAO<T>{
-		public T save(T record); //Save the record return a new record with id filled
+	public static interface DAO<T extends BaseModel>{
+		public boolean save(T record); //Save the record return success flag. This method must fill the record id
 		public T get(Long id); //Find the record return it or null of not found
 		public boolean delete(Long id); //Delete the record return true if success. False otherwise
 	}
