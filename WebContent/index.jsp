@@ -9,5 +9,6 @@
 <body>
 <h1>Hello World!</h1>
 The time is <%= (new java.util.Date()).toLocaleString() %>
+The system classpath is <%= System.getenv("CLASSPATH") %>
 </body>
 </html>

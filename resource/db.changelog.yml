@@ -1,0 +1,170 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: asdacap
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: encrypted_password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: points
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: submitter_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latitude
+                  type: decimal
+                  constraints:
+                    nullable: false
+              - column:
+                  name: longitude
+                  type: decimal
+                  constraints:
+                    nullable: false
+              - column:
+                  name: altitude
+                  type: decimal
+                  constraints:
+                    nullable: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: location_description
+                  type: text
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: contexts
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: submitter_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: point_contexts
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: context_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: point_id
+                  type: int
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: submitter_ratings
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: submitter_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rater_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: positive
+                  type: int
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: point_ratings
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: point_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rater_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: positive
+                  type: int
+                  constraints:
+                    nullable: false

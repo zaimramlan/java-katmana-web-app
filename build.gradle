@@ -7,16 +7,21 @@ sourceCompatibility = 1.6
 version = '1.0'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
+  compile "org.liquibase:liquibase-core:3.3.+"
+  compile "commons-dbcp:commons-dbcp:1.4"
 }
 
 sourceSets{
   main{
     java{
       srcDir 'src'
+    }
+    resources{
+      srcDir 'resource'
     }
   }
 }
@@ -27,4 +32,13 @@ war {
 
 jettyRun{
   webAppSourceDirectory = file("WebContent")
+  jettyEnvXml = file("jetty-env.xml")
+  
+  /*
+   * In my case, the postgresql driver is not loaded. But including it in dependency is not 
+   * very 'clean' as it should be db independent. So I link the jar in jettyJar folder
+   */
+  classpath.add(fileTree("jettyJar"){
+  	include "**/*.jar"
+  })
 }
