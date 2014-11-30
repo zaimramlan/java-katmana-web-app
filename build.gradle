@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+sourceCompatibility = 1.6
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+sourceSets{
+  main{
+    java{
+      srcDir 'src'
+    }
+  }
+}
+
+war {
+  from 'WebContent'
+}
+
+jettyRun{
+  webAppSourceDirectory = file("WebContent")
+}
