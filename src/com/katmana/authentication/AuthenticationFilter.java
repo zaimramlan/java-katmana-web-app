@@ -21,6 +21,12 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/AuthenticationFilter")
 public class AuthenticationFilter implements Filter {
   private ServletContext context;
+  private String[] whitelist = {
+                                "index.jsp",
+                                "login",
+                                "registration.html",
+                                "register"
+                              };
 
   @Override
   public void init(FilterConfig fConfig) throws ServletException {
@@ -39,13 +45,22 @@ public class AuthenticationFilter implements Filter {
 
     HttpSession session = req.getSession(false);
 
-    if (session == null && !(uri.endsWith("index.jsp") || uri.endsWith("LoginServlet"))) {
+    if (session == null && !isPublicPage(uri)) {
       this.context.log("Unauthorized access request");
       res.sendRedirect("index.jsp");
     } else {
       // pass the request along the filter chain
       chain.doFilter(request, response);
     }
+  }
+
+  private boolean isPublicPage(String uri){
+    for(String s:whitelist){
+      if(uri.endsWith(s))
+        return true;
+    }
+    
+    return false;
   }
 
   public void destroy() {

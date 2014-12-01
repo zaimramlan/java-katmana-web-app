@@ -46,6 +46,7 @@ public class User extends BaseModel{
 	 * A data access object interface for the user
 	 */
 	public static interface DAO extends BaseModel.DAO<User>{
+		public boolean addUser(String name, String email, String encrypted_password);
 		public User getByEmail(String email); //Same as get, but by email
 		public User getByName(String name); //Same as get, but by email
 	}

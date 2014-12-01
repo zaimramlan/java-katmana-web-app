@@ -1,8 +1,7 @@
 package com.katmana.model.mockdao;
 
-import java.util.ArrayList;
-
 import com.katmana.model.User;
+import java.util.ArrayList;
 
 public class UserMockDAO extends BaseMockDAO<User> implements User.DAO {
 
@@ -15,6 +14,11 @@ public class UserMockDAO extends BaseMockDAO<User> implements User.DAO {
 		data.add(new User(4L,"Some name4","someone4@someplace.com","idoneknowwhatthisis4"));
 		data.add(new User(5L,"Some name5","someone5@someplace.com","idoneknowwhatthisis5"));
 		this.data = data;
+	}
+
+	@Override
+	public boolean addUser(String name, String email, String encrypted_pass){
+		return save(new User(1L, name, email, encrypted_pass));
 	}
 
 	@Override
