@@ -9,7 +9,7 @@ public class UserMockDAO extends BaseMockDAO<User> implements User.DAO {
 	public UserMockDAO() {
 		/* set the data */
 		ArrayList<User> data = new ArrayList<User>();
-		data.add(new User(1L,"Some name1","someone1@someplace.com","idoneknowwhatthisis1"));
+		data.add(new User(1L,"Some name1","someone1@someplace.com","1f3a386d5aca7415d4b925bb2bb4af56fda488536c275808ff2b6cc93fbe10b5"));
 		data.add(new User(2L,"Some name2","someone2@someplace.com","idoneknowwhatthisis2"));
 		data.add(new User(3L,"Some name3","someone3@someplace.com","idoneknowwhatthisis3"));
 		data.add(new User(4L,"Some name4","someone4@someplace.com","idoneknowwhatthisis4"));

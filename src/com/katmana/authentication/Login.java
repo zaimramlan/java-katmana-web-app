@@ -1,5 +1,6 @@
 package com.katmana.authentication;
 
+import com.katmana.model.DAOProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,14 +21,17 @@ public class Login extends HttpServlet {
     response.setContentType("text/html;charset=UTF-8");
     try (PrintWriter out = response.getWriter()) {
 
-      String username = request.getParameter("username"),
+      String email = request.getParameter("email"),
              password = request.getParameter("password"), result;
-      boolean validUser = true; // must check from db
+      boolean validUser = DAOProvider.getInstance().getUserDAO().getByEmail(email)
+          .getEncryptedPassword().equals(Encryption.getEncryption(password));
 
       if(validUser){
         HttpSession session = request.getSession();
-        session.setAttribute("user", username);
-        result = "<p>Username: " + username + "</p><p>Password: " + password + "</p>";
+        session.setAttribute("user", email);
+        result = "<p>Username: " + email + "</p>";
+        response.sendRedirect("index.jsp");
+        return;
       }else{
         result = "<p>Please register.</p>";
       }
