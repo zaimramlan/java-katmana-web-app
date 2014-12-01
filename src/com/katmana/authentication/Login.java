@@ -23,15 +23,18 @@ public class Login extends HttpServlet {
 
       String email = request.getParameter("email"),
              password = request.getParameter("password"), result;
-      boolean validUser = DAOProvider.getInstance().getUserDAO().getByEmail(email)
+      boolean validUser = (DAOProvider.getInstance().getUserDAO().getByEmail(email) != null),
+          correctPass = DAOProvider.getInstance().getUserDAO().getByEmail(email)
           .getEncryptedPassword().equals(Encryption.getEncryption(password));
-
-      if(validUser){
+      
+      // there is no output when user is invalid weird
+      
+      if(validUser && correctPass){
         HttpSession session = request.getSession();
         session.setAttribute("user", email);
         result = "<p>Username: " + email + "</p>";
         response.sendRedirect("index.jsp");
-        return;
+        //return;
       }else{
         result = "<p>Please register.</p>";
       }
