@@ -3,6 +3,11 @@ package com.katmana.model;
 import java.sql.Date;
 import java.util.Calendar;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * A class that represent model base. 
  * All model should implement this.
@@ -10,11 +15,14 @@ import java.util.Calendar;
  * 
  * @author asdacap
  */
+@Entity
 public abstract class BaseModel {
 	
 	/*
 	 * This thing is mandatory
 	 */
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected Long id;
 	/*
 	 * For report keeping purposes
@@ -58,6 +66,7 @@ public abstract class BaseModel {
 	public static interface DAO<T extends BaseModel>{
 		public boolean save(T record); //Save the record return success flag. This method must fill the record id
 		public T get(Long id); //Find the record return it or null of not found
-		public boolean delete(Long id); //Delete the record return true if success. False otherwise
+		public boolean update(T record); //Update the db with record
+		public boolean delete(T record); //Delete the record return true if success. False otherwise
 	}
 }

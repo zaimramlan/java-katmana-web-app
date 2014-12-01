@@ -1,5 +1,6 @@
 package com.katmana.model;
 
+import javax.persistence.Table;
 
 /**
  * A class that model a user.
@@ -7,6 +8,7 @@ package com.katmana.model;
  * 
  * @author asdacap
  */
+@Table(name="users")
 public class User extends BaseModel{
 
 	protected String name;

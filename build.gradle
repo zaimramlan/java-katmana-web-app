@@ -1,7 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
-apply plugin: 'jetty'
+//apply plugin: 'jetty'
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
 sourceCompatibility = 1.6
 version = '1.0'
@@ -11,8 +13,25 @@ repositories {
 }
 
 dependencies {
+  providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+  providedCompile 'javax.servlet.jsp:jsp-api:2.1'
+  providedCompile 'javax.inject:javax.inject:1'
   compile "org.liquibase:liquibase-core:3.3.+"
   compile "commons-dbcp:commons-dbcp:1.4"
+  compile "org.hibernate:hibernate-core:4.3.7.Final"
+
+  /*
+   * For some reason, gretty do not load these
+   */
+  gretty "commons-dbcp:commons-dbcp:1.4"
+
+  /*
+   * In my case, the postgresql driver is not loaded. But including it in dependency is not 
+   * very 'clean' as it should be db independent. So I link the jar in jettyJar folder
+   */
+  gretty fileTree('jettyJar'){
+	  include '**/*.jar'
+  }
 }
 
 sourceSets{
@@ -27,18 +46,11 @@ sourceSets{
 }
 
 war {
-  from 'WebContent'
+  webAppDirName = 'WebContent'
 }
 
-jettyRun{
-  webAppSourceDirectory = file("WebContent")
-  jettyEnvXml = file("jetty-env.xml")
-  
-  /*
-   * In my case, the postgresql driver is not loaded. But including it in dependency is not 
-   * very 'clean' as it should be db independent. So I link the jar in jettyJar folder
-   */
-  classpath.add(fileTree("jettyJar"){
-  	include "**/*.jar"
-  })
+gretty {
+  servletContainer 'jetty9'
+  contextConfigFile = file("jetty-env.xml")
 }
+

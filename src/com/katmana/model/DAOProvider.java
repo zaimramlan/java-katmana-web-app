@@ -1,5 +1,9 @@
 package com.katmana.model;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import com.katmana.model.daoimpl.UserDAOImpl;
 import com.katmana.model.mockdao.ContextMockDAO;
 import com.katmana.model.mockdao.PointContextMockDAO;
 import com.katmana.model.mockdao.PointMockDAO;
@@ -16,34 +20,50 @@ import com.katmana.model.mockdao.UserMockDAO;
  */
 public class DAOProvider {
 	
-	private DAOProvider(){}
+	private EntityManagerFactory mFactory;
+	private User.DAO userDAO;
+	private Context.DAO contextDAO;
+	private Point.DAO pointDAO;
+	private PointContext.DAO pointContextDAO;
+	private PointRating.DAO pointRatingDAO;
+	private SubmitterRating.DAO submitterRatingDAO;
+
+	private DAOProvider(){
+		mFactory = Persistence.createEntityManagerFactory("KatManaDB");
+		userDAO = new UserDAOImpl(mFactory);
+		contextDAO = new ContextMockDAO();
+		pointContextDAO = new PointContextMockDAO();
+		pointDAO = new PointMockDAO();
+		pointRatingDAO = new PointRatingMockDAO();
+		submitterRatingDAO = new SubmitterRatingMockDAO();
+	}
 	
 	public User.DAO getUserDAO(){
-		return new UserMockDAO();
+		return userDAO;
 	}
 
 	public Context.DAO getContextDAO(){
-		return new ContextMockDAO();
+		return contextDAO;
 	}
 
 	public Point.DAO getPointDAO(){
-		return new PointMockDAO();
+		return pointDAO;
 	}
 
 	public PointContext.DAO getPointContextDAO(){
-		return new PointContextMockDAO();
+		return pointContextDAO;
 	}
 
 	public PointRating.DAO getPointRatingDAO(){
-		return new PointRatingMockDAO();
+		return pointRatingDAO;
 	}
 
 	public SubmitterRating.DAO getSubmitterRatingDAO(){
-		return new SubmitterRatingMockDAO();
+		return submitterRatingDAO;
 	}
 	
 	private static DAOProvider singleton = null;
-	public static DAOProvider getInstance(){
+	public synchronized static DAOProvider getInstance(){
 		if(singleton == null){
 			singleton = new DAOProvider();
 		}

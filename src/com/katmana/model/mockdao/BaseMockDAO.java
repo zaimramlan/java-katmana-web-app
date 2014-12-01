@@ -36,9 +36,22 @@ public abstract class BaseMockDAO<T extends BaseModel> implements BaseModel.DAO<
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public boolean update(T record) {
 		for(T cur:data){
-			if(cur.getId().equals(id)){
+			if(cur.getId().equals(record.getId())){
+				int index = data.indexOf(cur);
+				data.remove(cur);
+				data.add(index, record);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(T record) {
+		for(T cur:data){
+			if(cur.getId().equals(record.getId())){
 				data.remove(cur);
 				return true;
 			}

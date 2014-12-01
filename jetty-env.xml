@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
 
   <!-- For some reason, it do not use system classpath, meaning I have to put this manually. -->
   <Set name="extraClasspath">/usr/share/java/postgresql-jdbc.jar</Set>
 
   <!-- Configure data source mapping -->
-  <New id="datasource" class="org.mortbay.jetty.plus.naming.Resource">
+  <New id="datasource" class="org.eclipse.jetty.plus.jndi.Resource">
     <Arg>jdbc/default</Arg>
     <Arg>
       <New class="org.apache.commons.dbcp.BasicDataSource">
