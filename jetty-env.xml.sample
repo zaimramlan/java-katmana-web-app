@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+ 
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
 
   <!-- For some reason, it do not use system classpath, meaning I have to put this manually. -->
@@ -17,5 +19,5 @@
       </New>
     </Arg>
   </New>
-
+ 
 </Configure>

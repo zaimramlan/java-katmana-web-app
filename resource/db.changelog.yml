@@ -1,7 +1,9 @@
 databaseChangeLog:
+
   - changeSet:
       id: 1
       author: asdacap
+      comment: Initial structure
       changes:
         - createTable:
             tableName: users
@@ -166,5 +168,90 @@ databaseChangeLog:
               - column:
                   name: positive
                   type: int
+                  constraints:
+                    nullable: false
+                    
+                    
+  - changeSet:
+      id: 2
+      author: asdacap
+      comment: Added date
+      changes:
+        - addColumn:
+            tableName: points
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: contexts
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: point_contexts
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: submitter_ratings
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: point_ratings
+            columns:
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
                   constraints:
                     nullable: false

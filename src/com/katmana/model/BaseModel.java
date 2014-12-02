@@ -3,10 +3,10 @@ package com.katmana.model;
 import java.sql.Date;
 import java.util.Calendar;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 /**
  * A class that represent model base. 
@@ -15,14 +15,14 @@ import javax.persistence.Id;
  * 
  * @author asdacap
  */
-@Entity
+@MappedSuperclass
 public abstract class BaseModel {
 	
 	/*
 	 * This thing is mandatory
 	 */
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected Long id;
 	/*
 	 * For report keeping purposes

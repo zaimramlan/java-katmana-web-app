@@ -1,5 +1,6 @@
 package com.katmana.model;
 
+import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
@@ -8,6 +9,7 @@ import javax.persistence.Table;
  * 
  * @author asdacap
  */
+@Entity
 @Table(name="users")
 public class User extends BaseModel{
 
