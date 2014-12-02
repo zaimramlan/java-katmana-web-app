@@ -6,7 +6,7 @@ Installation
 
 - Install Gradle according to your platform.
 - Copy jetty-env.xml.sample to jetty-env.xml. Modify the database setting according to your database setting.
-- Run `gradle appRun'. It should now download all dependencies and if everything works, it will also migrate your database and everything will be fine.
+- Run `gradle appRun`. It should now download all dependencies and if everything works, it will also migrate your database and everything will be fine.
 - If it says something about your db driver cannot be found, put your db driver jar in jettyJar directory.
 
 Used Library, Tools and some Implication
