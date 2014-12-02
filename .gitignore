@@ -2,3 +2,4 @@
 /bin/
 .gradle/*
 jettyJar/*.jar
+jetty-env.xml
