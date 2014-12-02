@@ -6,7 +6,7 @@ Installation
 
 - Install Gradle according to your platform.
 - Copy jetty-env.xml.sample to jetty-env.xml. Modify the database setting according to your database setting.
-- Run `gradle runApp'. It should now download all dependencies and if everything works, it will also migrate your database and everything will be fine.
+- Run `gradle appRun'. It should now download all dependencies and if everything works, it will also migrate your database and everything will be fine.
 - If it says something about your db driver cannot be found, put your db driver jar in jettyJar directory.
 
 Used Library, Tools and some Implication
@@ -28,6 +28,17 @@ Please put any tools that you use that may be hard to figureout what here.
     - Liquibase is a database migration library.
     - It should be database independent.
     - All migration should be put in resource/db.changelog.yml
+
+Directory Structure
+-------------------
+
+- I've modified the directory structure to match Gradle build system.
+- Why? Because gradle have more than one way to hurt programmer.
+- The WebContent directory is now in `src/main/webapp`
+- The src for class is in `src/main/java`
+- It has an eclipse plugin, so running `gradle eclipse` and `gradle eclipseWtp` would generate a compatible eclipse project configuration.
+- So eclipse user should not have much problem other than the inbuild server should not be user. (use `gradle appRun` and open in `localhost:8080/KatMana`. 
+- Netbeans user should have gradle plugin.
 
 Notices
 -------

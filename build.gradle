@@ -21,7 +21,7 @@ dependencies {
   compile "org.hibernate:hibernate-entitymanager:4.3.7.Final"
 
   /*
-   * For some reason, gretty do not load these
+   * For some reason, gretty do not load these. Weird huh?
    */
   gretty "commons-dbcp:commons-dbcp:1.4"
 
@@ -34,32 +34,10 @@ dependencies {
   }
 }
 
-sourceSets{
-  main{
-    java{
-      srcDir 'src'
-    }
-    resources{
-      srcDir 'resource'
-    }
-  }
-}
-
-war {
-  webAppDirName = 'WebContent'
-}
-
 gretty {
   servletContainer 'jetty9'
   contextConfigFile = file("jetty-env.xml")
 
-  //Without this, the annotation won't work because it expect the classes to be in the dir
-  onStart {
-    copy {
-      from 'build/classes/main'
-      into 'build/inplaceWebapp/WEB-INF/classes'
-    }
-  }
 }
 
 task(test2) << {

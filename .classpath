@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="output" path="bin"/>
-	<classpathentry kind="src" path="resource"/>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container" exported="true"/>
 	<classpathentry sourcepath="/home/amirul/.gradle/caches/modules-2/files-2.1/org.liquibase/liquibase-core/3.3.0/5bec25f6dab1a6e20008bf455e7eab61444b50c5/liquibase-core-3.3.0-sources.jar" kind="lib" path="/home/amirul/.gradle/caches/modules-2/files-2.1/org.liquibase/liquibase-core/3.3.0/51832f3b8f9732ebde805661d3fec9248c2b8372/liquibase-core-3.3.0.jar" exported="true">
