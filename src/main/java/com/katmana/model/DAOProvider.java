@@ -3,13 +3,12 @@ package com.katmana.model;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import com.katmana.model.daoimpl.ContextDAOImpl;
+import com.katmana.model.daoimpl.PointContextDAOImpl;
+import com.katmana.model.daoimpl.PointDAOImpl;
+import com.katmana.model.daoimpl.PointRatingDAOImpl;
+import com.katmana.model.daoimpl.SubmitterRatingDAOImpl;
 import com.katmana.model.daoimpl.UserDAOImpl;
-import com.katmana.model.mockdao.ContextMockDAO;
-import com.katmana.model.mockdao.PointContextMockDAO;
-import com.katmana.model.mockdao.PointMockDAO;
-import com.katmana.model.mockdao.PointRatingMockDAO;
-import com.katmana.model.mockdao.SubmitterRatingMockDAO;
-import com.katmana.model.mockdao.UserMockDAO;
 
 /**
  * A class that provide DAO.
@@ -31,11 +30,11 @@ public class DAOProvider {
 	private DAOProvider(){
 		mFactory = Persistence.createEntityManagerFactory("KatManaDB");
 		userDAO = new UserDAOImpl(mFactory);
-		contextDAO = new ContextMockDAO();
-		pointContextDAO = new PointContextMockDAO();
-		pointDAO = new PointMockDAO();
-		pointRatingDAO = new PointRatingMockDAO();
-		submitterRatingDAO = new SubmitterRatingMockDAO();
+		contextDAO = new ContextDAOImpl(mFactory);
+		pointContextDAO = new PointContextDAOImpl(mFactory);
+		pointDAO = new PointDAOImpl(mFactory);
+		pointRatingDAO = new PointRatingDAOImpl(mFactory);
+		submitterRatingDAO = new SubmitterRatingDAOImpl(mFactory);
 	}
 	
 	public User.DAO getUserDAO(){

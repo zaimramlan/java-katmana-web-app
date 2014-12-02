@@ -19,9 +19,10 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 	protected EntityManagerFactory eFactory;
 	protected Class<T> entityClass;
 	
+	@SuppressWarnings("unchecked")
 	public BaseDAOImpl(EntityManagerFactory eFactory){
 		this.eFactory = eFactory;
-		this.entityClass = ((Class) ((ParameterizedType) getClass()
+		this.entityClass = ((Class<T>) ((ParameterizedType) getClass()
         .getGenericSuperclass()).getActualTypeArguments()[0]);
 	}
 
