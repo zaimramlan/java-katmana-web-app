@@ -18,7 +18,6 @@ Please put any tools that you use that may be hard to figureout what here.
     - We can specify our dependencies (hibernate,liquibase,anything else you want that is available through maven repository) and it will download it for you.
     - The development server command is `gradle runApp`.
     - The command is provided by Gretty, a Gradle plugin that replace jettyRun with a newer version of Jetty. 
-    - Because the layout is not the default Gradle preferred layout, some stuff may breaks.
 - Hibernate
     - Hibernate is the JPA implimentation.
     - JPA is Java Persistent API.
@@ -37,7 +36,7 @@ Directory Structure
 - The WebContent directory is now in `src/main/webapp`
 - The src for class is in `src/main/java`
 - It has an eclipse plugin, so running `gradle eclipse` and `gradle eclipseWtp` would generate a compatible eclipse project configuration.
-- So eclipse user should not have much problem other than the inbuild server should not be user. (use `gradle appRun` and open in `localhost:8080/KatMana`. 
+- So eclipse user should not have much problem other than the inbuild server should not be user. (use `gradle appRun` and open in `localhost:8080/KatMana`). 
 - Netbeans user should have gradle plugin.
 
 Notices
