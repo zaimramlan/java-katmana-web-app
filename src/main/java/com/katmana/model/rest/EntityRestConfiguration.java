@@ -104,7 +104,24 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public abstract List<T> indexRecords(HttpServletRequest request);
+	public List<T> indexRecords(HttpServletRequest request){
+		String countString = request.getParameter("count");
+		int count;
+		if(countString == null || countString.isEmpty()){
+			count = 100; // Default count
+		}else{
+			count = Integer.valueOf(countString);
+		}
+		String offsetString = request.getParameter("offset");
+		int offset;
+		if(offsetString == null || offsetString.isEmpty()){
+			offset = 0; // Default offset
+		}else{
+			offset = Integer.valueOf(offsetString);
+		}
+		
+		return dao.listAll(offset, count);
+	}
 	
 	/**
 	 * Called by servlet on create operation.
