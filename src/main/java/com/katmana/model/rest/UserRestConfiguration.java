@@ -32,7 +32,7 @@ public class UserRestConfiguration extends EntityRestConfiguration<User> {
 			offset = Integer.valueOf(offsetString);
 		}
 		
-		return userDao.listUser(offset, count);
+		return userDao.listAll(offset, count);
 	}
 
 }

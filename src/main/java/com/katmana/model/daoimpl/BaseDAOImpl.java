@@ -1,9 +1,12 @@
 package com.katmana.model.daoimpl;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 
 import com.katmana.model.BaseModel;
 
@@ -64,5 +67,17 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 		em.getTransaction().commit();
 		em.close();
 		return true;
+	}
+
+	@Override
+	public List<T> listAll(int offset, int count) {
+		EntityManager em = eFactory.createEntityManager();
+		Query query = em.createQuery("select u from "+entityClass.getName()+" u");
+		List<T> u = new ArrayList<T>(); 
+		query.setMaxResults(count);
+		query.setFirstResult(offset);
+		u = query.getResultList();
+		em.close();
+		return u;
 	}
 }

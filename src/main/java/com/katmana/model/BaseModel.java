@@ -2,6 +2,7 @@ package com.katmana.model;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -66,6 +67,7 @@ public abstract class BaseModel {
 	public static interface DAO<T extends BaseModel>{
 		public boolean save(T record); //Save the record return success flag. This method must fill the record id
 		public T get(Long id); //Find the record return it or null of not found
+		public List<T> listAll(int offset,int count); //Find the record return it or null of not found
 		public boolean update(T record); //Update the db with record
 		public boolean delete(T record); //Delete the record return true if success. False otherwise
 	}

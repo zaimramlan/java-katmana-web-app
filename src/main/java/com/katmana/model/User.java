@@ -55,6 +55,6 @@ public class User extends BaseModel{
 		public boolean addUser(String name, String email, String encrypted_password);
 		public User getByEmail(String email); //Same as get, but by email
 		public User getByName(String name); //Same as get, but by email
-		public List<User> listUser(int offset, int count);
+		public List<User> listAll(int offset, int count);
 	}
 }

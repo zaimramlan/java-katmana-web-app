@@ -48,16 +48,4 @@ public class UserDAOImpl extends BaseDAOImpl<User> implements User.DAO{
 		return save(user);
 	}
 
-	@Override
-	public List<User> listUser(int offset, int count) {
-		EntityManager em = eFactory.createEntityManager();
-		Query query = em.createQuery("select u from User u");
-		List<User> u = new ArrayList<User>(); 
-		query.setMaxResults(count);
-		query.setFirstResult(offset);
-		u = query.getResultList();
-		em.close();
-		return u;
-	}
-
 }

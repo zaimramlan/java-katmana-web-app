@@ -43,9 +43,4 @@ public class UserMockDAO extends BaseMockDAO<User> implements User.DAO {
 		return null;
 	}
 
-	@Override
-	public List<User> listUser(int offset, int count) {
-		return data.subList(offset, count);
-	}
-
 }
