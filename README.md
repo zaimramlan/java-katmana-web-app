@@ -29,6 +29,10 @@ Please put any tools that you use that may be hard to figureout what here.
     - All migration should be put in resource/db.changelog.yml
 - Gson
     - Gson is a library that allow us to generate JSON from Java Object as easy as if we are using PHP or other programming language.
+- commons-beanutils
+    - BeanUtils is a part of the Apache Commons java library.
+    - It allow us to easily set and get beans property by name.
+    - Used by EntityRestConfiguration to set entity properties.
 
 Directory Structure
 -------------------

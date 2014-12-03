@@ -1,14 +1,19 @@
 package com.katmana.model.rest;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 import com.katmana.Util;
 import com.katmana.model.BaseModel;
 import com.katmana.model.DAOProvider;
-import com.katmana.model.BaseModel.DAO;
 
 
 /**
@@ -56,11 +61,41 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	/**
 	 * Apply the parameter from request to record.
 	 * Used by default create and update implementation in servlet.
+	 * By default will put the property if available.
+	 * Property list obtained by getRecordProperties().
 	 * 
 	 * @param record
 	 * @param request
 	 */
-	public abstract void applyParams(T record, HttpServletRequest request);
+	public void applyParams(T record, HttpServletRequest request){
+		Map<String,String[] > params = request.getParameterMap();
+		for(String property:getWritableRecordProperties()){
+			if(params.containsKey(property)){
+				try {
+					PropertyUtils.setProperty(record, property, params.get(property)[0]);
+				} catch (IllegalAccessException | InvocationTargetException
+						| NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This function should return T's bean property that is writable.
+	 * It need to be writable because this is used by applyParams
+	 * @return
+	 */
+	public List<String> getWritableRecordProperties(){
+		PropertyDescriptor[] properties = PropertyUtils.getPropertyDescriptors(entityClass);
+		ArrayList<String> propertyList = new ArrayList<String>();
+		for(PropertyDescriptor prop:properties){
+			if(prop.getWriteMethod() != null){
+				propertyList.add(prop.getName());
+			}
+		}
+		return propertyList;
+	}
 	
 	/**
 	 * Should return a list of records that matches the request

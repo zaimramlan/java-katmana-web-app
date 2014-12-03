@@ -92,8 +92,16 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			response.sendError(500, "Fail to save record");
 			return;
 		}
-		response.setStatus(204);
+		response.setStatus(202);
 		response.getWriter().write(restConfiguration.serialize(record));
+	}
+	
+	/**
+	 * Do update
+	 */
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPut(request,response);
 	}
 
 	/**

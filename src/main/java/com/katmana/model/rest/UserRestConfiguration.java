@@ -16,17 +16,6 @@ public class UserRestConfiguration extends EntityRestConfiguration<User> {
 	}
 
 	@Override
-	public void applyParams(User record, HttpServletRequest request) {
-		
-		if(request.getParameterMap().containsKey("email")){
-			record.setEmail(request.getParameter("email"));
-		}
-		if(request.getParameterMap().containsKey("name")){
-			record.setName(request.getParameter("name"));
-		}
-	}
-
-	@Override
 	public List<User> indexRecords(HttpServletRequest request) {
 		String countString = request.getParameter("count");
 		int count;
