@@ -1,5 +1,8 @@
 package com.katmana.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * A point represet... a point. 
  * The thing that the user(submitter) submit.
@@ -7,6 +10,8 @@ package com.katmana.model;
  * @author asdacap
  *
  */
+@Entity
+@Table(name="points")
 public class Point extends BaseModel{
 
 	/*

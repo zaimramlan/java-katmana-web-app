@@ -33,6 +33,10 @@ Please put any tools that you use that may be hard to figureout what here.
     - BeanUtils is a part of the Apache Commons java library.
     - It allow us to easily set and get beans property by name.
     - Used by EntityRestConfiguration to set entity properties.
+- Guava
+	- Guava, like apache-commons is a java utility library, this time made by Google.
+	- In our case, the utility we are interested in is the CaseFormat enumerator used to convert
+	  java camelCased name to snake_case which is used by http parameters.
 
 Directory Structure
 -------------------

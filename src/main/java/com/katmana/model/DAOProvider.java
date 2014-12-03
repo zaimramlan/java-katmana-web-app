@@ -65,6 +65,21 @@ public class DAOProvider {
 		if(recordType.equals(User.class)){
 			return getUserDAO();
 		}
+		if(recordType.equals(Context.class)){
+			return getContextDAO();
+		}
+		if(recordType.equals(Point.class)){
+			return getPointDAO();
+		}
+		if(recordType.equals(PointContext.class)){
+			return getPointContextDAO();
+		}
+		if(recordType.equals(PointRating.class)){
+			return getPointRatingDAO();
+		}
+		if(recordType.equals(SubmitterRating.class)){
+			return getSubmitterRatingDAO();
+		}
 		return null;
 	}
 	

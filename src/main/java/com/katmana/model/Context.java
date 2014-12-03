@@ -1,5 +1,8 @@
 package com.katmana.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * A context is basically a way to group points.
  * A context may be a place or an event or a category of points or 
@@ -9,6 +12,8 @@ package com.katmana.model;
  * @author asdacap
  *
  */
+@Entity
+@Table(name="contexts")
 public class Context extends BaseModel {
 
 	private String name;

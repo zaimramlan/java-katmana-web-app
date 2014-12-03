@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.katmana.Util;
@@ -72,9 +73,8 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 		for(String property:getWritableRecordProperties()){
 			if(params.containsKey(property)){
 				try {
-					PropertyUtils.setProperty(record, property, params.get(property)[0]);
-				} catch (IllegalAccessException | InvocationTargetException
-						| NoSuchMethodException e) {
+					BeanUtils.setProperty(record, property, params.get(property)[0]);
+				} catch (IllegalAccessException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
 			}

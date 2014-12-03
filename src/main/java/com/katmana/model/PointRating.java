@@ -1,5 +1,8 @@
 package com.katmana.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * A point rating class represent rating submissions for a Point
  * A rating submission can be negative or positive.
@@ -7,6 +10,8 @@ package com.katmana.model;
  * @author asdacap
  *
  */
+@Entity
+@Table(name="point_ratings")
 public class PointRating extends BaseModel {
 
 	/*

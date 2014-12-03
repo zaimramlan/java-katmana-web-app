@@ -1,5 +1,8 @@
 package com.katmana.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * A PointContext is a many-to-many relationship table
  * between Context and Point
@@ -7,6 +10,8 @@ package com.katmana.model;
  * @author asdacap
  *
  */
+@Entity
+@Table(name="point_contexts")
 public class PointContext extends BaseModel {
 	private Long point_id;
 	private Long context_id;
