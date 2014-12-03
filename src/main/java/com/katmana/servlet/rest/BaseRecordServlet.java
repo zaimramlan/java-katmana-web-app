@@ -92,7 +92,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			response.sendError(500, "Fail to save record");
 			return;
 		}
-		response.setStatus(203);
+		response.setStatus(204);
 		response.getWriter().write(restConfiguration.serialize(record));
 	}
 
@@ -107,6 +107,8 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			response.sendError(500, "Fail to save record");
 			return;
 		}
+		response.setStatus(204);
+		response.getWriter().write(restConfiguration.serialize(record));
 	}
 	
 }

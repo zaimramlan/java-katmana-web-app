@@ -49,7 +49,7 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 	public boolean update(T record) {
 		EntityManager em = eFactory.createEntityManager();
 		em.getTransaction().begin();
-		em.merge(record);
+		record = em.merge(record);
 		em.getTransaction().commit();
 		em.close();
 		return true;
@@ -59,7 +59,7 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 	public boolean delete(T record) {
 		EntityManager em = eFactory.createEntityManager();
 		em.getTransaction().begin();
-		em.merge(record);
+		record = em.merge(record);
 		em.remove(record);
 		em.getTransaction().commit();
 		em.close();
