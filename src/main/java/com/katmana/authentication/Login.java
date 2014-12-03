@@ -32,7 +32,7 @@ public class Login extends HttpServlet {
       
       if(validUser && correctPass){
         HttpSession session = request.getSession();
-        session.setAttribute("user", email);
+        session.setAttribute("user", user);
         result = "<p>Username: " + email + "</p>";
         response.sendRedirect("index.jsp");
         return;
