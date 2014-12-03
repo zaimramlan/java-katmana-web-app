@@ -1,5 +1,8 @@
 package com.katmana.model.daoimpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -43,6 +46,18 @@ public class UserDAOImpl extends BaseDAOImpl<User> implements User.DAO{
 	public boolean addUser(String name, String email, String encrypted_password) {
 		User user = new User(null,name,email,encrypted_password);
 		return save(user);
+	}
+
+	@Override
+	public List<User> listUser(int offset, int count) {
+		EntityManager em = eFactory.createEntityManager();
+		Query query = em.createQuery("select u from User u");
+		List<User> u = new ArrayList<User>(); 
+		query.setMaxResults(count);
+		query.setFirstResult(offset);
+		u = query.getResultList();
+		em.close();
+		return u;
 	}
 
 }

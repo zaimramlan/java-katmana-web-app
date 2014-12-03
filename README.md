@@ -27,6 +27,8 @@ Please put any tools that you use that may be hard to figureout what here.
     - Liquibase is a database migration library.
     - It should be database independent.
     - All migration should be put in resource/db.changelog.yml
+- Gson
+    - Gson is a library that allow us to generate JSON from Java Object as easy as if we are using PHP or other programming language.
 
 Directory Structure
 -------------------

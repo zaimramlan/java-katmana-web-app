@@ -1,7 +1,9 @@
 package com.katmana.model.mockdao;
 
 import com.katmana.model.User;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserMockDAO extends BaseMockDAO<User> implements User.DAO {
 
@@ -39,6 +41,11 @@ public class UserMockDAO extends BaseMockDAO<User> implements User.DAO {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public List<User> listUser(int offset, int count) {
+		return data.subList(offset, count);
 	}
 
 }

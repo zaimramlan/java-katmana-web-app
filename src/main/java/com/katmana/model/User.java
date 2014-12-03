@@ -1,5 +1,7 @@
 package com.katmana.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -53,5 +55,6 @@ public class User extends BaseModel{
 		public boolean addUser(String name, String email, String encrypted_password);
 		public User getByEmail(String email); //Same as get, but by email
 		public User getByName(String name); //Same as get, but by email
+		public List<User> listUser(int offset, int count);
 	}
 }

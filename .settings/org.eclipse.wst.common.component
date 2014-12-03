@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="1.5.0">
+<project-modules id="moduleCoreId" project-version="2.0">
 	<wb-module deploy-name="KatMana">
 		<property name="context-root" value="KatMana"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
 		<wb-resource deploy-path="/" source-path="src/main/webapp"/>
-		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//home/amirul/.gradle/caches/modules-2/files-2.1/org.liquibase/liquibase-core/3.3.0/51832f3b8f9732ebde805661d3fec9248c2b8372/liquibase-core-3.3.0.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
@@ -14,6 +12,9 @@
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//home/amirul/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.7.Final/ae8cad662e5936b97e7b34e3cbd5156a3b457d3d/hibernate-entitymanager-4.3.7.Final.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//home/amirul/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//home/amirul/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar">

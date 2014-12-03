@@ -61,6 +61,13 @@ public class DAOProvider {
 		return submitterRatingDAO;
 	}
 	
+	public BaseModel.DAO<?> getDaoByType(Class<?> recordType){
+		if(recordType.equals(User.class)){
+			return getUserDAO();
+		}
+		return null;
+	}
+	
 	private static DAOProvider singleton = null;
 	public synchronized static DAOProvider getInstance(){
 		if(singleton == null){
