@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.katmana.authentication;
+package com.katmana;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,11 +10,32 @@ import java.security.SecureRandom;
  */
 public class Encryption {
 
-  public static String getEncryption(String password) {
+  public static boolean verifyPassword(String user_encrypted_password, String password){
+    String user_salt = user_encrypted_password.split("\\$")[1];
+    user_encrypted_password = user_encrypted_password.split("\\$")[2];
+    String encrypted_password = getEncryption(password, user_salt);
+
+    return user_encrypted_password.equals(encrypted_password);
+    // return encrypted_password;
+  }
+
+  public static String getEncryptedPassword(String user_password){
+    String salt = null, encrypted_password = null;
+    try {
+      salt = generateSalt();
+      encrypted_password = "$" + salt + "$" + getEncryption(user_password, salt);
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    }
+
+    return encrypted_password;
+  }
+
+  private static String getEncryption(String password, String salt) {
     String encryptedPassword = null;
     try {
       MessageDigest md = MessageDigest.getInstance("SHA-256");
-      //md.update(salt.getBytes());
+      md.update(salt.getBytes());
       byte[] bytes = md.digest(password.getBytes());
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < bytes.length; i++) {
