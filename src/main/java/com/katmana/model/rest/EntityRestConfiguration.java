@@ -73,10 +73,11 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public void applyParams(T record, HttpServletRequest request){
 		Map<String,String[] > params = request.getParameterMap();
 		for(String property:getWritableRecordProperties()){
-			String requestName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
-			if(params.containsKey(requestName)){
+			//To set it in beans, we need the camelCase property
+			String propName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, property);
+			if(params.containsKey(property)){
 				try {
-					BeanUtils.setProperty(record, property, params.get(requestName)[0]);
+					BeanUtils.setProperty(record, propName, params.get(property)[0]);
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
@@ -94,7 +95,9 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 		ArrayList<String> propertyList = new ArrayList<String>();
 		for(PropertyDescriptor prop:properties){
 			if(prop.getWriteMethod() != null){
-				propertyList.add(prop.getName());
+				//Because prob.getName is in camelCase, but the property (request and json) is using snake_case
+				String propName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, prop.getName());
+				propertyList.add(propName);
 			}
 		}
 		return propertyList;
