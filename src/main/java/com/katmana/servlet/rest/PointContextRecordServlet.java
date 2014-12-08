@@ -8,7 +8,7 @@ import com.katmana.model.rest.PointContextRestConfiguration;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet("/point_contexts/*")
+@WebServlet("/point_context/*")
 public class PointContextRecordServlet extends BaseRecordServlet<PointContext,PointContextRestConfiguration> {
 	private static final long serialVersionUID = 1L;
 }

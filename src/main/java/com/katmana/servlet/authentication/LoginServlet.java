@@ -22,6 +22,8 @@ import java.util.Arrays;
 public class LoginServlet extends HttpServlet {
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+
+    String accept = request.getHeader("Accept");
     response.setContentType("text/html;charset=UTF-8");
     try (PrintWriter out = response.getWriter()) {
 
@@ -37,13 +39,23 @@ public class LoginServlet extends HttpServlet {
       if(validUser && correctPass){
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        result = "<p>Username: " + email + "</p>";
-        response.sendRedirect("index.jsp");
-        return;
+        if(accept != null && accept.equals("text/json")){
+          result = "{'status':'ok'}";
+          response.setStatus(201);
+        }else{
+          result = "<p>Username: " + email + "</p>";
+          response.sendRedirect("index.jsp");
+        }
       }else{
-        result = "<p>Please register.</p>";
+          if(accept != null && accept.equals("text/json")){
+
+          result = "{'status':'wrong username and password'}";
+          response.setStatus(403);
+        }else{
+          result = "<p>Please register.</p>";
+        }
       }
-        out.println(result);
+      out.println(result);
     }
   }
 
