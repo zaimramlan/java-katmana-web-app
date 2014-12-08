@@ -13,10 +13,10 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.google.common.base.CaseFormat;
-
 import com.katmana.Util;
 import com.katmana.model.BaseModel;
 import com.katmana.model.DAOProvider;
+import com.katmana.model.User;
 
 
 /**
@@ -102,6 +102,16 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 		}
 		return propertyList;
 	}
+    
+    /**
+     * Get the id from the extra path.
+     * @return
+     */
+    public long getId(HttpServletRequest request){
+    	String extra = request.getPathInfo();
+    	extra = extra.substring(1); // Remote the initial '/'
+    	return Long.valueOf(extra);
+    }
 	
 	/**
 	 * Should return a list of records that matches the request
@@ -130,6 +140,27 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 	
 	/**
+	 * Override this to define if the index endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowIndex(HttpServletRequest request){
+		return allowIndex(Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the index endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowResource
+	 * @param request
+	 * @return
+	 */
+	public boolean allowIndex(User currentUser){
+		return allowResource(currentUser);
+	}
+	
+	/**
 	 * Called by servlet on create operation.
 	 * This function should save the record and return true
 	 * if successfully created.
@@ -143,6 +174,27 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 	
 	/**
+	 * Override this to define if the create endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowCreate(HttpServletRequest request){
+		return allowCreate(Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the create endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowResource
+	 * @param request
+	 * @return
+	 */
+	public boolean allowCreate(User currentUser){
+		return allowResource(currentUser);
+	}
+	
+	/**
 	 * Called by various method. Should return a record with the specific id
 	 * if exist. null otherwhise. 
 	 * Default implementation is to delegate it to DAO
@@ -152,6 +204,27 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 */
 	public T getRecord(Long id){
 		return dao.get(id);
+	}
+	
+	/**
+	 * Override this to define if the show endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowShow(HttpServletRequest request){
+		return allowShow(getRecord(getId(request)),Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the show endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowResource
+	 * @param request
+	 * @return
+	 */
+	public boolean allowShow(T record,User currentUser){
+		return allowResource(currentUser);
 	}
 
 	/**
@@ -165,6 +238,27 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public boolean doUpdate(T record){
 		return dao.update(record);
 	}
+	
+	/**
+	 * Override this to define if the update endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowUpdate(HttpServletRequest request){
+		return allowUpdate(getRecord(getId(request)),Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the update endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowModify
+	 * @param request
+	 * @return
+	 */
+	public boolean allowUpdate(T record,User currentUser){
+		return allowModify(record,currentUser);
+	}
 
 	/**
 	 * Called by servlet on destroy uperation.
@@ -176,5 +270,50 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 */
 	public boolean doDestroy(T record){
 		return dao.delete(record);
+	}
+	
+	/**
+	 * Override this to define if the destroy endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowDestroy(HttpServletRequest request){
+		return allowDestroy(getRecord(getId(request)),Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the destroy endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowModify
+	 * @param request
+	 * @return
+	 */
+	public boolean allowDestroy(T record,User currentUser){
+		return allowModify(record,currentUser);
+	}
+	
+
+	/**
+	 * Override this to define if the currentUser is allowed to modify the record.
+	 * This is default implementation for allowUpdate and allowDestroy
+	 * default is to delegate to allowResource
+	 * @param record
+	 * @param currentUser
+	 * @return
+	 */
+	public boolean allowModify(T record,User currentUser){
+		return allowResource(currentUser);
+	}
+	
+	
+	/**
+	 * A catch all on the default implementation. Subclass may override this method do
+	 * forbid access by default.
+	 * @param currentUser
+	 * @return
+	 */
+	public boolean allowResource(User currentUser){
+		return true;
 	}
 }

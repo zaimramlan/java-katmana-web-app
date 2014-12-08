@@ -1,5 +1,8 @@
 package com.katmana;
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.gson.Gson;
+import com.katmana.model.User;
 
 
 /**
@@ -20,6 +23,10 @@ public class Util {
 	 */
 	public static Gson createGson(){
 		return new Gson();
+	}
+	
+	public static User getCurrentUser(HttpServletRequest request){
+		return (User)request.getSession().getAttribute("user");
 	}
 
 }

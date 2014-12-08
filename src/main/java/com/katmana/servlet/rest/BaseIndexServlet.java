@@ -67,6 +67,11 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(!restConfiguration.allowIndex(request)){
+			response.setStatus(403);
+			response.getWriter().write("You do not have permission for this resource");
+			return;
+		}
 		List<R> records = restConfiguration.indexRecords(request);
 		response.setStatus(200);
 		response.getWriter().write(restConfiguration.serialize(records));
@@ -78,6 +83,11 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(!restConfiguration.allowCreate(request)){
+			response.setStatus(403);
+			response.getWriter().write("You do not have permission for this resource");
+			return;
+		}
 		R record;
 		try {
 			record = recordClass.newInstance();
