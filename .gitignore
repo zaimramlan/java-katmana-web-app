@@ -3,3 +3,5 @@
 .gradle/*
 jettyJar/*.jar
 jetty-env.xml
+.classpath
+.settings/
