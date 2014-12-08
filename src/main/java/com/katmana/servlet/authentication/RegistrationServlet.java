@@ -1,4 +1,4 @@
-package com.katmana.authentication;
+package com.katmana.servlet.authentication;
 import com.katmana.Encryption;
 
 import com.katmana.model.DAOProvider;

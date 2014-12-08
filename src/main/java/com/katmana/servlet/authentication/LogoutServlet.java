@@ -1,4 +1,4 @@
-package com.katmana.authentication;
+package com.katmana.servlet.authentication;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -45,7 +45,7 @@
   <!-- Auth filters -->
   <filter>
     <filter-name>AuthenticationFilter</filter-name>
-    <filter-class>com.katmana.authentication.AuthenticationFilter</filter-class>
+    <filter-class>com.katmana.servlet.authentication.AuthenticationFilter</filter-class>
   </filter>
 
   <filter-mapping>
