@@ -101,7 +101,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPut(request,response);
+		doPost(request,response);
 	}
 
 	/**
