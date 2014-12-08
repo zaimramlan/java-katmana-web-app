@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import com.google.common.base.CaseFormat;
+
 import com.katmana.Util;
 import com.katmana.model.BaseModel;
 import com.katmana.model.DAOProvider;
@@ -71,9 +73,10 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public void applyParams(T record, HttpServletRequest request){
 		Map<String,String[] > params = request.getParameterMap();
 		for(String property:getWritableRecordProperties()){
-			if(params.containsKey(property)){
+			String requestName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
+			if(params.containsKey(requestName)){
 				try {
-					BeanUtils.setProperty(record, property, params.get(property)[0]);
+					BeanUtils.setProperty(record, property, params.get(requestName)[0]);
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
