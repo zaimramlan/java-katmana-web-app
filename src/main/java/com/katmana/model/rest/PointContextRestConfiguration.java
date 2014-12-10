@@ -37,13 +37,12 @@ public class PointContextRestConfiguration extends EntityRestConfiguration<Point
 	}
 
 	@Override
-	public boolean doCreate(PointContext record) {
+	public void doCreate(PointContext record) {
 		if( point_contextDAO.getAssociation(record.getPointId(), record.getContextId()) != null ){
-			return false;
+			throw new RequestException("The point and context has alread been associated", 400);
 		}
-		boolean res = super.doCreate(record);
+		super.doCreate(record);
 		DAOProvider.getInstance().getPointDAO().index( DAOProvider.getInstance().getPointDAO().get(record.getPointId() ));
-		return res;
 	}
 	
 }

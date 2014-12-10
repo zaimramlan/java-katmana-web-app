@@ -170,8 +170,12 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public boolean doCreate(T record){
-		return dao.save(record);
+	public void doCreate(T record){
+		if(!dao.save(record)){
+			RequestException rex = new RequestException("Error creating record.", 500);
+			rex.printStackTrace();
+			throw rex;
+		}
 	}
 	
 	/**
@@ -236,8 +240,12 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public boolean doUpdate(T record){
-		return dao.update(record);
+	public void doUpdate(T record){
+		if(!dao.update(record)){
+			RequestException rex = new RequestException("Error updating record.", 500);
+			rex.printStackTrace();
+			throw rex;
+		}
 	}
 	
 	/**
@@ -269,8 +277,12 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public boolean doDestroy(T record){
-		return dao.delete(record);
+	public void doDestroy(T record){
+		if(!dao.delete(record)){
+			RequestException rex = new RequestException("Error deleting record.", 500);
+			rex.printStackTrace();
+			throw rex;
+		}
 	}
 	
 	/**
@@ -316,5 +328,27 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 */
 	public boolean allowResource(User currentUser){
 		return true;
+	}
+	
+	/**
+	 * This exception can be thrown the the endpoint and the servlet should catch it and
+	 * send respond according to the content of this exception.
+	 * @author asdacap
+	 *
+	 */
+	public static class RequestException extends RuntimeException{
+		
+		private static final long serialVersionUID = 707052263284902671L;
+		private int status_code;
+
+		public RequestException(String arg0, int status_code) {
+			super(arg0);
+			this.status_code = status_code;
+		}
+		
+		public int getStatusCode(){
+			return status_code;
+		}
+		
 	}
 }

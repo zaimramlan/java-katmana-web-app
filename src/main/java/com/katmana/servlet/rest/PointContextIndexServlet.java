@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.katmana.model.DAOProvider;
 import com.katmana.model.PointContext;
+import com.katmana.model.rest.EntityRestConfiguration;
 import com.katmana.model.rest.PointContextRestConfiguration;
 
 /**
@@ -30,20 +31,25 @@ public class PointContextIndexServlet extends BaseIndexServlet<PointContext,Poin
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if(req.getParameter("point_id") == null || req.getParameter("context_id") == null){
-			resp.setStatus(400);
-			resp.getWriter().write("Parameter point_id and context_id is required");
-			return;
+		try{
+			if(req.getParameter("point_id") == null || req.getParameter("context_id") == null){
+				resp.setStatus(400);
+				resp.getWriter().write("Parameter point_id and context_id is required");
+				return;
+			}
+			PointContext association = DAOProvider.getInstance().getPointContextDAO().getAssociation(Long.valueOf(req.getParameter("point_id")), Long.valueOf(req.getParameter("context_id")));
+			if(association == null){
+				resp.setStatus(404);
+				return;
+			}
+			DAOProvider.getInstance().getPointDAO().index( DAOProvider.getInstance().getPointDAO().get(association.getPointId() ));
+			restConfiguration.doDestroy(association);
+			resp.setStatus(200);
+			resp.getWriter().write(restConfiguration.serialize(association));
+		}catch(EntityRestConfiguration.RequestException e){
+			resp.setStatus(e.getStatusCode());
+			resp.getWriter().write(e.getMessage());
 		}
-		PointContext association = DAOProvider.getInstance().getPointContextDAO().getAssociation(Long.valueOf(req.getParameter("point_id")), Long.valueOf(req.getParameter("context_id")));
-		if(association == null){
-			resp.setStatus(404);
-			return;
-		}
-		DAOProvider.getInstance().getPointDAO().index( DAOProvider.getInstance().getPointDAO().get(association.getPointId() ));
-		restConfiguration.doDestroy(association);
-		resp.setStatus(200);
-		resp.getWriter().write(restConfiguration.serialize(association));
 	}
 	
 	

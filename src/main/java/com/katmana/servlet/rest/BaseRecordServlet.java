@@ -66,19 +66,24 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		R record = restConfiguration.getRecord(restConfiguration.getId(request));
-		if(record == null){
-			response.setStatus(404);
-			response.getWriter().write("Nothing to see here.");
-			return;
+		try{
+			R record = restConfiguration.getRecord(restConfiguration.getId(request));
+			if(record == null){
+				response.setStatus(404);
+				response.getWriter().write("Nothing to see here.");
+				return;
+			}
+			if(!restConfiguration.allowShow(request)){
+				response.setStatus(403);
+				response.getWriter().write("You do not have permission for this resource");
+				return;
+			}
+			response.setStatus(200);
+			response.getWriter().write(restConfiguration.serialize(record));
+		}catch(EntityRestConfiguration.RequestException e){
+			response.setStatus(e.getStatusCode());
+			response.getWriter().write(e.getMessage());
 		}
-		if(!restConfiguration.allowShow(request)){
-			response.setStatus(403);
-			response.getWriter().write("You do not have permission for this resource");
-			return;
-		}
-		response.setStatus(200);
-		response.getWriter().write(restConfiguration.serialize(record));
 	}
 
 	/**
@@ -86,24 +91,26 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		R record = restConfiguration.getRecord(restConfiguration.getId(request));
-		if(record == null){
-			response.setStatus(404);
-			response.getWriter().write("Nothing to see here.");
-			return;
+		try{
+			R record = restConfiguration.getRecord(restConfiguration.getId(request));
+			if(record == null){
+				response.setStatus(404);
+				response.getWriter().write("Nothing to see here.");
+				return;
+			}
+			if(!restConfiguration.allowUpdate(request)){
+				response.setStatus(403);
+				response.getWriter().write("You do not have permission for this resource");
+				return;
+			}
+			restConfiguration.applyParams(record, request);
+			restConfiguration.doUpdate(record);
+			response.setStatus(202);
+			response.getWriter().write(restConfiguration.serialize(record));
+		}catch(EntityRestConfiguration.RequestException e){
+			response.setStatus(e.getStatusCode());
+			response.getWriter().write(e.getMessage());
 		}
-		if(!restConfiguration.allowUpdate(request)){
-			response.setStatus(403);
-			response.getWriter().write("You do not have permission for this resource");
-			return;
-		}
-		restConfiguration.applyParams(record, request);
-		if(!restConfiguration.doUpdate(record)){
-			response.sendError(500, "Fail to save record");
-			return;
-		}
-		response.setStatus(202);
-		response.getWriter().write(restConfiguration.serialize(record));
 	}
 	
 	/**
@@ -120,23 +127,25 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		R record = restConfiguration.getRecord(restConfiguration.getId(request));
-		if(record == null){
-			response.setStatus(404);
-			response.getWriter().write("Nothing to see here.");
-			return;
+		try{
+			R record = restConfiguration.getRecord(restConfiguration.getId(request));
+			if(record == null){
+				response.setStatus(404);
+				response.getWriter().write("Nothing to see here.");
+				return;
+			}
+			if(!restConfiguration.allowDestroy(request)){
+				response.setStatus(403);
+				response.getWriter().write("You do not have permission for this resource");
+				return;
+			}
+			restConfiguration.doDestroy(record);
+			response.setStatus(204);
+			response.getWriter().write(restConfiguration.serialize(record));
+		}catch(EntityRestConfiguration.RequestException e){
+			response.setStatus(e.getStatusCode());
+			response.getWriter().write(e.getMessage());
 		}
-		if(!restConfiguration.allowDestroy(request)){
-			response.setStatus(403);
-			response.getWriter().write("You do not have permission for this resource");
-			return;
-		}
-		if(!restConfiguration.doDestroy(record)){
-			response.sendError(500, "Fail to save record");
-			return;
-		}
-		response.setStatus(204);
-		response.getWriter().write(restConfiguration.serialize(record));
 	}
 	
 }
