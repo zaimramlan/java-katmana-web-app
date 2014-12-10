@@ -21,4 +21,10 @@ public class PointMockDAO extends BaseMockDAO<Point> implements Point.DAO {
 		return null;
 	}
 
+	@Override
+	public void index(Point p) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

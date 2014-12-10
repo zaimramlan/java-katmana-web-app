@@ -39,6 +39,7 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 			String term = params.get("search");
 			bjunc = bjunc
 				.should(qb.phrase().withSlop(5).onField("name").boostedTo(5).sentence(term).createQuery())
+				.should(qb.phrase().withSlop(10).onField("contexts.name").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with context name
 				.should(qb.phrase().withSlop(10).onField("description").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with description
 				.should(qb.phrase().withSlop(10).onField("location_description").boostedTo(0.5F).sentence(term).createQuery()); //Even less weight with location_description
 		}
@@ -61,6 +62,17 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		em.getTransaction().commit();
 		
 		return results;
+	}
+
+	@Override
+	public void index(Point p) {
+		EntityManager em = eFactory.createEntityManager();
+		FullTextEntityManager ftem = Search.getFullTextEntityManager(em);
+		ftem.getTransaction().begin();
+		p = ftem.merge(p);
+		ftem.index(p);
+		ftem.getTransaction().commit();
+		em.close();
 	}
 
 }

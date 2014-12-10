@@ -14,4 +14,10 @@ public class PointContextMockDAO extends BaseMockDAO<PointContext> implements Po
 		this.data = data;
 	}
 
+	@Override
+	public PointContext getAssociation(Long point_id, Long context_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

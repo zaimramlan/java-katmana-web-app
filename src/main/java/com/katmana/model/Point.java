@@ -112,6 +112,12 @@ public class Point extends BaseModel{
 	public void setLocationDescription(String location_description) {
 		this.location_description = location_description;
 	}
+	public List<Context> getContexts() {
+		return contexts;
+	}
+	public void setContexts(List<Context> contexts) {
+		this.contexts = contexts;
+	}
 	
 	/**
 	 * DAO for Point
@@ -121,6 +127,7 @@ public class Point extends BaseModel{
 	 */
 	public static interface DAO extends BaseModel.DAO<Point>{
 		public List<Point> searchPoint(Map<String,String> params);
+		public void index(Point p);
 	}
 	
 }

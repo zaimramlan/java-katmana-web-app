@@ -55,7 +55,7 @@ Directory Structure
 Notices
 -------
 
-- Nothing yet....
+- if you get `java.lang.OutOfMemoryError: PermGen space`, the just restart the server. The java process may need to be killed manually in task manager.
 
 Endpoints
 ---------
@@ -70,6 +70,10 @@ Endpoints
     	- Will return the JSON representation of the resource.
     - EDIT endpoint at POST /resource/<id>
     	- Parameters same as the CREATE endpoint, just it has an id and it update the resource not create it.
-    - DELETE endpoint at POST /resource/<id>
+    - DELETE endpoint at DELETE /resource/<id>
     	- Return the resource JSON to, but the resource should no longer be available later.
+- One Exception is the PointContext endpoint which only have create and delete endpoint and the delete endpoint uses the index url (no id)
+    - INDEX - POST /point_contexts/
+    	- Accept point_id and context_id
+    - DELETE endpoint DELETE /point_contexts/?point_id=<pointid>&context_id=<contextid>
     	
