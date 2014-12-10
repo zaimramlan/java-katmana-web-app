@@ -19,7 +19,7 @@ public class PointContext extends BaseModel {
 	public Long getPointId() {
 		return point_id;
 	}
-	public void setPoint_id(Long point_id) {
+	public void setPointId(Long point_id) {
 		this.point_id = point_id;
 	}
 	public Long getContextId() {

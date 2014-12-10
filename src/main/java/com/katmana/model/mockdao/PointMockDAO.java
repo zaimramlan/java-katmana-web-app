@@ -2,6 +2,7 @@ package com.katmana.model.mockdao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.katmana.model.Point;
 
@@ -16,7 +17,7 @@ public class PointMockDAO extends BaseMockDAO<Point> implements Point.DAO {
 	}
 
 	@Override
-	public List<Point> searchPoint(String term) {
+	public List<Point> searchPoint(Map<String,String> param) {
 		return null;
 	}
 

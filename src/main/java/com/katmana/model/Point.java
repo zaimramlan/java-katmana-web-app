@@ -1,12 +1,17 @@
 package com.katmana.model;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Latitude;
 import org.hibernate.search.annotations.Longitude;
 import org.hibernate.search.annotations.Spatial;
@@ -47,6 +52,14 @@ public class Point extends BaseModel{
 	@Field
 	protected String description;
 	
+	@IndexedEmbedded
+	@ManyToMany
+	@JoinTable(name="point_contexts",
+			joinColumns=@JoinColumn(name="point_id", referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="context_id", referencedColumnName="id")
+			)
+	protected List<Context> contexts;
+	
 	/*
 	 * Additional description on the location. Like, under the desk
 	 * or behind the door or on the third floor.
@@ -54,7 +67,6 @@ public class Point extends BaseModel{
 	@Field
 	protected String location_description;
 	
-
 	/*
 	 * Getter setters
 	 */
@@ -108,7 +120,7 @@ public class Point extends BaseModel{
 	 *
 	 */
 	public static interface DAO extends BaseModel.DAO<Point>{
-		public List<Point> searchPoint(String term);
+		public List<Point> searchPoint(Map<String,String> params);
 	}
 	
 }

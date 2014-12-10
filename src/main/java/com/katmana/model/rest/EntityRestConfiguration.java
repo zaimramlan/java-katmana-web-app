@@ -73,6 +73,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public void applyParams(T record, HttpServletRequest request){
 		Map<String,String[] > params = request.getParameterMap();
 		for(String property:getWritableRecordProperties()){
+			System.out.println("Property: "+property);
 			//To set it in beans, we need the camelCase property
 			String propName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, property);
 			if(params.containsKey(property)){
