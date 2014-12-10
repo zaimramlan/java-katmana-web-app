@@ -24,6 +24,20 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 	@Override
 	public List<Point> searchPoint(Map<String,String> params) {
 		
+		String countString = params.get("count");
+		int count;
+		if(countString == null || countString.isEmpty()){
+			count = 100; // Default count
+		}else{
+			count = Integer.valueOf(countString);
+		}
+		String offsetString = params.get("offset");
+		int offset;
+		if(offsetString == null || offsetString.isEmpty()){
+			offset = 0; // Default offset
+		}else{
+			offset = Integer.valueOf(offsetString);
+		}
 		
 		EntityManager em = eFactory.createEntityManager();
 		FullTextEntityManager fulTextEM = Search.getFullTextEntityManager(em);
@@ -57,7 +71,7 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		}
 		Query query = fulTextEM.createFullTextQuery(finalQuery, Point.class);
 		
-		List<Point> results = query.setMaxResults(1000).getResultList();
+		List<Point> results = query.setMaxResults(count).setFirstResult(offset).getResultList();
 		
 		em.getTransaction().commit();
 		
