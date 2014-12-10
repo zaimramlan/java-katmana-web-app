@@ -23,6 +23,9 @@ Please put any tools that you use that may be hard to figureout what here.
     - JPA is Java Persistent API.
     - JPA is like an ORM that interface JDBC for us.
     - Be careful to differentiate between implementation and specification. JPA is specification, Hibernate is an ORM that provide its implementation.
+- Hibernate-Search
+	- Hibernate search is the search engine.
+	- It is basically a frontend to lucene similar to elasticsearch or solr but much easier to implement with Hibernate already used.
 - Liquibase
     - Liquibase is a database migration library.
     - It should be database independent.
@@ -53,3 +56,20 @@ Notices
 -------
 
 - Nothing yet....
+
+Endpoints
+---------
+
+- All endpoints follor basic CRUD mechanism. (resource here is the type of resource such as user or points)
+    - INDEX endpoint at GET /resources/
+        - Will return list of resource in JSON form.
+    - CREATE endpoint at POST /resources/
+        - The POST params are the resource property (as in variable not bean property) name. 
+        - Also return the modified resource JSON representation.
+    - SHOW endpoint at GET /resource/<id>
+    	- Will return the JSON representation of the resource.
+    - EDIT endpoint at POST /resource/<id>
+    	- Parameters same as the CREATE endpoint, just it has an id and it update the resource not create it.
+    - DELETE endpoint at POST /resource/<id>
+    	- Return the resource JSON to, but the resource should no longer be available later.
+    	

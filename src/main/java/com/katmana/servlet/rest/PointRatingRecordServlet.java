@@ -8,7 +8,7 @@ import com.katmana.model.rest.PointRatingRestConfiguration;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet("/point_ratings/*")
+@WebServlet("/point_rating/*")
 public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,PointRatingRestConfiguration> {
 	private static final long serialVersionUID = 1L;
 }

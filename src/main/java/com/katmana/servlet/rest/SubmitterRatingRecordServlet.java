@@ -8,7 +8,7 @@ import com.katmana.model.rest.SubmitterRatingRestConfiguration;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet("/submitter_ratings/*")
+@WebServlet("/submitter_rating/*")
 public class SubmitterRatingRecordServlet extends BaseRecordServlet<SubmitterRating,SubmitterRatingRestConfiguration> {
 	private static final long serialVersionUID = 1L;
 }
