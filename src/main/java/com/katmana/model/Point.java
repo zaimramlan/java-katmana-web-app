@@ -1,7 +1,15 @@
 package com.katmana.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Latitude;
+import org.hibernate.search.annotations.Longitude;
+import org.hibernate.search.annotations.Spatial;
 
 /**
  * A point represet... a point. 
@@ -12,6 +20,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="points")
+@Indexed
+@Spatial
 public class Point extends BaseModel{
 
 	/*
@@ -22,7 +32,9 @@ public class Point extends BaseModel{
 	/*
 	 * The coordinates. Altitude is optional.
 	 */
+	@Latitude
 	protected Double latitude;
+	@Longitude
 	protected Double longitude;
 	protected Double altitude;
 	
@@ -30,13 +42,16 @@ public class Point extends BaseModel{
 	 * What name to put with this. Or just description?
 	 * 
 	 */
+	@Field
 	protected String name;
+	@Field
 	protected String description;
 	
 	/*
 	 * Additional description on the location. Like, under the desk
 	 * or behind the door or on the third floor.
 	 */
+	@Field
 	protected String location_description;
 	
 
@@ -93,6 +108,7 @@ public class Point extends BaseModel{
 	 *
 	 */
 	public static interface DAO extends BaseModel.DAO<Point>{
+		public List<Point> searchPoint(String term);
 	}
 	
 }
