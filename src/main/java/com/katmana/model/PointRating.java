@@ -22,7 +22,7 @@ public class PointRating extends BaseModel {
 	/*
 	 * The one who is liking
 	 */
-	private Long liker_id;
+	private Long rater_id;
 
 	/*
 	 * Like or not?
@@ -35,11 +35,11 @@ public class PointRating extends BaseModel {
 	public void setPointId(Long point_id) {
 		this.point_id = point_id;
 	}
-	public Long getLikerId() {
-		return liker_id;
+	public Long getRaterId() {
+		return rater_id;
 	}
-	public void setLikerId(Long liker_id) {
-		this.liker_id = liker_id;
+	public void setRaterId(Long rater_id) {
+		this.rater_id = rater_id;
 	}
 	public Boolean getPositive() {
 		return positive;
@@ -48,6 +48,30 @@ public class PointRating extends BaseModel {
 		this.positive = positive;
 	}
 	
+	public static class Summary{
+		private Long point_id;
+		private int positive = 0;
+		private int negative = 0;
+		
+		public Summary(Long p,int positive,int negative){
+			this.point_id = p;
+			this.positive = positive;
+			this.negative = negative;
+		}
+
+		public Long getPointId() {
+			return point_id;
+		}
+		public int getPositive() {
+			return positive;
+		}
+		public int getNegative() {
+			return negative;
+		}
+	}
+	
 	public static interface DAO extends BaseModel.DAO<PointRating>{
+		public PointRating getRating(Long rater_id,Long point_id);
+		public PointRating.Summary getPointRatingSummary(Long point_id);
 	}
 }

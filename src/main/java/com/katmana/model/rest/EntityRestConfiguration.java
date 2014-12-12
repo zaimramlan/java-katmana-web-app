@@ -239,6 +239,18 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public T getRecord(Long id){
 		return dao.get(id);
 	}
+
+	/**
+	 * Called by SHOW endpoint. Should return a record ssociated with the request.
+	 * if exist. null otherwhise. 
+	 * Default implementation is to get the id and get record from getRecord(Long id);
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public T getRecord(HttpServletRequest request){
+		return getRecord(getId(request));
+	}
 	
 	/**
 	 * Override this to define if the show endpoint is allowed for this resource.
@@ -247,7 +259,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public boolean allowShow(HttpServletRequest request){
-		return allowShow(getRecord(getId(request)),Util.getCurrentUser(request));
+		return allowShow(getRecord(request),Util.getCurrentUser(request));
 	}
 
 	/**
@@ -284,7 +296,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public boolean allowUpdate(HttpServletRequest request){
-		return allowUpdate(getRecord(getId(request)),Util.getCurrentUser(request));
+		return allowUpdate(getRecord(request),Util.getCurrentUser(request));
 	}
 
 	/**
@@ -321,7 +333,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public boolean allowDestroy(HttpServletRequest request){
-		return allowDestroy(getRecord(getId(request)),Util.getCurrentUser(request));
+		return allowDestroy(getRecord(request),Util.getCurrentUser(request));
 	}
 
 	/**
