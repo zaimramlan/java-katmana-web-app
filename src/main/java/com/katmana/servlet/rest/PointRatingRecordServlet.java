@@ -48,6 +48,8 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 				pr.setPointId(point_id);
 				pr.setPositive(positive);
 				restConfiguration.doCreate(pr);
+				response.setStatus(201);
+				response.getWriter().write(restConfiguration.serialize(record));
 				
 			}
 			if(!restConfiguration.allowUpdate(request)){

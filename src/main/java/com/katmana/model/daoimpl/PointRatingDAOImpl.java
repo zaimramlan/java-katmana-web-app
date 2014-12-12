@@ -29,7 +29,7 @@ public class PointRatingDAOImpl extends BaseDAOImpl<PointRating> implements Poin
 	}
 
 	@Override
-	public Summary getPointRatingSummary(Long point_id) {
+	public Summary getRatingSummary(Long point_id) {
 		int positive = 0;
 		int negative = 0;
 		

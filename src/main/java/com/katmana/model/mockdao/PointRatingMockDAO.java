@@ -22,7 +22,7 @@ public class PointRatingMockDAO extends BaseMockDAO<PointRating> implements Poin
 	}
 
 	@Override
-	public Summary getPointRatingSummary(Long point_id) {
+	public Summary getRatingSummary(Long point_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

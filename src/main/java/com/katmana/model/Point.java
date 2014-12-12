@@ -129,7 +129,7 @@ public class Point extends BaseModel{
 	
 	@ExposeMethodResult("rating")
 	public PointRating.Summary getRatingSummary(){
-		return DAOProvider.getInstance().getPointRatingDAO().getPointRatingSummary(getId());
+		return DAOProvider.getInstance().getPointRatingDAO().getRatingSummary(getId());
 	}
 	
 	/**

@@ -68,6 +68,6 @@ public class PointRating extends BaseModel {
 	
 	public static interface DAO extends BaseModel.DAO<PointRating>{
 		public PointRating getRating(Long rater_id,Long point_id);
-		public PointRating.Summary getPointRatingSummary(Long point_id);
+		public PointRating.Summary getRatingSummary(Long point_id);
 	}
 }
