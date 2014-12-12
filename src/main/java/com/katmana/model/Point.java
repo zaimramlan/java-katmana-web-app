@@ -16,6 +16,8 @@ import org.hibernate.search.annotations.Latitude;
 import org.hibernate.search.annotations.Longitude;
 import org.hibernate.search.annotations.Spatial;
 
+import com.katmana.model.annotation.ExcludeJson;
+
 /**
  * A point represet... a point. 
  * The thing that the user(submitter) submit.
@@ -56,6 +58,7 @@ public class Point extends BaseModel{
 	@Field
 	protected String description;
 	
+	@ExcludeJson
 	@IndexedEmbedded
 	@ManyToMany
 	@JoinTable(name="point_contexts",
