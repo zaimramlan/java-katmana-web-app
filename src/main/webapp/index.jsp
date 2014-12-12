@@ -10,7 +10,7 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="jquery-2.1.1.min.js"></script>
     <script type="text/javascript">
-      var map, isAdding = false, active_context = null;
+      var map, isAdding = false, active_context = null, markers = new Array();
       function initialize() {
         var mapOptions = {
           center: { lat: 3.25106, lng: 101.735866},
@@ -25,11 +25,21 @@
           isAdding = false
         });
 
-        // addContextMarkers();
-        // populateMarkers();
         populateContext();
       }
       google.maps.event.addDomListener(window, 'load', initialize);
+
+      function clearPoints(){
+        for(var i=0; i<markers.length; i++){
+          var m = markers[i];
+          if(m.deleted == false){
+            m.node.parentNode.removeChild(m.node);
+            m.marker.setMap(null);
+          }
+          m.deleted = true;
+        }
+        markers = new Array();
+      }
 
       function placeMarker(location) {
         var marker = new google.maps.Marker({
@@ -116,12 +126,6 @@
             self.marker.setMap(null);
             self.deleted = true;
             el.removeChild(self.node);
-            request = $.ajax({
-              type: "DELETE",
-              url: "point_contexts/",
-              data: {point_id: self.id, context_id: active_context},
-              dataType: "json"
-            });
           })
         }
 
@@ -141,9 +145,12 @@
 
         // add node to el
         el.appendChild(self.node);
+
+        markers.push(self);
       }
 
       function populateMarkers(points){
+        var bounds = new google.maps.LatLngBounds();
         for (var i = 0; i < points.length; i++) {
           var latLng = new google.maps.LatLng(points[i].latitude,points[i].longitude);
           var p = new Point(document.getElementById("points"), placeMarker(latLng));
@@ -151,7 +158,9 @@
           p.id = points[i].id;
           p.name_field.value = points[i].name;
           p.description_field.value = points[i].description;
+          bounds.extend(latLng);
         };
+        map.fitBounds(bounds);
       }
 
       function Context(el){
@@ -187,6 +196,7 @@
             dataType: "json"
           }).done(function(response){
             self.points = response;
+            clearPoints();
             populateMarkers(self.points);
           })
         }
@@ -238,6 +248,7 @@
       function createContext(el){
         var c = new Context(el);
         c.save();
+        clearPoints();
       }
 
       function populateContext(){
