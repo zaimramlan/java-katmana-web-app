@@ -17,6 +17,9 @@ import org.hibernate.search.annotations.Latitude;
 import org.hibernate.search.annotations.Longitude;
 import org.hibernate.search.annotations.Spatial;
 
+import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
+import com.katmana.model.annotation.ExcludeJson;
+
 /**
  * A point represet... a point. 
  * The thing that the user(submitter) submit.
@@ -33,15 +36,19 @@ public class Point extends BaseModel{
 	/*
 	 * The user ID who submit it.
 	 */
+	@Field
 	protected Long submitter_id;
 	
 	/*
 	 * The coordinates. Altitude is optional.
 	 */
+	@Field
 	@Latitude
 	protected Double latitude;
+	@Field
 	@Longitude
 	protected Double longitude;
+	@Field
 	protected Double altitude;
 	
 	/*
@@ -52,6 +59,7 @@ public class Point extends BaseModel{
 	protected String name;
 	@Field
 	protected String description;
+	
 	@ExcludeJson
 	@IndexedEmbedded
 	@ManyToMany
@@ -118,6 +126,11 @@ public class Point extends BaseModel{
 	}
 	public void setContexts(List<Context> contexts) {
 		this.contexts = contexts;
+	}
+	
+	@ExposeMethodResult("rating")
+	public PointRating.Summary getRatingSummary(){
+		return DAOProvider.getInstance().getPointRatingDAO().getRatingSummary(getId());
 	}
 	
 	/**

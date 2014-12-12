@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
 import com.katmana.model.annotation.ExcludeJson;
 
 /**
@@ -52,6 +53,12 @@ public class User extends BaseModel{
 		this.encrypted_password = encrypted_password;
 	}
 	
+	
+	@ExposeMethodResult("rating")
+	public SubmitterRating.Summary getRatingSummary(){
+		return DAOProvider.getInstance().getSubmitterRatingDAO().getRatingSummary(getId());
+	}
+
 	/**
 	 * A data access object interface for the user
 	 */

@@ -255,3 +255,17 @@ databaseChangeLog:
                   type: DATETIME
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: 3
+      author: asdacap
+      comment: Fix rating data type represented by int
+      changes:
+        - modifyDataType:
+            tableName: point_ratings
+            columnName: positive
+            newDataType: boolean
+        - modifyDataType:
+            tableName: submitter_ratings
+            columnName: positive
+            newDataType: boolean

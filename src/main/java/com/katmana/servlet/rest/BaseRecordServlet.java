@@ -67,7 +67,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			R record = restConfiguration.getRecord(restConfiguration.getId(request));
+			R record = restConfiguration.getRecord(request);
 			if(record == null){
 				response.setStatus(404);
 				response.getWriter().write("Nothing to see here.");
@@ -92,7 +92,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			R record = restConfiguration.getRecord(restConfiguration.getId(request));
+			R record = restConfiguration.getRecord(request);
 			if(record == null){
 				response.setStatus(404);
 				response.getWriter().write("Nothing to see here.");
@@ -128,7 +128,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try{
-			R record = restConfiguration.getRecord(restConfiguration.getId(request));
+			R record = restConfiguration.getRecord(request);
 			if(record == null){
 				response.setStatus(404);
 				response.getWriter().write("Nothing to see here.");

@@ -4,6 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,6 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public void applyParams(T record, HttpServletRequest request){
 		Map<String,String[] > params = request.getParameterMap();
 		for(String property:getWritableRecordProperties()){
-			System.out.println("Property: "+property);
 			//To set it in beans, we need the camelCase property
 			String propName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, property);
 			if(params.containsKey(property)){
@@ -87,7 +87,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 	
 	/**
-	 * This function should return T's bean property that is writable.
+	 * This function should return T's bean property that is writable in snaked_case form.
 	 * It need to be writable because this is used by applyParams
 	 * @return
 	 */
@@ -137,7 +137,35 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 			offset = Integer.valueOf(offsetString);
 		}
 		
-		return dao.listAll(offset, count);
+		List<String> qableProp = getQueryableRecordProperties();
+		Map<String,Object> query = new Hashtable<String,Object>();
+		
+		for(String str:qableProp){
+			if(request.getParameter(str) != null && !request.getParameter(str).isEmpty()){
+				query.put(str, request.getParameter(str));
+			}
+		}
+		
+		return dao.basicWhereQuery(query, offset, count);
+	}
+	
+	/**
+	 * This function should return T's bean property that is queriable in snaked_case form.
+	 * It will be used by indexRecords to make query.
+	 * By default queriable is readable.
+	 * @return
+	 */
+	public List<String> getQueryableRecordProperties(){
+		PropertyDescriptor[] properties = PropertyUtils.getPropertyDescriptors(entityClass);
+		ArrayList<String> propertyList = new ArrayList<String>();
+		for(PropertyDescriptor prop:properties){
+			if(prop.getReadMethod() != null){
+				//Because prob.getName is in camelCase, but the property (request and json) is using snake_case
+				String propName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, prop.getName());
+				propertyList.add(propName);
+			}
+		}
+		return propertyList;
 	}
 	
 	/**
@@ -210,6 +238,18 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public T getRecord(Long id){
 		return dao.get(id);
 	}
+
+	/**
+	 * Called by SHOW endpoint. Should return a record ssociated with the request.
+	 * if exist. null otherwhise. 
+	 * Default implementation is to get the id and get record from getRecord(Long id);
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public T getRecord(HttpServletRequest request){
+		return getRecord(getId(request));
+	}
 	
 	/**
 	 * Override this to define if the show endpoint is allowed for this resource.
@@ -218,7 +258,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public boolean allowShow(HttpServletRequest request){
-		return allowShow(getRecord(getId(request)),Util.getCurrentUser(request));
+		return allowShow(getRecord(request),Util.getCurrentUser(request));
 	}
 
 	/**
@@ -255,7 +295,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public boolean allowUpdate(HttpServletRequest request){
-		return allowUpdate(getRecord(getId(request)),Util.getCurrentUser(request));
+		return allowUpdate(getRecord(request),Util.getCurrentUser(request));
 	}
 
 	/**
@@ -292,7 +332,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public boolean allowDestroy(HttpServletRequest request){
-		return allowDestroy(getRecord(getId(request)),Util.getCurrentUser(request));
+		return allowDestroy(getRecord(request),Util.getCurrentUser(request));
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package com.katmana;
 import javax.servlet.http.HttpServletRequest;
 
+import com.github.julman99.gsonfire.GsonFireBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.katmana.model.GsonExcludeStrategy;
@@ -24,7 +25,14 @@ public class Util {
 	 * @return
 	 */
 	public static Gson createGson(){
-		return new GsonBuilder().setExclusionStrategies(new GsonExcludeStrategy()).create();
+		return createGsonBuilder().create();
+	}
+	
+	public static GsonBuilder createGsonBuilder(){
+		return new GsonFireBuilder()
+		.enableExposeMethodResult()
+		.createGsonBuilder()
+		.setExclusionStrategies(new GsonExcludeStrategy());
 	}
 	
 	public static User getCurrentUser(HttpServletRequest request){
