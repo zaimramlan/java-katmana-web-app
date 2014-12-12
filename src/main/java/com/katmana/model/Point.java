@@ -1,4 +1,5 @@
 package com.katmana.model;
+import com.katmana.model.annotation.ExcludeJson;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class Point extends BaseModel{
 	protected String name;
 	@Field
 	protected String description;
-	
+	@ExcludeJson
 	@IndexedEmbedded
 	@ManyToMany
 	@JoinTable(name="point_contexts",

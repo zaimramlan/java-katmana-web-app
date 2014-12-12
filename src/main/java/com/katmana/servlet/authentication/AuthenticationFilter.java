@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter {
   private ServletContext context;
   private String[] whitelist = {
+                                "/jquery-2.1.1.min.js",
                                 "/index.jsp",
                                 "/login",
                                 "/registration.html",
