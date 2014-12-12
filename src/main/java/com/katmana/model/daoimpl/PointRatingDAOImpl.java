@@ -39,8 +39,8 @@ public class PointRatingDAOImpl extends BaseDAOImpl<PointRating> implements Poin
 				.setParameter("point_id", point_id).getResultList();
 		
 		for(Object[] obj:results){
-			boolean is_positive = (boolean)obj[0];
-			int count = (int)obj[1];
+			boolean is_positive = (boolean)obj[1];
+			int count = (int)(long)obj[0];
 			if(is_positive){
 				positive = count;
 			}else{
@@ -49,7 +49,7 @@ public class PointRatingDAOImpl extends BaseDAOImpl<PointRating> implements Poin
 		}
 		
 		em.close();
-		return new Summary(point_id, positive, negative);
+		return new Summary(positive, negative);
 	}
 
 }

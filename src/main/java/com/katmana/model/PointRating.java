@@ -49,19 +49,15 @@ public class PointRating extends BaseModel {
 	}
 	
 	public static class Summary{
-		private Long point_id;
+
 		private int positive = 0;
 		private int negative = 0;
 		
-		public Summary(Long p,int positive,int negative){
-			this.point_id = p;
+		public Summary(int positive,int negative){
 			this.positive = positive;
 			this.negative = negative;
 		}
 
-		public Long getPointId() {
-			return point_id;
-		}
 		public int getPositive() {
 			return positive;
 		}

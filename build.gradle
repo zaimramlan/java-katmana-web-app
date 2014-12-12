@@ -22,6 +22,9 @@ apply plugin: 'org.akhikhl.gretty'
 
 repositories {
   mavenCentral()
+  maven{
+	  url 'https://raw.github.com/julman99/mvn-repo/master'
+  }
   jcenter()
 }
 
@@ -37,6 +40,7 @@ dependencies {
   compile "com.google.code.gson:gson:2.3.1"
   compile "commons-beanutils:commons-beanutils:1.9.2"
   compile "com.google.guava:guava:18.0"
+  compile "com.github.julman99:gson-fire:0.11.0"
 
   /*
    * For some reason, gretty do not load these. Weird huh?

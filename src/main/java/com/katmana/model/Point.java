@@ -16,6 +16,7 @@ import org.hibernate.search.annotations.Latitude;
 import org.hibernate.search.annotations.Longitude;
 import org.hibernate.search.annotations.Spatial;
 
+import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
 import com.katmana.model.annotation.ExcludeJson;
 
 /**
@@ -124,6 +125,11 @@ public class Point extends BaseModel{
 	}
 	public void setContexts(List<Context> contexts) {
 		this.contexts = contexts;
+	}
+	
+	@ExposeMethodResult("rating")
+	public PointRating.Summary getRatingSummary(){
+		return DAOProvider.getInstance().getPointRatingDAO().getPointRatingSummary(getId());
 	}
 	
 	/**
