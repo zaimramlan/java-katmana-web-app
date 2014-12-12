@@ -2,7 +2,9 @@ package com.katmana.model.daoimpl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -71,8 +73,36 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 
 	@Override
 	public List<T> listAll(int offset, int count) {
+		return basicWhereQuery(new Hashtable<String,Object>(), offset, count);
+	}
+	
+	@Override
+	public List<T> basicWhereQuery(Map<String,Object> params,int offset, int count){
 		EntityManager em = eFactory.createEntityManager();
-		Query query = em.createQuery("select u from "+entityClass.getName()+" u");
+		String whereQuery = "";
+		boolean first = true;
+		
+		//Build the where query
+		for(String par:params.keySet()){
+			if(!first){
+				whereQuery += " AND ";
+			}else{
+				first = false;
+			}
+			whereQuery+= "u."+par+" = :"+par;
+		}
+		//If not empty, add 'WHERE'
+		if(!whereQuery.isEmpty()){
+			whereQuery = "WHERE "+whereQuery;
+		}
+		
+		Query query = em.createQuery("select u from "+entityClass.getName()+" u "+whereQuery);
+		
+		//Assign parameter value
+		for(String par:params.keySet()){
+			query.setParameter(par, params.get(par));
+		}
+		
 		List<T> u = new ArrayList<T>(); 
 		query.setMaxResults(count);
 		query.setFirstResult(offset);

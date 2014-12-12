@@ -32,15 +32,19 @@ public class Point extends BaseModel{
 	/*
 	 * The user ID who submit it.
 	 */
+	@Field
 	protected Long submitter_id;
 	
 	/*
 	 * The coordinates. Altitude is optional.
 	 */
+	@Field
 	@Latitude
 	protected Double latitude;
+	@Field
 	@Longitude
 	protected Double longitude;
+	@Field
 	protected Double altitude;
 	
 	/*

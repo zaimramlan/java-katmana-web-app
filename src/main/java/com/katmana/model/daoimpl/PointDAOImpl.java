@@ -62,6 +62,14 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 			String context_id = params.get("context_id");
 			bjunc.must(qb.keyword().onField("contexts.id").matching(context_id).createQuery());
 		}
+		
+		//Queriables/Filter
+		String[] queriables = {"submitter_id","name","description","location_description"};
+		for(String param:queriables){
+			if(params.containsKey(param)){
+				bjunc.must(qb.keyword().onField(param).matching(params.get(param)).createQuery());
+			}
+		}
 
 		org.apache.lucene.search.Query finalQuery;
 		try{

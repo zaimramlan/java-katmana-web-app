@@ -2,6 +2,7 @@ package com.katmana.model.mockdao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.katmana.model.BaseModel;
@@ -63,5 +64,10 @@ public abstract class BaseMockDAO<T extends BaseModel> implements BaseModel.DAO<
 	@Override
 	public List<T> listAll(int offset, int count) {
 		return data.subList(offset, count);
+	}
+	
+	@Override
+	public List<T> basicWhereQuery(Map<String,Object> param,int offset, int count){
+		return null;
 	}
 }

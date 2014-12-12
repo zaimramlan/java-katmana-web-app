@@ -65,6 +65,7 @@ Endpoints
         - Will return list of resource in JSON form.
         - By default all index endpoint will return a maximum of 100 record.
         - They should accept parameter `offset` and `limit` for the rest of the record.
+        - Default implementation also accept the model attributes as parameters in which you can do filter query.
     - CREATE endpoint at `POST /resources/`
         - The POST params are the resource property (as in variable not bean property) name. 
         - Also return the modified resource JSON representation.

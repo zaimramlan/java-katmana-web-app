@@ -4,6 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 	
 	/**
-	 * This function should return T's bean property that is writable.
+	 * This function should return T's bean property that is writable in snaked_case form.
 	 * It need to be writable because this is used by applyParams
 	 * @return
 	 */
@@ -137,7 +138,35 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 			offset = Integer.valueOf(offsetString);
 		}
 		
-		return dao.listAll(offset, count);
+		List<String> qableProp = getQueryableRecordProperties();
+		Map<String,Object> query = new Hashtable<String,Object>();
+		
+		for(String str:qableProp){
+			if(request.getParameter(str) != null && !request.getParameter(str).isEmpty()){
+				query.put(str, request.getParameter(str));
+			}
+		}
+		
+		return dao.basicWhereQuery(query, offset, count);
+	}
+	
+	/**
+	 * This function should return T's bean property that is queriable in snaked_case form.
+	 * It will be used by indexRecords to make query.
+	 * By default queriable is readable.
+	 * @return
+	 */
+	public List<String> getQueryableRecordProperties(){
+		PropertyDescriptor[] properties = PropertyUtils.getPropertyDescriptors(entityClass);
+		ArrayList<String> propertyList = new ArrayList<String>();
+		for(PropertyDescriptor prop:properties){
+			if(prop.getReadMethod() != null){
+				//Because prob.getName is in camelCase, but the property (request and json) is using snake_case
+				String propName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, prop.getName());
+				propertyList.add(propName);
+			}
+		}
+		return propertyList;
 	}
 	
 	/**
