@@ -82,6 +82,7 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		List<Point> results = query.setMaxResults(count).setFirstResult(offset).getResultList();
 		
 		em.getTransaction().commit();
+		em.close();
 		
 		return results;
 	}
