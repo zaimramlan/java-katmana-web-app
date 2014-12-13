@@ -304,6 +304,11 @@
         <button onclick="isAdding=true; return false">addnew</button>
       </div>
       <% } %>
+      <div>
+        <form action="points/">
+          <input type="text" name="seacrh">
+        </form>
+      </div>
     </div>
   </body>
 </html>

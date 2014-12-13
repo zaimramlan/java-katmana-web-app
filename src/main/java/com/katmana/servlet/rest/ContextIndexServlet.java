@@ -8,7 +8,7 @@ import com.katmana.model.rest.ContextRestConfiguration;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet("/contexts/")
+@WebServlet("/contexts")
 public class ContextIndexServlet extends BaseIndexServlet<Context,ContextRestConfiguration> {
 	private static final long serialVersionUID = 1L;
 }

@@ -61,12 +61,12 @@ Endpoints
 ---------
 
 - All endpoints follor basic CRUD mechanism. (resource here is the type of resource such as user or points)
-    - INDEX endpoint at `GET /resources/`
+    - INDEX endpoint at `GET /resources`
         - Will return list of resource in JSON form.
         - By default all index endpoint will return a maximum of 100 record.
         - They should accept parameter `offset` and `limit` for the rest of the record.
         - Default implementation also accept the model attributes as parameters in which you can do filter query.
-    - CREATE endpoint at `POST /resources/`
+    - CREATE endpoint at `POST /resources`
         - The POST params are the resource property (as in variable not bean property) name. 
         - Also return the modified resource JSON representation.
     - SHOW endpoint at `GET /resource/<id>`. Notice that this one and the other two endpoint uses singular url.
@@ -77,11 +77,11 @@ Endpoints
     	- Return the resource JSON to, but the resource should no longer be available later.
 - Several exception to that usual rule are:
     - PointContext endpoint only have create and delete endpoint and the delete endpoint uses the index url (no id)
-        - INDEX - `POST /point_contexts/`
+        - INDEX - `POST /point_contexts`
         	- Accept `point_id` and `context_id`
-        - DELETE endpoint `DELETE /point_contexts/?point_id=<pointid>&context_id=<contextid>`
+        - DELETE endpoint `DELETE /point_contexts?point_id=<pointid>&context_id=<contextid>`
     - PointRating and SubmitterRating endpoint do not have create and index endpoint. The update endpoint act as a create endpoint.
 - The point INDEX endpoint can be used to search for endpoints.
 	- It accept two additional parameter `search` and `context_id`
-- There is one helper endpoint at `POST /reindex_points/` . This will reindex all point into the search engine.
+- There is one helper endpoint at `POST /reindex_points` . This will reindex all point into the search engine.
     	
