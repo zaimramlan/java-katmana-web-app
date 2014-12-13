@@ -24,6 +24,8 @@ public class AuthenticationFilter implements Filter {
   private ServletContext context;
   private String[] whitelist = {
                                 "/jquery-2.1.1.min.js",
+                                "/point.js",
+                                "/index.js",
                                 "/index.jsp",
                                 "/login",
                                 "/registration.html",
