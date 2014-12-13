@@ -299,11 +299,29 @@
         <h3>Contexts</h3>
         <button onclick="createContext(this.parentNode); return false">new Context</button>
       </div>
+      <% } %>
+      <div>
+        <form id="search-form" action="points/">
+          <input type="text" name="search">
+        </form>
+        <script>
+          $("#search-form").submit(function(event){
+            event.preventDefault();
+            $.get("points/?"+$("#search-form").serialize())
+            .done(function(points){
+              clearPoints();
+              points = JSON.parse(points);
+              populateMarkers(points);
+            })
+            return false;
+          })
+        </script>
+      </div>
+
       <div id="points">
         <h3>Points</h3>
         <button onclick="isAdding=true; return false">addnew</button>
       </div>
-      <% } %>
     </div>
   </body>
 </html>
