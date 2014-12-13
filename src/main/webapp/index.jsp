@@ -55,7 +55,11 @@
             .done(function(points){
               clearPoints();
               points = JSON.parse(points);
-              populateMarkers(points);
+              populateMarkers({
+                points:points,
+                parentElement: document.getElementById("points"),
+                draggable: false
+              });
             })
             return false;
           })

@@ -64,6 +64,7 @@ function Point(param){
     }).done(function(response){
       if(!self.submitted){
         self.placeMarker();
+        self.parentElement.appendChild(self.node);
         self.id = response.id;
         request = $.ajax({
           type: method,
@@ -72,6 +73,9 @@ function Point(param){
         });
         self.submitted = true;
       }
+      return true;
+    }).fail(function(){
+      return false;
     });
   }
 
@@ -103,8 +107,10 @@ function Point(param){
   self.set_button.addEventListener("click", self.showLoc, false);
   self.remove_button.addEventListener("click", self.destroy, false);
 
-  if(self.submitted) self.placeMarker();
+  if(self.submitted){
+    self.placeMarker();
 
-  // add node to el
-  self.parentElement.appendChild(self.node);
+    // add node to el
+    self.parentElement.appendChild(self.node);
+  }
 }

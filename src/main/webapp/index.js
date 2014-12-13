@@ -17,9 +17,9 @@ function initialize() {
         active_context: active_context,
         parentElement: document.getElementById("right-col")
       });
-      p.save();
+      if(p.save())
+        markers.push(p);
     }
-    markers.push(p);
     isAdding = false
   });
 
@@ -51,7 +51,7 @@ function populateMarkers(param){
       submitted: true,
       position: latLng,
       map: map,
-      draggable: true,
+      draggable: param.draggable,
       name: point.name,
       description: point.description,
       active_context: active_context,
@@ -102,6 +102,7 @@ function Context(param){
       self.points = response;
       clearPoints();
       populateMarkers({
+        draggable: true,
         points: self.points,
         parentElement: document.getElementById("points")
       });
