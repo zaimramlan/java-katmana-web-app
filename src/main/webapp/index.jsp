@@ -12,7 +12,6 @@
         left:50%;
         height: 100%; 
         width:50%; 
-        float:right; 
         margin: 0; 
         padding: 0;
         -webkit-opacity:0.8;
@@ -20,7 +19,6 @@
       #map-canvas { 
         height: 100%; 
         width:100%; 
-        float:left; 
         margin: 0; 
         padding: 0;
       }
@@ -31,15 +29,14 @@
       }
     </style>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+    <script type="text/javascript" src="map.js"></script>
     <script src="jquery-2.1.1.min.js"></script>
     <script src="jquery-ui.min.js"></script>
     <script src="custom.js"></script>
-    <script type="text/javascript" src="map.js"></script>
   </head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <body>
-    <div id="map-canvas">
-    </div>
+    <div id="map-canvas"></div>
     <input type="button" value="trigger" class="trig">
     <div id="right-col">
       <h1>Hello World!</h1>

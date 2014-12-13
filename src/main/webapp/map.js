@@ -18,6 +18,7 @@ function initialize() {
   populateContext();
 }
 
+
 function clearPoints(){
   for(var i=0; i<markers.length; i++){
     var m = markers[i];
