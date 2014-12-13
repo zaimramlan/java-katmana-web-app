@@ -41,10 +41,6 @@ function Point(param){
       '</div>';
   }
 
-  this.infowindow = new google.maps.InfoWindow({
-    content: self.getContentString(),
-    maxWidth: 300
-  });
 
   this.placeMarker = function() {
     var t = 0;
@@ -70,8 +66,14 @@ function Point(param){
   }
 
   this.displayInfo = function(){
-    self.infowindow.content = self.getContentString();
-    self.infowindow.open(self.map, self.marker);
+    if(infowindow)
+      infowindow.close();
+    infowindow = new google.maps.InfoWindow({
+      content: null,
+      maxWidth: 300
+    });
+    infowindow.content = self.getContentString();
+    infowindow.open(self.map, self.marker);
     self.infowindow.height(self.infowindow.height());
   }
 

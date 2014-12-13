@@ -1,4 +1,4 @@
-var map, isAdding = false, active_context = null, markers = new Array();
+var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null;
 function initialize() {
   var mapOptions = {
     center: { lat: 3.25106, lng: 101.735866},
@@ -15,12 +15,15 @@ function initialize() {
         map: map,
         draggable: true,
         active_context: active_context,
-        parentElement: document.getElementById("right-col")
+        parentElement: document.getElementById("right-col"),
+        infowindow: infowindow
       });
       if(p.save())
         markers.push(p);
     }
     isAdding = false
+    if(infowindow)
+      infowindow.close();
   });
 
   populateContext({parentElement: document.getElementById("contexts")});
@@ -60,7 +63,8 @@ function populateMarkers(param){
       description: point.description,
       active_context: active_context,
       parentElement: param.parentElement,
-      delay: i * 100
+      delay: i * 100,
+      infowindow: infowindow
     });
     markers.push(p);
     bounds.extend(latLng);
