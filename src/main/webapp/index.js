@@ -28,18 +28,22 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function clearPoints(){
+  console.log(markers)
   for(var i=0; i<markers.length; i++){
     var m = markers[i];
     if(m.deleted == false){
       m.node.parentNode.removeChild(m.node);
+      m.map = null;
       m.marker.setMap(null);
     }
     m.deleted = true;
+    m = null;
   }
   markers = new Array();
 }
 
 function populateMarkers(param){
+  clearPoints();
   var bounds = new google.maps.LatLngBounds();
   for (var i = 0; i < param.points.length; i++) {
     var point = param.points[i];
@@ -55,7 +59,8 @@ function populateMarkers(param){
       name: point.name,
       description: point.description,
       active_context: active_context,
-      parentElement: param.parentElement
+      parentElement: param.parentElement,
+      delay: i * 100
     });
     markers.push(p);
     bounds.extend(latLng);

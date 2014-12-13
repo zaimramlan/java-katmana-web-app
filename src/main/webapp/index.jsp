@@ -5,7 +5,7 @@
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0;}
       #right-col { height: 100%; width:50%; float:right; margin: 0; padding: 0;}
-      #map-canvas { height: 100%; width:50%; float:left; margin: 0; padding: 0;}
+      #map-canvas { height: 100%; width:50%; float:left; margin: 0; padding: 0; line-height:normal;}
     </style>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="jquery-2.1.1.min.js"></script>

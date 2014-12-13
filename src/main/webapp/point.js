@@ -8,8 +8,8 @@ function Point(param){
   this.position = param.position;
   this.map = param.map;
   this.draggable = param.draggable;
-  this.parentElement = param.parentElement;
   this.active_context = param.active_context;
+  this.parentElement = param.parentElement;
   this.node = document.createElement("div");
   this.name_field = document.createElement("input");
   this.description_field = document.createElement("input");
@@ -32,14 +32,47 @@ function Point(param){
   self.node.appendChild(self.set_button);
   self.node.appendChild(self.remove_button);
 
+  this.getContentString = function(){
+    return '<div id="content">'+
+      '<p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">'+self.name_field.value+'</p>'+
+      '<div id="bodyContent">'+
+      '<p style="margin:0">'+self.description_field.value+'</p>'+
+      '</div>'+
+      '</div>';
+  }
+
+  this.infowindow = new google.maps.InfoWindow({
+    content: self.getContentString(),
+    maxWidth: 300
+  });
+
   this.placeMarker = function() {
-    self.marker = new google.maps.Marker({
+    var t = 0;
+    self.marker = new google.maps.Marker({});
+    if(param.delay != undefined) t = param.delay;
+    setTimeout(function() {
+      self.marker = new google.maps.Marker({
         position: self.position,
         map: self.map,
-        draggable:self.draggable
-    });
-    self.marker.setAnimation(google.maps.Animation.DROP);
-    self.bindDrag();
+        draggable:self.draggable,
+        title: self.name_field.value
+      });
+      self.marker.setAnimation(google.maps.Animation.DROP);
+      
+      google.maps.event.addListener(self.marker, 'dragend', function(event) {
+        self.save();
+      });
+
+      google.maps.event.addListener(self.marker, 'click', function() {
+        self.displayInfo();
+      });
+    }, t);
+  }
+
+  this.displayInfo = function(){
+    self.infowindow.content = self.getContentString();
+    self.infowindow.open(self.map, self.marker);
+    self.infowindow.height(self.infowindow.height());
   }
 
   this.save = function(){
@@ -68,9 +101,11 @@ function Point(param){
         self.id = response.id;
         request = $.ajax({
           type: method,
-          url: "point_contexts/?point_id="+self.id+"&"+"context_id="+self.active_context,
+          url: "point_contexts/",
+          data: {point_id: self.id, context_id: self.active_context},
           dataType: "json"
         });
+        self.marker.title = self.name_field.value
         self.submitted = true;
       }
       return true;
@@ -94,12 +129,7 @@ function Point(param){
 
   this.showLoc = function(){
     self.map.setCenter(self.marker.position);
-  }
-
-  this.bindDrag = function(){
-    google.maps.event.addListener(self.marker, 'dragend', function(event) {
-      self.save();
-    });
+    self.displayInfo();
   }
 
   // set button onclick
