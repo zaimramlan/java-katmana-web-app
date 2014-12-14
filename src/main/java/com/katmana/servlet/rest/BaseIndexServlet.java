@@ -67,9 +67,19 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<R> records = restConfiguration.indexRecords(request);
-		response.setStatus(200);
-		response.getWriter().write(restConfiguration.serialize(records));
+		try{
+			if(!restConfiguration.allowIndex(request)){
+				response.setStatus(403);
+				response.getWriter().write("You do not have permission for this resource");
+				return;
+			}
+			List<R> records = restConfiguration.indexRecords(request);
+			response.setStatus(200);
+			response.getWriter().write(restConfiguration.serialize(records));
+		}catch(EntityRestConfiguration.RequestException e){
+			response.setStatus(e.getStatusCode());
+			response.getWriter().write(e.getMessage());
+		}
 	}
 
 	/**
@@ -78,24 +88,30 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		R record;
-		try {
-			record = recordClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-			response.sendError(500, "Record instantiation exception.");
-			return;
+		try{
+			if(!restConfiguration.allowCreate(request)){
+				response.setStatus(403);
+				response.getWriter().write("You do not have permission for this resource");
+				return;
+			}
+			R record;
+			try {
+				record = recordClass.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+				response.sendError(500, "Record instantiation exception.");
+				return;
+			}
+
+			restConfiguration.applyParams(record, request);
+			//Should validate here.
+			restConfiguration.doCreate(record);
+			response.setStatus(201);
+			response.getWriter().write(restConfiguration.serialize(record));
+		}catch(EntityRestConfiguration.RequestException e){
+			response.setStatus(e.getStatusCode());
+			response.getWriter().write(e.getMessage());
 		}
-		
-		restConfiguration.applyParams(record, request);
-		//Should validate here.
-		if(!restConfiguration.doCreate(record)){
-			response.sendError(500, "Fail to save record");
-			return;
-		}
-		
-		response.setStatus(201);
-		response.getWriter().write(restConfiguration.serialize(record));
 	}
 
 }

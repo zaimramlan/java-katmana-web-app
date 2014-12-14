@@ -1,4 +1,4 @@
-package com.katmana.authentication;
+package com.katmana.servlet.authentication;
 
 import java.io.IOException;
 
@@ -23,10 +23,20 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter {
   private ServletContext context;
   private String[] whitelist = {
-                                "index.jsp",
-                                "login",
-                                "registration.html",
-                                "register"
+                                "/jquery-2.1.1.min.js",
+                                "/point.js",
+                                "/index.js",
+                                "/index.jsp",
+                                "/login",
+                                "/registration.html",
+                                "/register",
+                                //The rest endpoint's authentication is managed by EntityRestConfiguration
+                                "/point",
+                                "/user",
+                                "/context",
+                                "/point_context",
+                                "/point_rating",
+                                "/submitter_rating"
                               };
 
   @Override
@@ -42,11 +52,12 @@ public class AuthenticationFilter implements Filter {
     HttpServletResponse res = (HttpServletResponse) response;
 
     String uri = req.getRequestURI();
-    this.context.log("Requested Resource::" + uri);
+    String path = uri.substring(req.getContextPath().length());
+    this.context.log("Requested path::" + path);
 
     HttpSession session = req.getSession(false);
 
-    if ((session == null || session.getAttribute("user") == null) && !isPublicPage(uri)) {
+    if ((session == null || session.getAttribute("user") == null) && !isPublicPage(path)) {
       this.context.log("Unauthorized access request");
       res.sendRedirect(req.getContextPath()+"/index.jsp");
     } else {
@@ -55,9 +66,9 @@ public class AuthenticationFilter implements Filter {
     }
   }
 
-  private boolean isPublicPage(String uri){
+  private boolean isPublicPage(String path){
     for(String s:whitelist){
-      if(uri.endsWith(s))
+      if(path.startsWith(s))
         return true;
     }
     

@@ -1,7 +1,24 @@
 package com.katmana.model;
+import com.katmana.model.annotation.ExcludeJson;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Latitude;
+import org.hibernate.search.annotations.Longitude;
+import org.hibernate.search.annotations.Spatial;
+
+import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
+import com.katmana.model.annotation.ExcludeJson;
 
 /**
  * A point represet... a point. 
@@ -12,34 +29,53 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="points")
+@Indexed
+@Spatial
 public class Point extends BaseModel{
 
 	/*
 	 * The user ID who submit it.
 	 */
+	@Field
 	protected Long submitter_id;
 	
 	/*
 	 * The coordinates. Altitude is optional.
 	 */
+	@Field
+	@Latitude
 	protected Double latitude;
+	@Field
+	@Longitude
 	protected Double longitude;
+	@Field
 	protected Double altitude;
 	
 	/*
 	 * What name to put with this. Or just description?
 	 * 
 	 */
+	@Field
 	protected String name;
+	@Field
 	protected String description;
+	
+	@ExcludeJson
+	@IndexedEmbedded
+	@ManyToMany
+	@JoinTable(name="point_contexts",
+			joinColumns=@JoinColumn(name="point_id", referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="context_id", referencedColumnName="id")
+			)
+	protected List<Context> contexts;
 	
 	/*
 	 * Additional description on the location. Like, under the desk
 	 * or behind the door or on the third floor.
 	 */
+	@Field
 	protected String location_description;
 	
-
 	/*
 	 * Getter setters
 	 */
@@ -85,6 +121,17 @@ public class Point extends BaseModel{
 	public void setLocationDescription(String location_description) {
 		this.location_description = location_description;
 	}
+	public List<Context> getContexts() {
+		return contexts;
+	}
+	public void setContexts(List<Context> contexts) {
+		this.contexts = contexts;
+	}
+	
+	@ExposeMethodResult("rating")
+	public PointRating.Summary getRatingSummary(){
+		return DAOProvider.getInstance().getPointRatingDAO().getRatingSummary(getId());
+	}
 	
 	/**
 	 * DAO for Point
@@ -93,6 +140,8 @@ public class Point extends BaseModel{
 	 *
 	 */
 	public static interface DAO extends BaseModel.DAO<Point>{
+		public List<Point> searchPoint(Map<String,String> params);
+		public void index(Point p);
 	}
 	
 }

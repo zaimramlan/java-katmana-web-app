@@ -1,6 +1,7 @@
 package com.katmana.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +20,7 @@ public class PointContext extends BaseModel {
 	public Long getPointId() {
 		return point_id;
 	}
-	public void setPoint_id(Long point_id) {
+	public void setPointId(Long point_id) {
 		this.point_id = point_id;
 	}
 	public Long getContextId() {
@@ -30,5 +31,6 @@ public class PointContext extends BaseModel {
 	}
 	
 	public static interface DAO extends BaseModel.DAO<PointContext>{
+		public PointContext getAssociation(Long point_id,Long context_id);
 	}
 }

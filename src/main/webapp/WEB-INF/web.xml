@@ -5,6 +5,17 @@
          metadata-complete="false"
          version="3.0">
   <display-name>KatMana</display-name>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>ReindexPoints</display-name>
+  	<servlet-name>ReindexPoints</servlet-name>
+  	<servlet-class>com.katmana.servlet.ReindexPoints</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ReindexPoints</servlet-name>
+  	<url-pattern>/reindex_points</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -45,7 +56,7 @@
   <!-- Auth filters -->
   <filter>
     <filter-name>AuthenticationFilter</filter-name>
-    <filter-class>com.katmana.authentication.AuthenticationFilter</filter-class>
+    <filter-class>com.katmana.servlet.authentication.AuthenticationFilter</filter-class>
   </filter>
 
   <filter-mapping>

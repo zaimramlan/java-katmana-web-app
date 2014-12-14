@@ -23,6 +23,9 @@ Please put any tools that you use that may be hard to figureout what here.
     - JPA is Java Persistent API.
     - JPA is like an ORM that interface JDBC for us.
     - Be careful to differentiate between implementation and specification. JPA is specification, Hibernate is an ORM that provide its implementation.
+- Hibernate-Search
+	- Hibernate search is the search engine.
+	- It is basically a frontend to lucene similar to elasticsearch or solr but much easier to implement with Hibernate already used.
 - Liquibase
     - Liquibase is a database migration library.
     - It should be database independent.
@@ -52,4 +55,33 @@ Directory Structure
 Notices
 -------
 
-- Nothing yet....
+- if you get `java.lang.OutOfMemoryError: PermGen space`, the just restart the server. The java process may need to be killed manually in task manager.
+
+Endpoints
+---------
+
+- All endpoints follor basic CRUD mechanism. (resource here is the type of resource such as user or points)
+    - INDEX endpoint at `GET /resources/`
+        - Will return list of resource in JSON form.
+        - By default all index endpoint will return a maximum of 100 record.
+        - They should accept parameter `offset` and `limit` for the rest of the record.
+        - Default implementation also accept the model attributes as parameters in which you can do filter query.
+    - CREATE endpoint at `POST /resources/`
+        - The POST params are the resource property (as in variable not bean property) name. 
+        - Also return the modified resource JSON representation.
+    - SHOW endpoint at `GET /resource/<id>`. Notice that this one and the other two endpoint uses singular url.
+    	- Will return the JSON representation of the resource.
+    - EDIT endpoint at `POST /resource/<id>`
+    	- Parameters same as the CREATE endpoint, just it has an id and it update the resource not create it.
+    - DELETE endpoint at `DELETE /resource/<id>`
+    	- Return the resource JSON to, but the resource should no longer be available later.
+- Several exception to that usual rule are:
+    - PointContext endpoint only have create and delete endpoint and the delete endpoint uses the index url (no id)
+        - INDEX - `POST /point_contexts/`
+        	- Accept `point_id` and `context_id`
+        - DELETE endpoint `DELETE /point_contexts/?point_id=<pointid>&context_id=<contextid>`
+    - PointRating and SubmitterRating endpoint do not have create and index endpoint. The update endpoint act as a create endpoint.
+- The point INDEX endpoint can be used to search for endpoints.
+	- It accept two additional parameter `search` and `context_id`
+- There is one helper endpoint at `POST /reindex_points/` . This will reindex all point into the search engine.
+    	

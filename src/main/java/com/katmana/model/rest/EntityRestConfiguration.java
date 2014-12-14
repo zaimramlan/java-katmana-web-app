@@ -4,6 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,10 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import com.google.common.base.CaseFormat;
-
 import com.katmana.Util;
 import com.katmana.model.BaseModel;
 import com.katmana.model.DAOProvider;
+import com.katmana.model.User;
 
 
 /**
@@ -73,10 +74,11 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public void applyParams(T record, HttpServletRequest request){
 		Map<String,String[] > params = request.getParameterMap();
 		for(String property:getWritableRecordProperties()){
-			String requestName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
-			if(params.containsKey(requestName)){
+			//To set it in beans, we need the camelCase property
+			String propName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, property);
+			if(params.containsKey(property)){
 				try {
-					BeanUtils.setProperty(record, property, params.get(requestName)[0]);
+					BeanUtils.setProperty(record, propName, params.get(property)[0]);
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
@@ -85,7 +87,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 	
 	/**
-	 * This function should return T's bean property that is writable.
+	 * This function should return T's bean property that is writable in snaked_case form.
 	 * It need to be writable because this is used by applyParams
 	 * @return
 	 */
@@ -94,11 +96,23 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 		ArrayList<String> propertyList = new ArrayList<String>();
 		for(PropertyDescriptor prop:properties){
 			if(prop.getWriteMethod() != null){
-				propertyList.add(prop.getName());
+				//Because prob.getName is in camelCase, but the property (request and json) is using snake_case
+				String propName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, prop.getName());
+				propertyList.add(propName);
 			}
 		}
 		return propertyList;
 	}
+    
+    /**
+     * Get the id from the extra path.
+     * @return
+     */
+    public long getId(HttpServletRequest request){
+    	String extra = request.getPathInfo();
+    	extra = extra.substring(1); // Remote the initial '/'
+    	return Long.valueOf(extra);
+    }
 	
 	/**
 	 * Should return a list of records that matches the request
@@ -123,7 +137,56 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 			offset = Integer.valueOf(offsetString);
 		}
 		
-		return dao.listAll(offset, count);
+		List<String> qableProp = getQueryableRecordProperties();
+		Map<String,Object> query = new Hashtable<String,Object>();
+		
+		for(String str:qableProp){
+			if(request.getParameter(str) != null && !request.getParameter(str).isEmpty()){
+				query.put(str, request.getParameter(str));
+			}
+		}
+		
+		return dao.basicWhereQuery(query, offset, count);
+	}
+	
+	/**
+	 * This function should return T's bean property that is queriable in snaked_case form.
+	 * It will be used by indexRecords to make query.
+	 * By default queriable is readable.
+	 * @return
+	 */
+	public List<String> getQueryableRecordProperties(){
+		PropertyDescriptor[] properties = PropertyUtils.getPropertyDescriptors(entityClass);
+		ArrayList<String> propertyList = new ArrayList<String>();
+		for(PropertyDescriptor prop:properties){
+			if(prop.getReadMethod() != null){
+				//Because prob.getName is in camelCase, but the property (request and json) is using snake_case
+				String propName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, prop.getName());
+				propertyList.add(propName);
+			}
+		}
+		return propertyList;
+	}
+	
+	/**
+	 * Override this to define if the index endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowIndex(HttpServletRequest request){
+		return allowIndex(Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the index endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowResource
+	 * @param request
+	 * @return
+	 */
+	public boolean allowIndex(User currentUser){
+		return allowResource(currentUser);
 	}
 	
 	/**
@@ -135,8 +198,33 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public boolean doCreate(T record){
-		return dao.save(record);
+	public void doCreate(T record){
+		if(!dao.save(record)){
+			RequestException rex = new RequestException("Error creating record.", 500);
+			rex.printStackTrace();
+			throw rex;
+		}
+	}
+	
+	/**
+	 * Override this to define if the create endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowCreate(HttpServletRequest request){
+		return allowCreate(Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the create endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowResource
+	 * @param request
+	 * @return
+	 */
+	public boolean allowCreate(User currentUser){
+		return allowResource(currentUser);
 	}
 	
 	/**
@@ -152,6 +240,39 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 
 	/**
+	 * Called by SHOW endpoint. Should return a record ssociated with the request.
+	 * if exist. null otherwhise. 
+	 * Default implementation is to get the id and get record from getRecord(Long id);
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public T getRecord(HttpServletRequest request){
+		return getRecord(getId(request));
+	}
+	
+	/**
+	 * Override this to define if the show endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowShow(HttpServletRequest request){
+		return allowShow(getRecord(request),Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the show endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowResource
+	 * @param request
+	 * @return
+	 */
+	public boolean allowShow(T record,User currentUser){
+		return allowResource(currentUser);
+	}
+
+	/**
 	 * Called by servlet on update operation.
 	 * Should return a boolean indicating the success of update.
 	 * Default implementation is to delegate it to DAO
@@ -159,8 +280,33 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public boolean doUpdate(T record){
-		return dao.update(record);
+	public void doUpdate(T record){
+		if(!dao.update(record)){
+			RequestException rex = new RequestException("Error updating record.", 500);
+			rex.printStackTrace();
+			throw rex;
+		}
+	}
+	
+	/**
+	 * Override this to define if the update endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowUpdate(HttpServletRequest request){
+		return allowUpdate(getRecord(request),Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the update endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowModify
+	 * @param request
+	 * @return
+	 */
+	public boolean allowUpdate(T record,User currentUser){
+		return allowModify(record,currentUser);
 	}
 
 	/**
@@ -171,7 +317,78 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 * @return
 	 */
-	public boolean doDestroy(T record){
-		return dao.delete(record);
+	public void doDestroy(T record){
+		if(!dao.delete(record)){
+			RequestException rex = new RequestException("Error deleting record.", 500);
+			rex.printStackTrace();
+			throw rex;
+		}
+	}
+	
+	/**
+	 * Override this to define if the destroy endpoint is allowed for this resource.
+	 * Default is to delegate to User variant.
+	 * @param request
+	 * @return
+	 */
+	public boolean allowDestroy(HttpServletRequest request){
+		return allowDestroy(getRecord(request),Util.getCurrentUser(request));
+	}
+
+	/**
+	 * Override this to define if the destroy endpoint is allowed for this resource
+	 * for this currentUser
+	 * Default is to delegate to allowModify
+	 * @param request
+	 * @return
+	 */
+	public boolean allowDestroy(T record,User currentUser){
+		return allowModify(record,currentUser);
+	}
+	
+
+	/**
+	 * Override this to define if the currentUser is allowed to modify the record.
+	 * This is default implementation for allowUpdate and allowDestroy
+	 * default is to delegate to allowResource
+	 * @param record
+	 * @param currentUser
+	 * @return
+	 */
+	public boolean allowModify(T record,User currentUser){
+		return allowResource(currentUser);
+	}
+	
+	
+	/**
+	 * A catch all on the default implementation. Subclass may override this method do
+	 * forbid access by default.
+	 * @param currentUser
+	 * @return
+	 */
+	public boolean allowResource(User currentUser){
+		return true;
+	}
+	
+	/**
+	 * This exception can be thrown the the endpoint and the servlet should catch it and
+	 * send respond according to the content of this exception.
+	 * @author asdacap
+	 *
+	 */
+	public static class RequestException extends RuntimeException{
+		
+		private static final long serialVersionUID = 707052263284902671L;
+		private int status_code;
+
+		public RequestException(String arg0, int status_code) {
+			super(arg0);
+			this.status_code = status_code;
+		}
+		
+		public int getStatusCode(){
+			return status_code;
+		}
+		
 	}
 }

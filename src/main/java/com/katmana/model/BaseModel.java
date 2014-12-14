@@ -3,6 +3,7 @@ package com.katmana.model;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -70,5 +71,6 @@ public abstract class BaseModel {
 		public List<T> listAll(int offset,int count); //Find the record return it or null of not found
 		public boolean update(T record); //Update the db with record
 		public boolean delete(T record); //Delete the record return true if success. False otherwise
+		public List<T> basicWhereQuery(Map<String,Object> params, int offset, int count);
 	}
 }

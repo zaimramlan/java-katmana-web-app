@@ -82,6 +82,10 @@ public class DAOProvider {
 		}
 		return null;
 	}
+
+	public EntityManagerFactory getEntityManagerFactory() {
+		return mFactory;
+	}
 	
 	private static DAOProvider singleton = null;
 	public synchronized static DAOProvider getInstance(){
