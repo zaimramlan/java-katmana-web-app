@@ -43,10 +43,6 @@ function Point(param){
 
 
   this.placeMarker = function() {
-    var t = 0;
-    self.marker = new google.maps.Marker({});
-    if(param.delay != undefined) t = param.delay;
-    setTimeout(function() {
       self.marker = new google.maps.Marker({
         position: self.position,
         map: self.map,
@@ -62,7 +58,6 @@ function Point(param){
       google.maps.event.addListener(self.marker, 'click', function() {
         self.displayInfo();
       });
-    }, t);
   }
 
   this.displayInfo = function(){
@@ -91,6 +86,8 @@ function Point(param){
       url = "point/"+self.id;
     }
 
+    var defer = $.Deferred();
+
     $.ajax({
       type: method,
       url: url,
@@ -110,10 +107,12 @@ function Point(param){
         self.marker.title = self.name_field.value
         self.submitted = true;
       }
-      return true;
+      defer.resolve(self);
     }).fail(function(){
-      return false;
+      defer.reject();
     });
+
+    return defer;
   }
 
   this.destroy = function(){
@@ -140,9 +139,6 @@ function Point(param){
   self.remove_button.addEventListener("click", self.destroy, false);
 
   if(self.submitted){
-    self.placeMarker();
-
-    // add node to el
     self.parentElement.appendChild(self.node);
   }
 }

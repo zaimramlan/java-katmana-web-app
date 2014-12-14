@@ -18,8 +18,9 @@ function initialize() {
         parentElement: document.getElementById("right-col"),
         infowindow: infowindow
       });
-      if(p.save())
-        markers.push(p);
+      p.save().done(function(point){
+        markers.push(point);
+      });
     }
     isAdding = false
     if(infowindow)
@@ -37,7 +38,8 @@ function clearPoints(){
     if(m.deleted == false){
       m.node.parentNode.removeChild(m.node);
       m.map = null;
-      m.marker.setMap(null);
+      if(m.marker != undefined)
+        m.marker.setMap(null);
     }
     m.deleted = true;
     m = null;
@@ -66,6 +68,13 @@ function populateMarkers(param){
       delay: i * 100,
       infowindow: infowindow
     });
+    function deferPlace(point){
+      return function(){
+        if(markers.indexOf(point) != -1)
+          point.placeMarker();
+      }
+    }
+    setTimeout(deferPlace(p),i*100);
     markers.push(p);
     bounds.extend(latLng);
   };
