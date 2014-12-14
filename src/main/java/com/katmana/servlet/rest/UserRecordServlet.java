@@ -11,4 +11,9 @@ import com.katmana.model.rest.UserRestConfiguration;
 @WebServlet("/user/*")
 public class UserRecordServlet extends BaseRecordServlet<User,UserRestConfiguration> {
 	private static final long serialVersionUID = 1L;
+
+  @override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setStatus(404);
+  }
 }
