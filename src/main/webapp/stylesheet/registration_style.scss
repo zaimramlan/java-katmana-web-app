@@ -1,0 +1,77 @@
+@import 'default';
+@import 'screensizes';
+@import url('http://fonts.googleapis.com/css?family=Raleway:500,400,300');
+
+body {
+	background: url('../media/city_wallpaper.jpg');
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
+	@include background-size(cover);
+}
+
+.overlay {
+	background: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
+}
+
+.form-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border:1px solid #fff;
+	@include border-radius(4px);
+	@include transform(-50%, -50%);
+
+	input {
+		background: transparent!important;
+		border: 1px solid $btn-other;
+		color: #fff;
+		@include border-radius(4px);
+	}
+
+	.form-sub-container {
+		margin-top: 20px!important;
+		margin-bottom: 20px!important;
+	}
+
+	.register-btn {
+		display: block;
+		background: $btn-login-add!important;
+		border: 1px solid $btn-login-add;
+		padding: 5px 15px 5px 15px;
+		margin: 0 auto;
+		margin-bottom: 5px;
+		font-weight: 500;
+		font-size: 15px;
+		letter-spacing: -1px;
+		text-transform: uppercase;
+		@include border-radius(4px);
+		@include transition(300ms);
+
+		@media #{$medium-up} {
+			float: left;
+		}
+
+		&:hover {
+			background: $btn-login-add-darker!important;
+			border-color: $btn-login-add-darker;
+		}
+	}
+
+	.back-btn {
+		background: transparent!important;
+		border: 1px solid $btn-other;
+		padding: 5px 29px 5px 29px;
+
+		@extend .register-btn;
+		@media #{$medium-up} {
+			float: right;
+		}
+
+		&:hover {
+			background: transparent!important;
+			border: 1px solid #fff;
+		}
+	}
+}

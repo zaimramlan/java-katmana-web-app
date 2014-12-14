@@ -1,13 +1,22 @@
 $(document).on('click','#u-ico, #user-bar .icon .back-m', function() {
 	$('#user-bar').toggle("slide",{direction:'right'}, 225);
+	$('#u-ico').toggle("slide", {direction:'left'}, 300);
+	$('#m-ico').toggle("slide", {direction:'left'}, 300);
+	$('#s-ico').toggle("slide", {direction:'left'}, 300);
 });
 
 $(document).on('click','#m-ico, #menu-bar .icon .back-m', function() {
 	$('#menu-bar').toggle("slide",{direction:'right'}, 225);
+	$('#u-ico').toggle("slide", {direction:'left'}, 300);
+	$('#m-ico').toggle("slide", {direction:'left'}, 300);
+	$('#s-ico').toggle("slide", {direction:'left'}, 300);
 });
 
 $(document).on('click','#s-ico, #search-bar .icon .back-m', function() {
 	$('#search-bar').toggle("slide",{direction:'right'}, 225);
+	$('#u-ico').toggle("slide", {direction:'left'}, 300);
+	$('#m-ico').toggle("slide", {direction:'left'}, 300);
+	$('#s-ico').toggle("slide", {direction:'left'}, 300);
 });
 
 $(document).ready(function(){

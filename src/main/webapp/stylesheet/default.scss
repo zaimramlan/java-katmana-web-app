@@ -12,6 +12,13 @@ $btn-login-add-darker:#03A678;
 $btn-logout-rem:#e74c3c;
 $btn-other:#95a5a6;
 
+@mixin background-size($val) {
+	-webkit-background-size: $val;
+	-moz-background-size: $val;
+	-o-background-size: $val;
+	background-size: $val;
+}
+
 @mixin filter($filter, $val) {
 	@if $filter == 'opacity' {
 		-webkit-filter: opacity($val);
@@ -33,6 +40,13 @@ $btn-other:#95a5a6;
 	-moz-border-radius: $val;
 	-o-border-radius: $val;
 	border-radius: $val;
+}
+
+@mixin transform($a, $b) {
+	-webkit-transform: translate($a, $b);
+	-moz-transform: translate($a, $b);
+	-o-transform: translate($a, $b);
+	transform: translate($a, $b);
 }
 
 @mixin transition($val) {
