@@ -3,6 +3,7 @@ package com.katmana.authentication;
 import com.katmana.model.DAOProvider;
 import com.katmana.model.User;
 import com.katmana.Encryption;
+import com.katmana.Util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,37 +36,34 @@ public class UpdateServlet extends HttpServlet {
       old_password = request.getParameter("old_password");
       
       HttpSession session = request.getSession();
-      User current_user = (User) session.getAttribute("user");
-      User user = DAOProvider.getInstance().getUserDAO().getByEmail(current_user.getEmail());
+      User current_user = Util.getCurrentUser(request);
 
       boolean valid_user = (current_user != null), valid_new_pass, authentic, new_email;
 
-      if(valid_user){
-        new_email = (DAOProvider.getInstance().getUserDAO().getByEmail(email) == null) && (email.length() > 0);
-        valid_new_pass = password.equals(password_confirmation) && (password.length() > 0);
-        authentic = Encryption.verifyPassword(user.getEncryptedPassword(), old_password);
+      new_email = (DAOProvider.getInstance().getUserDAO().getByEmail(email) == null) && (email.length() > 8);
+      valid_new_pass = password.equals(password_confirmation) && (password.length() > 8);
+      authentic = Encryption.verifyPassword(current_user.getEncryptedPassword(), old_password);
 
-        if(authentic){
+      if(authentic){
 
-          if(valid_new_pass){
-            encrypted_password = Encryption.getEncryptedPassword(password);
-            user.setEncryptedPassword(encrypted_password);
-          }
-          if(new_email){
-            user.setEmail(email);
-          }
-          if(name.length() > 0){
-            user.setName(name);
-          }
-          DAOProvider.getInstance().getUserDAO().update(user);
-          if(accept != null && accept.equals("text/json")){
-            result = "{'status':'ok'}";
-            response.setStatus(201);
-          }else{
-            result = "<p>Username: Password updated</p>";
-            response.sendRedirect("index.jsp");
-          }
-
+        if(valid_new_pass){
+          encrypted_password = Encryption.getEncryptedPassword(password);
+          current_user.setEncryptedPassword(encrypted_password);
+        }
+        if(new_email){
+          current_user.setEmail(email);
+        }
+        if(name.length() > 8){
+          current_user.setName(name);
+        }
+        DAOProvider.getInstance().getUserDAO().update(current_user);
+        
+        if(accept != null && accept.equals("text/json")){
+          result = "{'status':'ok'}";
+          response.setStatus(201);
+        }else{
+          result = "<p>Username: Password updated</p>";
+          response.sendRedirect("index.jsp");
         }
       }
       else{
@@ -91,10 +89,4 @@ public class UpdateServlet extends HttpServlet {
       throws ServletException, IOException {
     processRequest(request, response);
   }
-
-  @Override
-  public String getServletInfo() {
-    return "Short description";
-  }
-  
 }
