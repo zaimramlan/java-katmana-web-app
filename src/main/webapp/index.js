@@ -134,7 +134,7 @@ function Context(param){
 
     if(self.submitted == false){
       method = "POST";
-      url = "contexts/";
+      url = "contexts";
     }
 
     $.ajax({
