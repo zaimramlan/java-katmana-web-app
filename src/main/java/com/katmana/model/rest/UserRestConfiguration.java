@@ -1,5 +1,7 @@
 package com.katmana.model.rest;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.katmana.model.User;
@@ -41,6 +43,20 @@ public class UserRestConfiguration extends EntityRestConfiguration<User> {
 		 * Default is, NO.
 		 */
 		return false;
+	}
+
+	@Override
+	public List<String> getWritableRecordProperties() {
+		List<String> resp = super.getWritableRecordProperties();
+		resp.remove("encrypted_password");
+		return resp;
+	}
+
+	@Override
+	public List<String> getQueryableRecordProperties() {
+		List<String> resp = super.getWritableRecordProperties();
+		resp.remove("encrypted_password");
+		return resp;
 	}
 	
 }
