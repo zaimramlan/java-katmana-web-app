@@ -54,4 +54,16 @@ public class Encryption {
     sr.nextBytes(salt);
     return salt.toString();
   }
+
+  public static String[] resetPassword(){
+    String salt=null, encrypted_password=null, dummy=null;
+    try {
+      dummy = generateSalt();
+      salt = generateSalt();
+      encrypted_password = "$" + salt + "$" + getEncryption(dummy, salt);
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    }
+    return new String[]{dummy, encrypted_password};
+  }
 }

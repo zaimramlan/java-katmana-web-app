@@ -32,6 +32,7 @@ dependencies {
   providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
   providedCompile 'javax.servlet.jsp:jsp-api:2.1'
   providedCompile 'javax.inject:javax.inject:1'
+  providedCompile 'javax.mail:mail:1.4'
   compile "org.liquibase:liquibase-core:3.3.+"
   compile "org.yaml:snakeyaml:1.14"
   compile "commons-dbcp:commons-dbcp:1.4"

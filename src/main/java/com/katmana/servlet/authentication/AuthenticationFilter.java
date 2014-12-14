@@ -28,6 +28,7 @@ public class AuthenticationFilter implements Filter {
                                 "/index.js",
                                 "/index.jsp",
                                 "/login",
+                                "/recover_password",
                                 "/registration.html",
                                 "/register",
                                 //The rest endpoint's authentication is managed by EntityRestConfiguration
