@@ -55,7 +55,7 @@
         <script>
           $("#search-form").submit(function(event){
             event.preventDefault();
-            $.get("points/?"+$("#search-form").serialize())
+            $.get("points?"+$("#search-form").serialize())
             .done(function(points){
               clearPoints();
               points = JSON.parse(points);

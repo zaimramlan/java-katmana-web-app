@@ -113,7 +113,7 @@ function Context(param){
   this.display = function(){
     this.request = $.ajax({
       type: "GET",
-      url: "points/",
+      url: "points",
       data: {context_id: self.id},
       dataType: "json"
     }).done(function(response){
@@ -181,7 +181,7 @@ function createContext(el){
 function populateContext(parem){
   var request = $.ajax({
     type: "GET",
-    url: "contexts/",
+    url: "contexts",
     dataType: "json"
   }).done(function(contexts){
     for (var i = 0; i < contexts.length; i++) {

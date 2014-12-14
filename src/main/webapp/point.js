@@ -77,7 +77,7 @@ function Point(param){
         lng = self.position.lng(),
         description = self.description_field.value,
         name = self.name_field.value,
-        method = "POST", url = "points/";
+        method = "POST", url = "points";
 
     if(self.id != null){
       lat = self.marker.position.lat();
@@ -100,7 +100,7 @@ function Point(param){
         self.id = response.id;
         request = $.ajax({
           type: method,
-          url: "point_contexts/",
+          url: "point_contexts",
           data: {point_id: self.id, context_id: self.active_context},
           dataType: "json"
         });
