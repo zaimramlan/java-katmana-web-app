@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.katmana.Util" %>
 <html>
   <head>
     <style type="text/css">
@@ -7,6 +8,9 @@
       #right-col { height: 100%; width:50%; float:right; margin: 0; padding: 0;}
       #map-canvas { height: 100%; width:50%; float:left; margin: 0; padding: 0; line-height:normal;}
     </style>
+    <script>
+      var user_id = <%= Util.getCurrentUser(request) == null ? null : Util.getCurrentUser(request).getId() %>;
+    </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="jquery-2.1.1.min.js"></script>
     <script src="point.js"></script>
