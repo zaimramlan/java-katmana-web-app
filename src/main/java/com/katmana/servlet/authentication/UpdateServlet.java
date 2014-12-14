@@ -26,29 +26,38 @@ public class UpdateServlet extends HttpServlet {
     String accept = request.getHeader("Accept");
     response.setContentType("text/html;charset=UTF-8");
     try (PrintWriter out = response.getWriter()) {
-      String email, password, password_confirmation, old_password, encrypted_password, result;
+      String email, name, password, password_confirmation, old_password, encrypted_password, result="";
 
       email = request.getParameter("email");
+      name = request.getParameter("name");
       password = request.getParameter("password");
       password_confirmation = request.getParameter("password_confirmation");
       old_password = request.getParameter("old_password");
       
       HttpSession session = request.getSession();
-      User user = (User) session.getAttribute("user");
+      User current_user = (User) session.getAttribute("user");
+      User user = DAOProvider.getInstance().getUserDAO().getByEmail(current_user.getEmail());
 
-      boolean valid_user = (user != null), valid_pass, valid_old_pass, new_email;
+      boolean valid_user = (current_user != null), valid_new_pass, authentic, new_email;
 
       if(valid_user){
-        new_email = email.equals(user.getEmail()) && email != null;
-        valid_pass = password.equals(password_confirmation) && (password != null);
-        valid_old_pass = Encryption.verifyPassword(user.getEncryptedPassword(), old_password);
-        if(valid_old_pass){
+        new_email = (DAOProvider.getInstance().getUserDAO().getByEmail(email) == null) && (email.length() > 0);
+        valid_new_pass = password.equals(password_confirmation) && (password.length() > 0);
+        authentic = Encryption.verifyPassword(user.getEncryptedPassword(), old_password);
+
+        if(authentic){
+
+          if(valid_new_pass){
             encrypted_password = Encryption.getEncryptedPassword(password);
             user.setEncryptedPassword(encrypted_password);
           }
           if(new_email){
             user.setEmail(email);
           }
+          if(name.length() > 0){
+            user.setName(name);
+          }
+          DAOProvider.getInstance().getUserDAO().update(user);
           if(accept != null && accept.equals("text/json")){
             result = "{'status':'ok'}";
             response.setStatus(201);
@@ -56,9 +65,9 @@ public class UpdateServlet extends HttpServlet {
             result = "<p>Username: Password updated</p>";
             response.sendRedirect("index.jsp");
           }
+
         }
       }
-
       else{
         if(accept != null && accept.equals("text/json")){
           result = "{'status':'wrong username and password'}";
@@ -67,7 +76,7 @@ public class UpdateServlet extends HttpServlet {
           result = "<p>Please register.</p>";
         }
       }
-      out.println(result);
+      response.getWriter().println(result);
     }
   }
 
