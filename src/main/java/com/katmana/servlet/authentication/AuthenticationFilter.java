@@ -23,8 +23,25 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter {
   private ServletContext context;
   private String[] whitelist = {
-                                "/jquery-2.1.1.min.js",
+                                "/javascript/jquery-2.1.1.min.js",
+                                "/javascript/jquery-ui.min.js",
+                                "/javascript/map.js",
+                                "/javascript/ui.js",
+                                "/stylesheet/foundation.min.css",
+                                "/stylesheet/normalize.css",
+                                "/stylesheet/style.css",
+                                "/media/map_user.png",
+                                "/media/map_search.png",
+                                "/media/user.png",
+                                "/media/search.png",
+                                "/media/back.png",
+                                "/media/add.png",
+                                "/media/rem.png",
+                                "/media/view.png",
+                                "/custom.js",
                                 "/index.jsp",
+                                "/main.html",
+                                "/login.html",
                                 "/login",
                                 "/registration.html",
                                 "/register",
@@ -57,7 +74,7 @@ public class AuthenticationFilter implements Filter {
 
     if ((session == null || session.getAttribute("user") == null) && !isPublicPage(path)) {
       this.context.log("Unauthorized access request");
-      res.sendRedirect(req.getContextPath()+"/index.jsp");
+      res.sendRedirect(req.getContextPath()+"/main.html");
     } else {
       // pass the request along the filter chain
       chain.doFilter(request, response);

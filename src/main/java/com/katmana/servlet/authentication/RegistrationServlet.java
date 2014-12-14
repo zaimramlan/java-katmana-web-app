@@ -37,7 +37,7 @@ public class RegistrationServlet extends HttpServlet {
         encrypted_password = Encryption.getEncryptedPassword(password);
         DAOProvider.getInstance().getUserDAO().addUser(name, email, encrypted_password);
         out.println("<h1>Successfully Registered</h1>");
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("main.html");
         return;
       }
       else if (!new_user){

@@ -5,31 +5,32 @@
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0;}
       #right-col { 
-        /*display: none;*/
+        display: none;
         background: #fff;
         position: absolute;
         top:0%;
         left:50%;
         height: 100%; 
         width:50%; 
-        margin: 0; 
-        padding: 0;
+/*        margin: 0; 
+        padding: 0;*/
         -webkit-opacity:0.8;
       }
       #map-canvas { 
         height: 100%; 
         width:100%; 
-        margin: 0; 
+/*        margin: 0; 
         padding: 0;
-      }
+*/      }
       .trig {
         position: absolute;
         top: 5%;
-        left: 5%;
+        right: 1%;
       }
     </style>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script type="text/javascript" src="map.js"></script>
+    <!-- // <script type="text/javascript" src="javascript/map.js"></script> -->
     <script src="jquery-2.1.1.min.js"></script>
     <script src="jquery-ui.min.js"></script>
     <script src="custom.js"></script>
@@ -38,7 +39,8 @@
   <body>
     <div id="map-canvas"></div>
     <input type="button" value="trigger" class="trig">
-    <div id="right-col">
+    <div id="right-col">\
+      <input type="button" value="back" class="trigs">
       <h1>Hello World!</h1>
       The time is <%= (new java.util.Date()).toLocaleString() %>
 
@@ -71,7 +73,6 @@
         <button onclick="isAdding=true; return false">addnew</button>
       </div>
       <% } %>
-      <p>HI THERE!</p>
     </div>
   </body>
 </html>

@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
           response.setStatus(201);
         }else{
           result = "<p>Username: " + email + "</p>";
-          response.sendRedirect("index.jsp");
+          response.sendRedirect("home.html");
         }
       }else{
           if(accept != null && accept.equals("text/json")){
