@@ -1,0 +1,113 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Main</title>
+	<link rel="stylesheet" type="text/css" href="stylesheet/foundation.min.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet/normalize.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet/style.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="javascript/jquery-2.1.1.min.js"></script>
+    <script src="javascript/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="javascript/map.js"></script>
+    <script src="javascript/ui.js"></script>
+
+    <style type="text/css">
+	    .search-ico {
+	    	top: 10%;
+	    }
+    </style>
+</head>
+<body>
+	<div id="map-canvas"></div>
+
+	<div class="show-for-medium-up">
+		<img src="media/map_user.png" id="u-ico" class="user-ico">
+		<img src="media/map_search.png" id="s-ico" class="search-ico">
+	</div>
+
+	<div class="row nav-icons show-for-small-only">
+		<div class="small-9 small-centered columns">
+			<div class="row">
+				<div class="small-6 columns">
+					<img src="media/user.png" id="u-ico-s" class="user-ico">
+				</div>
+				<div class="small-6 columns">
+					<img src="media/search.png" id="s-ico-s" class="search-ico">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="user-bar">
+		<div class="header row">
+				<div class="title small-7 small-centered medium-uncentered medium-9 columns">user options</div>
+				<div class="icon medium-3 columns show-for-medium-up"><img class="back-m" src="media/back.png"></div>
+		</div>
+		<div class="content row">
+			<div class="medium-10 medium-centered columns">
+				<div class="row">
+				    <form id="login-form" action="login" method="post">
+				    	<div class="medium-12 columns">
+					        <input type="text" name="email" placeholder="email">
+				        </div>
+				    	<div class="medium-12 columns">
+					        <input type="password" name="password" placeholder="pasword">
+				        </div>
+				    	<div class="medium-12 columns">
+					        <input class="login-btn" type="submit" value="login">
+				        </div>
+				    </form>
+			    </div>
+			    <div class="row">
+			    	<div class="register-header medium-11 medium-centered columns">
+			    		NOT A MEMBER?	
+			    	</div>
+			    	<div class="medium-12 columns">
+			    		<form action="registration.html">
+				    		<input class="register-btn" type="submit" value="register">
+			    		</form>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+	</div>
+
+	<div id="search-bar">
+		<div class="header small-12 columns">
+			<div class="title small-8 small-centered medium-uncentered medium-9 columns">search options</div>
+			<div class="icon medium-3 columns show-for-medium-up"><img class="back-m" src="media/back.png"></div>
+		</div>
+		<div class="row content">
+			<div class="medium-12 columns">
+				<input type="text" placeholder="search here">
+			</div>
+			<div class="results">
+				<div class="medium-12 columns">
+					<ul class="main">
+						<li>name</li>
+						<ul class="sub">
+							<li>description</li>
+						</ul>
+					</ul>
+				</div>
+				<div class="medium-12 columns">
+					<ul class="main">
+						<li>name</li>
+						<ul class="sub">
+							<li>description</li>
+						</ul>
+					</ul>
+				</div>
+				<div class="medium-12 columns">
+					<ul class="main">
+						<li>name</li>
+						<ul class="sub">
+							<li>description</li>
+						</ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

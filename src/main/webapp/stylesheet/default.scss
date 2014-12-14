@@ -1,0 +1,43 @@
+$icon:#22313f;
+$sidebar-header:#0f161c;
+$sidebar:#1a252f;
+$sidebar-header-small: #232323;
+$sidebar-small: #3B3B3B;
+$name:#fff;
+$description:#858686;
+$btn-register: #5C97BF;
+$btn-register-darker: #2574A9;
+$btn-login-add:#2ecc71;
+$btn-login-add-darker:#03A678;
+$btn-logout-rem:#e74c3c;
+$btn-other:#95a5a6;
+
+@mixin filter($filter, $val) {
+	@if $filter == 'opacity' {
+		-webkit-filter: opacity($val);
+		-moz-filter: opacity($val);
+		-o-filter: opacity($val);
+		filter: opacity($val);
+	}
+
+	@elseif $filter == 'invert' {
+		-webkit-filter: invert($val);
+		-moz-filter: invert($val);
+		-o-filter: invert($val);
+		filter: invert($val);	
+	}
+}
+
+@mixin border-radius($val) {
+	-webkit-border-radius: $val;
+	-moz-border-radius: $val;
+	-o-border-radius: $val;
+	border-radius: $val;
+}
+
+@mixin transition($val) {
+	-webkit-border-transition: $val;
+	-moz-transition: $val;
+	-o-transition: $val;
+	transition: $val;
+}

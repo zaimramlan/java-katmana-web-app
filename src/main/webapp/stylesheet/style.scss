@@ -1,0 +1,322 @@
+@import 'default';
+@import 'screensizes';
+@import url('http://fonts.googleapis.com/css?family=Raleway:400,300');
+
+body {
+	background: $sidebar-small;
+	margin: 0;
+	padding: 0;
+	font-family: 'Raleway';
+	letter-spacing: -1px;
+}
+
+img {
+	width: 100%;
+}
+
+.nav-icons {
+	background: $sidebar-header-small;
+	text-align: center;
+	padding: 5px 0 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 5px solid #585858;
+}
+
+.icon img:hover {
+	cursor: pointer;
+}
+
+#map-canvas {
+	width: 100%;
+	height: 100%;
+	letter-spacing: 0px;
+
+	@media #{$small-only} {
+		height: 70%;
+	}
+}
+
+.user-ico {
+	@include transition(500ms);
+
+	@media #{$small-only} {
+		max-width: 30px; 
+	    @include filter(invert, 1);
+	}
+
+	@media #{$medium-up} {
+		position: absolute;
+		top: 5%;
+		right: 1%;
+		width: 30px;
+	}
+}
+
+.user-ico:hover {
+	cursor: pointer;
+
+	@media #{$small-only} {
+		@include filter(invert, 0.5);
+	}
+
+	@media #{$medium-up} {
+		@include filter(invert, 0.2);
+	}
+}
+
+#user-bar {
+	@extend #search-bar;
+
+	.content {
+		img {
+			width: 23px;
+			@include filter(invert, 1);
+		}
+
+		input {
+			margin-bottom: 5px!important;
+			padding-left: 5px;
+			text-transform: lowercase!important;
+		}
+
+		.login-btn {
+			background: $btn-login-add;
+			border-color: $btn-login-add;
+			padding: 3px 0 6px 0;
+			font-size: 15px;
+			text-transform: uppercase!important;
+			letter-spacing: -1px;
+			@include transition(300ms);
+		}
+
+		.login-btn:hover {
+			background: $btn-login-add-darker;
+			border-color: $btn-login-add-darker;
+		}
+
+		.register-header {
+			text-align: left;
+			font-size: 14px;
+			margin-top: 14px;
+		}
+
+		.register-btn {
+			background: $btn-register;
+			border-color: $btn-register;
+			padding: 4px 0 6px 0;
+			font-size: 15px;
+			text-transform: uppercase!important;
+			letter-spacing: -1px;
+			@include transition(300ms);
+		}
+
+		.register-btn:hover {
+			background: $btn-register-darker;
+			border-color: $btn-register-darker;
+		}
+
+		.profile {
+			border: 1px solid $btn-other;
+			margin-bottom: 7px;
+			text-transform: uppercase;
+			@include border-radius(4px);
+			@include transition(300ms);
+		}
+
+		.profile:hover {
+			background: $btn-login-add;
+			border-color: $btn-login-add;
+			cursor: pointer;
+		}
+
+		.settings {
+			@extend .profile;
+		}
+
+		.settings:hover {
+			@extend .profile:hover;
+		}
+
+		.logout {
+			@extend .profile;
+			background: none;
+
+			button {
+				background: transparent;
+				border: none;
+				text-transform: uppercase;
+				padding: 0;
+				width: 100%;
+			}
+		}
+
+		.logout:hover {
+			background: $btn-logout-rem;
+			border-color: $btn-logout-rem;
+		}
+	}
+}
+
+.menu-ico {
+	@extend .user-ico;
+
+	@media #{$medium-up} {
+		top: 10%;
+	}
+}
+
+.menu-ico:hover {
+	@extend .user-ico:hover;
+}
+
+#menu-bar {
+	@extend #search-bar;
+
+	.content {
+		img {
+			width: 23px;
+			cursor: pointer;
+			float: right;
+		}
+
+		input {
+			margin-bottom: 5px!important;
+			padding-left: 5px;
+			text-transform: capitalize!important;
+		}
+
+		.points, .contexts {
+			img {
+				float: none;
+			}
+		}
+
+		#context-btn {
+			margin-bottom: 7px;
+			text-align: left;
+			text-transform: uppercase;
+			@include border-radius(4px);
+
+			img {
+				background: $btn-login-add;
+				width: 23px;
+				max-width: 23px;
+				cursor: pointer;
+				@include border-radius(100px);
+			}
+
+			a {
+				color: #fff;
+			}
+		}
+
+		#points-btn {
+			@extend #context-btn;
+		}
+	}
+}
+
+.search-ico {
+	@extend .user-ico;
+
+	@media #{$medium-up} {
+		top: 15%;
+	}
+}
+
+.search-ico:hover {
+	@extend .user-ico:hover;
+}
+
+#search-bar {
+	background: $sidebar;
+	color: #fff;
+	overflow:auto;
+
+	@media #{$small-only} {
+		width: 100%; 
+	    position: relative;
+	    padding-left: 0.9375rem;
+	    padding-right: 0.9375rem;
+	    float: left; 		
+	    background: $sidebar-small;
+	}
+
+	@media #{$medium-up} {
+		display: none;
+		position: absolute;
+		top: 0%;
+		right: 0%;
+		height: 100%;
+		width: 30%;
+		@include filter(opacity, 0.85);
+	}
+
+	@media #{$large-up} {
+		width: 25%;
+	}
+
+	@media #{$xlarge-up} {
+		width: 20%;
+	}
+
+	.header {
+		background: $sidebar-header;
+		margin-bottom: 10px;
+		@include filter(opacity, 1);
+
+		@media #{$small-only} {
+			background: $sidebar-header-small;
+			text-align: center;
+		    @include border-radius(25px);
+		}
+
+		.title { 
+			font-weight: 300;
+			text-transform: uppercase;
+			margin-top: 4px;
+		}
+
+		.icon { 
+			img { 
+				width: 25px;
+				margin-top:2px;
+				@include filter(invert, 1); 
+			}
+		}
+	}
+
+	.content {
+		text-align: center;
+
+		input {
+			background: transparent;
+			width: 90%;
+			margin: auto;
+			color: #fff;
+			text-transform: uppercase;
+			border: 1px solid $btn-other;
+			@include border-radius(4px);
+		}
+
+		.results {
+			text-align: left;
+
+			ul {
+				list-style-type:none;
+				font-size: 15px;
+				letter-spacing: -0.2px;
+				text-transform: capitalize;
+			}
+
+			.main {
+				color: $name;
+			}
+
+			.sub {
+				font-size: 14px;
+				color: $description;
+			}
+		}
+	}
+}
