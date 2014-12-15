@@ -8,7 +8,7 @@ import com.katmana.model.rest.UserRestConfiguration;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet("/users/")
+@WebServlet("/users")
 public class UserIndexServlet extends BaseIndexServlet<User,UserRestConfiguration> {
 	private static final long serialVersionUID = 1L;
 }

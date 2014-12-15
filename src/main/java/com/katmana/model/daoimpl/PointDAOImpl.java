@@ -53,6 +53,7 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 			String term = params.get("search");
 			bjunc = bjunc
 				.should(qb.phrase().withSlop(5).onField("name").boostedTo(5).sentence(term).createQuery())
+				.should(qb.phrase().withSlop(10).onField("contexts.description").boostedTo(0.3F).sentence(term).createQuery()) // Less weight with context description
 				.should(qb.phrase().withSlop(10).onField("contexts.name").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with context name
 				.should(qb.phrase().withSlop(10).onField("description").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with description
 				.should(qb.phrase().withSlop(10).onField("location_description").boostedTo(0.5F).sentence(term).createQuery()); //Even less weight with location_description

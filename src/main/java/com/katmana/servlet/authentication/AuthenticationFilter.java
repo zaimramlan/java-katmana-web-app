@@ -41,6 +41,8 @@ public class AuthenticationFilter implements Filter {
                                 "/media/view.png",
                                 "/media/city_wallpaper.jpg",
                                 "/custom.js",
+                                "/point.js",
+                                "/index.js",
                                 "/index.jsp",
                                 "/main.html",
                                 "/login.html",

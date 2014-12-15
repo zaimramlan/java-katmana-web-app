@@ -1,5 +1,6 @@
 package com.katmana.model.daoimpl;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -9,6 +10,9 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.ConvertUtils;
 
 import com.katmana.model.BaseModel;
 
@@ -100,7 +104,20 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 		
 		//Assign parameter value
 		for(String par:params.keySet()){
-			query.setParameter(par, params.get(par));
+			Object val = params.get(par);
+			try {
+				Field thefield = entityClass.getDeclaredField(par);
+				if(!thefield.getClass().equals(val.getClass())){
+					//If not the same, attempt cast
+					val = ConvertUtils.convert(val,thefield.getType());
+					System.out.println("Cast attempt");
+				}
+			} catch (NoSuchFieldException | SecurityException | ConversionException e) {
+				//Directly then
+			}
+			System.out.println("Field "+par+" type "+val.getClass().getCanonicalName());
+			query.setParameter(par, val);
+			
 		}
 		
 		List<T> u = new ArrayList<T>(); 

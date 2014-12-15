@@ -16,7 +16,7 @@ import com.katmana.model.Point;
  * This is a debugging helper. It will reindex all point so that they can be searched.
  * There is no security for this. So keep that in mind.
  */
-@WebServlet("/reindex_points/")
+@WebServlet("/reindex_points")
 public class ReindexPoints extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
