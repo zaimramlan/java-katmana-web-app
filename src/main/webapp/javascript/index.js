@@ -28,7 +28,7 @@ function initialize() {
       infowindow.close();
   });
 
-  populateContext({parentElement: document.getElementById("contexts")});
+  populateContext({parentElement: document.getElementById("context")});
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
