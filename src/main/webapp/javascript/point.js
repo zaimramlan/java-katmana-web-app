@@ -1,3 +1,11 @@
+function linkContains(param) {
+  var link = window.location.pathname;
+  var result = link.indexOf(param);
+
+  if(result === -1) { return false; }
+  else { return true; }
+}
+
 function Point(param){
   var self = this;
   this.id = param.id;
@@ -12,25 +20,15 @@ function Point(param){
   this.parentElement = param.parentElement;
   this.node = document.createElement("div");
   this.container_name = document.createElement("div");
-  this.container_desc = document.createElement("div");
-  this.container_menu = document.createElement("div");  
-  this.name_field = document.createElement("input");
-  this.description_field = document.createElement("input");
-  this.save_button = document.createElement("img");
+  this.container_description = document.createElement("div");
   this.set_button = document.createElement("img");
+  this.save_button = document.createElement("img");
   this.remove_button = document.createElement("img");
 
-  self.node.className = "points"
+  self.node.className = "points row";
   self.container_name.className = "small-12 columns";
-  self.container_desc.className = "small-12 columns";
-  self.container_menu.className = "small-12 columns";  
-  self.name_field.name = "name"
-  self.description_field.name = "description"
-  self.name_field.value = param.name;
-  self.description_field.value = param.description;
-  self.save_button.src = "media/add.png";
+  self.container_description.className = "small-12 columns";
   self.set_button.src = "media/view.png";
-  self.remove_button.src = "media/rem.png";
 
   // self.node.appendChild(self.name_field);
   // self.node.appendChild(self.description_field);
@@ -38,20 +36,64 @@ function Point(param){
   // self.node.appendChild(self.set_button);
   // self.node.appendChild(self.remove_button);
 
-  self.container_name.appendChild(self.name_field);
-  self.container_desc.appendChild(self.description_field);
-  self.container_menu.appendChild(self.save_button);
-  self.container_menu.appendChild(self.set_button);
-  self.container_menu.appendChild(self.remove_button);
-  self.node.appendChild(self.container_name);
-  self.node.appendChild(self.container_desc);
-  self.node.appendChild(self.container_menu);  
+  if(linkContains("main.html")) {
+    this.container_main = document.createElement("div");
+    this.container_set_button = document.createElement("div");
+    this.container_both_name_description = document.createElement("div");
+    this.container_outer_name = document.createElement("div");
+    this.container_name = document.createElement("div");
+    this.name_field = document.createElement("span");
+    this.container_outer_description = document.createElement("div");
+    this.description_field = document.createElement("span");
+
+    self.container_main.className = "small-12 columns";
+    self.container_set_button.className = "small-4 columns";
+    self.container_both_name_description.className = "small-8 columns";
+    self.container_outer_name.className = "row";
+    self.container_name.className = "points-name small-12 columns";
+    self.name_field.innerHTML = param.name;
+    self.container_outer_description.className = "row";
+    self.container_description.className = "points-description small-12 columns";
+    self.description_field.innerHTML = param.description;
+
+    self.container_set_button.appendChild(self.set_button);
+    self.container_name.appendChild(self.name_field);
+    self.container_outer_name.appendChild(self.container_name);
+    self.container_description.appendChild(self.description_field);
+    self.container_outer_description.appendChild(self.container_description);
+    self.container_both_name_description.appendChild(self.container_outer_name);
+    self.container_both_name_description.appendChild(self.container_outer_description);
+    self.container_main.appendChild(self.container_set_button);
+    self.container_main.appendChild(self.container_both_name_description);
+    self.node.appendChild(self.container_main);
+  } else {
+    this.container_menu = document.createElement("div");  
+    this.name_field = document.createElement("input");
+    this.description_field = document.createElement("input");
+ 
+    self.container_menu.className = "small-12 columns";  
+    self.name_field.name = "name"
+    self.description_field.name = "description"
+    self.name_field.value = param.name;
+    self.description_field.value = param.description;
+    self.save_button.src = "media/add.png";
+    self.remove_button.src = "media/rem.png";
+
+    self.container_name.appendChild(self.name_field);
+    self.container_description.appendChild(self.description_field);
+    self.container_menu.appendChild(self.save_button);
+    self.container_menu.appendChild(self.set_button);
+    self.container_menu.appendChild(self.remove_button);
+    self.node.appendChild(self.container_name);
+    self.node.appendChild(self.container_description);
+    self.node.appendChild(self.container_menu); 
+  }
 
   this.getContentString = function(){
     return '<div id="content">'+
-      '<p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">'+self.name_field.value+'</p>'+
+      '<p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">'+param.name+'</p>'+
       '<div id="bodyContent">'+
-      '<p style="margin:0">'+self.description_field.value+'</p>'+
+      '<p style="margin:0">'+param.description+'</p>'+
       '</div>'+
       '</div>';
   }

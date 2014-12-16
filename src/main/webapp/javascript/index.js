@@ -100,7 +100,7 @@ function Context(param){
   this.remove_button = document.createElement("img");
 
 
-  self.node.className = "contexts";
+  self.node.className = "contexts row";
   self.container_name.className = "small-12 columns";
   self.container_desc.className = "small-12 columns";
   self.container_menu.className = "small-12 columns";  

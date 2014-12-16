@@ -27,8 +27,8 @@ public class AuthenticationFilter implements Filter {
                                 "/javascript/jquery-ui.min.js",
                                 "/javascript/map.js",
                                 "/javascript/ui.js",
-                                "javascript/point.js",
-                                "javascript/index.js",                                
+                                "/javascript/point.js",
+                                "/javascript/index.js",                                
                                 "/stylesheet/foundation.min.css",
                                 "/stylesheet/normalize.css",
                                 "/stylesheet/context_style.css",
@@ -42,7 +42,6 @@ public class AuthenticationFilter implements Filter {
                                 "/media/rem.png",
                                 "/media/view.png",
                                 "/media/city_wallpaper.jpg",
-
                                 "/index.jsp",
                                 "/main.html",
                                 "/login.html",

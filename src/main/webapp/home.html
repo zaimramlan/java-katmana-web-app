@@ -8,7 +8,6 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="javascript/jquery-2.1.1.min.js"></script>
     <script src="javascript/jquery-ui.min.js"></script>
-    <!-- // <script type="text/javascript" src="javascript/map.js"></script> -->
     <script type="text/javascript" src="javascript/index.js"></script>
     <script type="text/javascript" src="javascript/point.js"></script>
     <script src="javascript/ui.js"></script>
@@ -111,34 +110,28 @@
 			<div class="icon medium-3 columns show-for-medium-up"><img class="back-m" src="media/back.png"></div>
 		</div>
 		<div class="row content">
-			<div class="medium-12 columns">
-				<input type="text" placeholder="search here">
+			<div id="points-search-bar" class="medium-12 columns">
+			    <form id="search-form" action="points/">
+					<input type="text" name="search" placeholder="search here">
+		        </form>
+		        <script>
+		        	$("#search-form").submit(function(event){
+		        		event.preventDefault();
+		        		$.get("points?"+$("#search-form").serialize())
+		        		.done(function(points){
+		        			clearPoints();
+		        			points = JSON.parse(points);
+		        			populateMarkers({
+		        				points:points,
+		        				parentElement: document.getElementById("points-search"),
+		        				draggable: false
+		        			});
+		        		})
+		        		return false;
+		        	})
+		        </script>
 			</div>
-			<div class="results">
-				<div class="medium-12 columns">
-					<ul class="main">
-						<li>name</li>
-						<ul class="sub">
-							<li>description</li>
-						</ul>
-					</ul>
-				</div>
-				<div class="medium-12 columns">
-					<ul class="main">
-						<li>name</li>
-						<ul class="sub">
-							<li>description</li>
-						</ul>
-					</ul>
-				</div>
-				<div class="medium-12 columns">
-					<ul class="main">
-						<li>name</li>
-						<ul class="sub">
-							<li>description</li>
-						</ul>
-					</ul>
-				</div>
+			<div id="points-search" class="small-12 columns">
 			</div>
 		</div>
 	</div>
