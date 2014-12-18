@@ -2,10 +2,7 @@ package com.katmana.servlet.rest;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -74,14 +71,10 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		R record = restConfiguration.getRecord(request);
 		if(record == null){
-			response.setStatus(404);
-			response.getWriter().write("Nothing to see here.");
-			return;
+			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
 		if(!restConfiguration.allowShow(request)){
-			response.setStatus(403);
-			response.getWriter().write("You do not have permission for this resource");
-			return;
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
 		}
 		response.setStatus(200);
 		response.getWriter().write(restConfiguration.serialize(record));
@@ -95,14 +88,10 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		R record = restConfiguration.getRecord(request);
 		if(record == null){
-			response.setStatus(404);
-			response.getWriter().write("Nothing to see here.");
-			return;
+			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
 		if(!restConfiguration.allowUpdate(request)){
-			response.setStatus(403);
-			response.getWriter().write("You do not have permission for this resource");
-			return;
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
 		}
 		restConfiguration.applyParams(record, request);
 
@@ -135,14 +124,10 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		R record = restConfiguration.getRecord(request);
 		if(record == null){
-			response.setStatus(404);
-			response.getWriter().write("Nothing to see here.");
-			return;
+			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
 		if(!restConfiguration.allowDestroy(request)){
-			response.setStatus(403);
-			response.getWriter().write("You do not have permission for this resource");
-			return;
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
 		}
 		restConfiguration.doDestroy(record);
 		response.setStatus(204);
