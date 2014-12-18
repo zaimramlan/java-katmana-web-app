@@ -21,15 +21,15 @@ import com.katmana.model.annotation.ExcludeJson;
 @Table(name="users")
 public class User extends BaseModel{
 
-	@NotNull
-	@NotBlank
+	@NotBlank(message="Name must not be blank")
 	protected String name;
 
-	@NotNull
-	@Email
+	@NotBlank(message="Email must not be blank")
+	@Email(message="Email must be an email")
 	protected String email;
 	
 	@ExcludeJson
+	@NotBlank(message="You must provide a password")
 	protected String encrypted_password;
 	
 	public User(){
