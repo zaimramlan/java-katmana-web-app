@@ -19,9 +19,6 @@ import com.katmana.model.annotation.ExcludeJson;
 @Entity
 @Table(name="users")
 public class User extends BaseModel{
-	
-	@PersistenceContext
-	EntityManager em;
 
 	protected String name;
 	protected String email;
@@ -58,11 +55,12 @@ public class User extends BaseModel{
 		this.encrypted_password = encrypted_password;
 	}
 	
-	
+	/*
 	@ExposeMethodResult("rating")
 	public SubmitterRating.Summary getRatingSummary(){
 		return DAOProvider.getInstance(em).getSubmitterRatingDAO().getRatingSummary(getId());
 	}
+	*/
 
 	/**
 	 * A data access object interface for the user

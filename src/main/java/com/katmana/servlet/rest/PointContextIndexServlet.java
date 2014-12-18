@@ -3,7 +3,6 @@ package com.katmana.servlet.rest;
 import java.io.IOException;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +32,8 @@ public class PointContextIndexServlet extends BaseIndexServlet<PointContext,Poin
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		EntityManager em = (EntityManager)req.getAttribute("EntityManager");
+		PointContextRestConfiguration restConfiguration = getInstanceOfRestConfiguration(em);
 		try{
 			if(req.getParameter("point_id") == null || req.getParameter("context_id") == null){
 				resp.setStatus(400);

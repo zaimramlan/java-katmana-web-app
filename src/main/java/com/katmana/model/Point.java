@@ -128,13 +128,12 @@ public class Point extends BaseModel{
 		this.contexts = contexts;
 	}
 	
-	@PersistenceContext
-	EntityManager em;
-	
+	/*
 	@ExposeMethodResult("rating")
 	public PointRating.Summary getRatingSummary(){
 		return DAOProvider.getInstance(em).getPointRatingDAO().getRatingSummary(getId());
 	}
+	*/
 	
 	/**
 	 * DAO for Point

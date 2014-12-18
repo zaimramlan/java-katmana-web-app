@@ -27,19 +27,13 @@ import com.katmana.model.rest.EntityRestConfiguration;
 public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestConfiguration<R> > extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected T restConfiguration;
 	protected Class<R> recordClass;
 
-    @PersistenceContext(unitName="KatManaDB")
-    EntityManager em;
-
-	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public BaseIndexServlet() {
         super();
-        restConfiguration = getInstanceOfT();
         
         /*
          * These two create a recordClass so that we can instantiate it.
@@ -52,7 +46,7 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
      * Copied from stackoverflow, this create a new instance of T
      * @return
      */
-    protected T getInstanceOfT()
+    protected T getInstanceOfRestConfiguration(EntityManager em)
     {
         ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
         Class<T> type = (Class<T>) superClass.getActualTypeArguments()[1]; //1 as in the second parameter
@@ -73,6 +67,7 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		try{
 			if(!restConfiguration.allowIndex(request)){
 				response.setStatus(403);
@@ -94,6 +89,7 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		try{
 			if(!restConfiguration.allowCreate(request)){
 				response.setStatus(403);

@@ -26,19 +26,13 @@ import com.katmana.model.rest.EntityRestConfiguration;
 public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRestConfiguration<R> > extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected T restConfiguration;
 	protected Class<R> recordClass;
-
-    @PersistenceContext
-    EntityManager em;
-
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public BaseRecordServlet() {
         super();
-        restConfiguration = getInstanceOfT();
         
         /*
          * These two create a recordClass so that we can instantiate it.
@@ -51,7 +45,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
      * Copied from stackoverflow, this create a new instance of T
      * @return
      */
-    protected T getInstanceOfT()
+    protected T getInstanceOfRestConfiguration(EntityManager em)
     {
         ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
         Class<T> type = (Class<T>) superClass.getActualTypeArguments()[1]; //1 as in the second parameter
@@ -71,6 +65,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		try{
 			R record = restConfiguration.getRecord(request);
 			if(record == null){
@@ -96,6 +91,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		try{
 			R record = restConfiguration.getRecord(request);
 			if(record == null){
@@ -132,6 +128,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		try{
 			R record = restConfiguration.getRecord(request);
 			if(record == null){

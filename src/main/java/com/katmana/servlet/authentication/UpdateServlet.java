@@ -24,12 +24,10 @@ import com.katmana.model.User;
 @WebServlet(urlPatterns = {"/update_account"})
 public class UpdateServlet extends HttpServlet {
 
-  @PersistenceContext
-  EntityManager em;
-
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
+	EntityManager em = (EntityManager)request.getAttribute("EntityManager");
     String accept = request.getHeader("Accept");
     response.setContentType("text/html;charset=UTF-8");
     try (PrintWriter out = response.getWriter()) {

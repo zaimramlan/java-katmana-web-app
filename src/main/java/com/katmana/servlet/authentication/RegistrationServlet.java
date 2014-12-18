@@ -21,11 +21,9 @@ import com.katmana.model.User;
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/register"})
 public class RegistrationServlet extends HttpServlet {
 
-  @PersistenceContext
-  EntityManager em;
-
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+	EntityManager em = (EntityManager)request.getAttribute("EntityManager");
     response.setContentType("text/html;charset=UTF-8");
     try (PrintWriter out = response.getWriter()) {
 

@@ -1,4 +1,6 @@
 package com.katmana;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.julman99.gsonfire.GsonFireBuilder;
@@ -37,6 +39,10 @@ public class Util {
 	
 	public static User getCurrentUser(HttpServletRequest request){
 		return (User)request.getSession().getAttribute("user");
+	}
+	
+	public static EntityManagerFactory getEntityManagerFactory(){
+		return Persistence.createEntityManagerFactory("KatManaDB");
 	}
 
 }

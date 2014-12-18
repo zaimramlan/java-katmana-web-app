@@ -41,8 +41,6 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		
 		FullTextEntityManager fulTextEM = Search.getFullTextEntityManager(em);
 		
-		em.getTransaction().begin();
-		
 		QueryBuilder qb = fulTextEM.getSearchFactory().buildQueryBuilder().forEntity(Point.class).get();
 		
 		//Basic term query must match at least one.
@@ -88,10 +86,8 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 	@Override
 	public void index(Point p) {
 		FullTextEntityManager ftem = Search.getFullTextEntityManager(em);
-		ftem.getTransaction().begin();
 		p = ftem.merge(p);
 		ftem.index(p);
-		ftem.getTransaction().commit();
 	}
 
 }

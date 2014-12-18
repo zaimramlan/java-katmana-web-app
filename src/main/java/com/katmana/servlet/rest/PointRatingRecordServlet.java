@@ -2,13 +2,13 @@ package com.katmana.servlet.rest;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.katmana.Util;
-import com.katmana.model.Point;
 import com.katmana.model.PointRating;
 import com.katmana.model.User;
 import com.katmana.model.rest.EntityRestConfiguration;
@@ -27,6 +27,7 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		PointRatingRestConfiguration restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
 		try{
 			PointRating record = restConfiguration.getRecord(request);
 			if(record == null){
