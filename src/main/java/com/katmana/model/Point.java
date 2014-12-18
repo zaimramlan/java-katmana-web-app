@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -14,6 +15,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Latitude;
 import org.hibernate.search.annotations.Longitude;
 import org.hibernate.search.annotations.Spatial;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.katmana.model.annotation.ExcludeJson;
 
@@ -33,6 +35,7 @@ public class Point extends BaseModel{
 	/*
 	 * The user ID who submit it.
 	 */
+	@NotNull(message="Submitter id must not be null")
 	@Field
 	protected Long submitter_id;
 	
@@ -41,10 +44,14 @@ public class Point extends BaseModel{
 	 */
 	@Field
 	@Latitude
+	@NotNull(message="Latitude must not be null")
 	protected Double latitude;
+
 	@Field
 	@Longitude
+	@NotNull(message="Longitude must not be null")
 	protected Double longitude;
+
 	@Field
 	protected Double altitude;
 	
@@ -53,8 +60,11 @@ public class Point extends BaseModel{
 	 * 
 	 */
 	@Field
+	@NotBlank(message="Name must not be blank")
 	protected String name;
+
 	@Field
+	@NotBlank(message="Description must not be blank")
 	protected String description;
 	
 	@ExcludeJson

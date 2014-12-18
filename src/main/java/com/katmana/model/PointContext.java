@@ -1,8 +1,8 @@
 package com.katmana.model;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A PointContext is a many-to-many relationship table
@@ -14,7 +14,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="point_contexts")
 public class PointContext extends BaseModel {
+	@NotNull(message="point id must not be null")
 	private Long point_id;
+	@NotNull(message="context id must not be null")
 	private Long context_id;
 	
 	public Long getPointId() {

@@ -2,6 +2,7 @@ package com.katmana.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A submitter rating class represent rating submissions for a Submitter
@@ -17,16 +18,19 @@ public class SubmitterRating extends BaseModel {
 	/*
 	 * The one who is being liked
 	 */
+	@NotNull(message="submitter id must not be null")
 	private Long submitter_id;
 
 	/*
 	 * The one who is liking
 	 */
+	@NotNull(message="rater id must not be null")
 	private Long rater_id;
 
 	/*
 	 * Like or not?
 	 */
+	@NotNull(message="Positive value must be given")
 	private Boolean positive = true;
 
 	public Long getSubmitterId() {

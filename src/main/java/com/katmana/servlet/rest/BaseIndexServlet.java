@@ -2,15 +2,20 @@ package com.katmana.servlet.rest;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
 
+import com.katmana.Util;
 import com.katmana.model.BaseModel;
 import com.katmana.model.rest.EntityRestConfiguration;
 
@@ -106,7 +111,22 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 			}
 
 			restConfiguration.applyParams(record, request);
-			//Should validate here.
+			
+			//Validate it
+			Set<ConstraintViolation<R> > violations = Util.getValidator().validate(record);
+			if(violations.size() > 0){
+				Map<String,Object> resp_json = new Hashtable<String,Object>();
+				resp_json.put("error", "validation error");
+				Set<String> errors = new TreeSet<>();
+				for(ConstraintViolation<R> vio:violations){
+					errors.add(vio.getMessage());
+				}
+				resp_json.put("validation_errors", errors);
+				response.setStatus(400);
+				response.getWriter().write(Util.createGson().toJson(resp_json));
+				return;
+			}
+			
 			restConfiguration.doCreate(record);
 			response.setStatus(201);
 			response.getWriter().write(restConfiguration.serialize(record));

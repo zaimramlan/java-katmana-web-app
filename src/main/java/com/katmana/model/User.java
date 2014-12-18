@@ -3,11 +3,12 @@ package com.katmana.model;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.katmana.model.annotation.ExcludeJson;
 
 /**
@@ -20,7 +21,12 @@ import com.katmana.model.annotation.ExcludeJson;
 @Table(name="users")
 public class User extends BaseModel{
 
+	@NotNull
+	@NotBlank
 	protected String name;
+
+	@NotNull
+	@Email
 	protected String email;
 	
 	@ExcludeJson

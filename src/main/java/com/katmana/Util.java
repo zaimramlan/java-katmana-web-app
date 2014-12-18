@@ -2,6 +2,8 @@ package com.katmana;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import com.github.julman99.gsonfire.GsonFireBuilder;
 import com.google.gson.Gson;
@@ -43,6 +45,19 @@ public class Util {
 	
 	public static EntityManagerFactory getEntityManagerFactory(){
 		return Persistence.createEntityManagerFactory("KatManaDB");
+	}
+	
+	private static Validator validator;
+	
+	private static synchronized void createValidator(){
+		validator = Validation.buildDefaultValidatorFactory().getValidator();
+	}
+	
+	public static Validator getValidator(){
+		if(validator == null){
+			createValidator();
+		}
+		return validator;
 	}
 
 }
