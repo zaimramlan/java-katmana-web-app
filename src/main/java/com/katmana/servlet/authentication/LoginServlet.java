@@ -1,18 +1,20 @@
 package com.katmana.servlet.authentication;
 
-import com.katmana.model.DAOProvider;
-import com.katmana.model.User;
-import com.katmana.Encryption;
-
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
+
+import com.katmana.Encryption;
+import com.katmana.model.DAOProvider;
+import com.katmana.model.User;
 
 /**
  *
@@ -20,6 +22,10 @@ import java.util.Arrays;
  */
 @WebServlet(urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
+	
+  @PersistenceContext
+  EntityManager em;
+	
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
@@ -28,7 +34,7 @@ public class LoginServlet extends HttpServlet {
     try (PrintWriter out = response.getWriter()) {
 
       String email = request.getParameter("email"), password = request.getParameter("password"), result;
-      User user = DAOProvider.getInstance().getUserDAO().getByEmail(email);
+      User user = DAOProvider.getInstance(em).getUserDAO().getByEmail(email);
       
       boolean validUser = (user != null), correctPass = false;
       

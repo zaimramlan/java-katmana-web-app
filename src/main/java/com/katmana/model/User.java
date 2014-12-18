@@ -3,6 +3,8 @@ package com.katmana.model;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
@@ -17,6 +19,9 @@ import com.katmana.model.annotation.ExcludeJson;
 @Entity
 @Table(name="users")
 public class User extends BaseModel{
+	
+	@PersistenceContext
+	EntityManager em;
 
 	protected String name;
 	protected String email;
@@ -56,7 +61,7 @@ public class User extends BaseModel{
 	
 	@ExposeMethodResult("rating")
 	public SubmitterRating.Summary getRatingSummary(){
-		return DAOProvider.getInstance().getSubmitterRatingDAO().getRatingSummary(getId());
+		return DAOProvider.getInstance(em).getSubmitterRatingDAO().getRatingSummary(getId());
 	}
 
 	/**

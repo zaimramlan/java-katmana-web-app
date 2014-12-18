@@ -1,13 +1,13 @@
 package com.katmana.model;
-import com.katmana.model.annotation.ExcludeJson;
-
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
@@ -128,9 +128,12 @@ public class Point extends BaseModel{
 		this.contexts = contexts;
 	}
 	
+	@PersistenceContext
+	EntityManager em;
+	
 	@ExposeMethodResult("rating")
 	public PointRating.Summary getRatingSummary(){
-		return DAOProvider.getInstance().getPointRatingDAO().getRatingSummary(getId());
+		return DAOProvider.getInstance(em).getPointRatingDAO().getRatingSummary(getId());
 	}
 	
 	/**

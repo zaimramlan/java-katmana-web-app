@@ -1,7 +1,6 @@
 package com.katmana.model.rest;
 
-import java.util.List;
-
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import com.katmana.Util;
@@ -12,8 +11,8 @@ public class PointRatingRestConfiguration extends EntityRestConfiguration<PointR
 	
 	PointRating.DAO pointRatingDAO;
 	
-	public PointRatingRestConfiguration() {
-		super();
+	public PointRatingRestConfiguration(EntityManager em) {
+		super(em);
 		pointRatingDAO = (PointRating.DAO)dao;
 	}
 

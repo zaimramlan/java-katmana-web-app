@@ -12,8 +12,8 @@ import com.katmana.model.SubmitterRating.Summary;
 
 public class SubmitterRatingDAOImpl extends BaseDAOImpl<SubmitterRating> implements SubmitterRating.DAO{
 
-	public SubmitterRatingDAOImpl(EntityManagerFactory eFactory) {
-		super(eFactory);
+	public SubmitterRatingDAOImpl(EntityManager em) {
+		super(em);
 	}
 
 	@Override
@@ -33,8 +33,6 @@ public class SubmitterRatingDAOImpl extends BaseDAOImpl<SubmitterRating> impleme
 		int positive = 0;
 		int negative = 0;
 		
-		EntityManager em = eFactory.createEntityManager();
-		
 		List<Object[]> results = em.createQuery("SELECT count(*) as total, r.positive FROM SubmitterRating r WHERE r.submitter_id = :submitter_id GROUP BY r.positive")
 				.setParameter("submitter_id", submitter_id).getResultList();
 		
@@ -47,8 +45,7 @@ public class SubmitterRatingDAOImpl extends BaseDAOImpl<SubmitterRating> impleme
 				negative = count;
 			}
 		}
-		
-		em.close();
+
 		return new Summary(positive, negative);
 	}
 

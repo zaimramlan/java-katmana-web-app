@@ -17,8 +17,8 @@ import com.katmana.model.Point;
 
 public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 
-	public PointDAOImpl(EntityManagerFactory eFactory) {
-		super(eFactory);
+	public PointDAOImpl(EntityManager em) {
+		super(em);
 	}
 
 	@Override
@@ -39,7 +39,6 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 			offset = Integer.valueOf(offsetString);
 		}
 		
-		EntityManager em = eFactory.createEntityManager();
 		FullTextEntityManager fulTextEM = Search.getFullTextEntityManager(em);
 		
 		em.getTransaction().begin();
@@ -82,21 +81,17 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		
 		List<Point> results = query.setMaxResults(count).setFirstResult(offset).getResultList();
 		
-		em.getTransaction().commit();
-		em.close();
 		
 		return results;
 	}
 
 	@Override
 	public void index(Point p) {
-		EntityManager em = eFactory.createEntityManager();
 		FullTextEntityManager ftem = Search.getFullTextEntityManager(em);
 		ftem.getTransaction().begin();
 		p = ftem.merge(p);
 		ftem.index(p);
 		ftem.getTransaction().commit();
-		em.close();
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -31,16 +32,18 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	
 	protected BaseModel.DAO<T> dao;
 	protected Class<T> entityClass;
+	protected EntityManager em;
 	
 	/**
 	 * A default constructor is required by BaseIndexServlet
 	 */
-	public EntityRestConfiguration(){
+	public EntityRestConfiguration(EntityManager em){
+		this.em = em;
 		this.entityClass = ((Class<T>) ((ParameterizedType) getClass()
         .getGenericSuperclass()).getActualTypeArguments()[0]);
-		dao = (BaseModel.DAO<T>)DAOProvider.getInstance().getDaoByType(this.entityClass);
+		dao = (BaseModel.DAO<T>)(new DAOProvider(em)).getDaoByType(this.entityClass);
 	}
-	
+
 	/**
 	 * These two function are util function that can be override
 	 * by subclass to provide customizations needed.

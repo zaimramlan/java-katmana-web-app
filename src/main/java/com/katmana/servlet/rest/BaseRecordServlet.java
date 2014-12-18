@@ -2,8 +2,9 @@ package com.katmana.servlet.rest;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,10 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
        
 	protected T restConfiguration;
 	protected Class<R> recordClass;
+
+    @PersistenceContext
+    EntityManager em;
+
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -52,7 +57,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
         Class<T> type = (Class<T>) superClass.getActualTypeArguments()[1]; //1 as in the second parameter
         try
         {
-            return type.newInstance();
+            return type.getDeclaredConstructor(EntityManager.class).newInstance(em);
         }
         catch (Exception e)
         {

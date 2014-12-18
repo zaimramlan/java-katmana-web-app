@@ -1,5 +1,6 @@
 package com.katmana.model.rest;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import com.katmana.Util;
@@ -10,8 +11,8 @@ public class SubmitterRatingRestConfiguration extends EntityRestConfiguration<Su
 	
 	SubmitterRating.DAO submitterRatingDAO;
 	
-	public SubmitterRatingRestConfiguration() {
-		super();
+	public SubmitterRatingRestConfiguration(EntityManager em) {
+		super(em);
 		submitterRatingDAO = (SubmitterRating.DAO)dao;
 	}
 

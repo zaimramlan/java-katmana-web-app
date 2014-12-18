@@ -9,20 +9,18 @@ import com.katmana.model.Context;
 
 public class ContextDAOImpl extends BaseDAOImpl<Context> implements Context.DAO{
 
-	public ContextDAOImpl(EntityManagerFactory eFactory) {
-		super(eFactory);
+	public ContextDAOImpl(EntityManager em) {
+		super(em);
 	}
 
 	@Override
 	public Context getByName(String name) {
-		EntityManager em = eFactory.createEntityManager();
 		Query query = em.createQuery("select u from Context u where u.name = :name");
 		query.setParameter("name", name);
 		Context u = null; 
 		try{
 			u = (Context)query.getSingleResult();
 		}catch(NoResultException e){}
-		em.close();
 		return u;
 	}
 

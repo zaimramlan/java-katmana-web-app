@@ -1,19 +1,21 @@
 package com.katmana.servlet.authentication;
 
-import com.katmana.model.DAOProvider;
-import com.katmana.model.User;
-import com.katmana.Encryption;
-import com.katmana.Util;
-
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
+
+import com.katmana.Encryption;
+import com.katmana.Util;
+import com.katmana.model.DAOProvider;
+import com.katmana.model.User;
 
 /**
  *
@@ -21,6 +23,10 @@ import java.util.Arrays;
  */
 @WebServlet(urlPatterns = {"/update_account"})
 public class UpdateServlet extends HttpServlet {
+
+  @PersistenceContext
+  EntityManager em;
+
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
@@ -40,7 +46,7 @@ public class UpdateServlet extends HttpServlet {
 
       boolean valid_user = (current_user != null), valid_new_pass, authentic, new_email;
 
-      new_email = (DAOProvider.getInstance().getUserDAO().getByEmail(email) == null) && (email.length() > 8);
+      new_email = (DAOProvider.getInstance(em).getUserDAO().getByEmail(email) == null) && (email.length() > 8);
       valid_new_pass = password.equals(password_confirmation) && (password.length() > 8);
       authentic = Encryption.verifyPassword(current_user.getEncryptedPassword(), old_password);
 
@@ -56,7 +62,7 @@ public class UpdateServlet extends HttpServlet {
         if(name.length() > 8){
           current_user.setName(name);
         }
-        DAOProvider.getInstance().getUserDAO().update(current_user);
+        DAOProvider.getInstance(em).getUserDAO().update(current_user);
         
         if(accept != null && accept.equals("text/json")){
           result = "{'status':'ok'}";
