@@ -1,11 +1,12 @@
 package com.katmana.model.daoimpl;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.katmana.model.Context;
+import com.katmana.model.DAOProvider;
+import com.katmana.model.Point;
 
 public class ContextDAOImpl extends BaseDAOImpl<Context> implements Context.DAO{
 
@@ -22,6 +23,17 @@ public class ContextDAOImpl extends BaseDAOImpl<Context> implements Context.DAO{
 			u = (Context)query.getSingleResult();
 		}catch(NoResultException e){}
 		return u;
+	}
+
+	@Override
+	public boolean delete(Context record) {
+		Point.DAO pointdao = new DAOProvider(em).getPointDAO();
+		for(Point p:record.getPoints()){
+			if(p.getContexts().size()==1){
+				pointdao.delete(p);
+			}
+		}
+		return super.delete(record);
 	}
 
 }

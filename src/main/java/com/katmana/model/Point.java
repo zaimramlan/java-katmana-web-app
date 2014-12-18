@@ -1,13 +1,12 @@
 package com.katmana.model;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
@@ -126,6 +125,15 @@ public class Point extends BaseModel{
 	}
 	public void setContexts(List<Context> contexts) {
 		this.contexts = contexts;
+	}
+
+	@ExposeMethodResult("submitterIds")
+	public List<Long> getSubmitterIds(){
+		List<Long> ids = new ArrayList<Long>();
+		for(Context c:contexts){
+			ids.add(c.getId());
+		}
+		return ids;
 	}
 	
 	/*

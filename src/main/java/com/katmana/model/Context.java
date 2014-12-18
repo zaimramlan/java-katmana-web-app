@@ -61,6 +61,9 @@ public class Context extends BaseModel {
 	public void setSubmitterId(Long submitter_id) {
 		this.submitter_id = submitter_id;
 	}
+	public List<Point> getPoints(){
+		return points;
+	}
 	
 	public static interface DAO extends BaseModel.DAO<Context>{
 		public Context getByName(String name);
