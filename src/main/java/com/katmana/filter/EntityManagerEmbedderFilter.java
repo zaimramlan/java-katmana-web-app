@@ -30,7 +30,9 @@ public class EntityManagerEmbedderFilter implements Filter {
 		em.getTransaction().begin();
 		request.setAttribute("EntityManager", em);
 		chain.doFilter(request, response);
-		em.getTransaction().commit();
+		if(em.getTransaction().isActive()){
+			em.getTransaction().commit();
+		}
 		em.close();
 	}
 

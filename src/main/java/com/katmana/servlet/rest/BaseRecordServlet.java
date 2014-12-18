@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import com.katmana.Util;
 import com.katmana.model.BaseModel;
@@ -28,7 +29,7 @@ import com.katmana.model.rest.EntityRestConfiguration;
  * @author asdacap
  * 
  */
-public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRestConfiguration<R> > extends HttpServlet {
+public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRestConfiguration<R> > extends BaseRestServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected Class<R> recordClass;
@@ -71,24 +72,19 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
-		try{
-			R record = restConfiguration.getRecord(request);
-			if(record == null){
-				response.setStatus(404);
-				response.getWriter().write("Nothing to see here.");
-				return;
-			}
-			if(!restConfiguration.allowShow(request)){
-				response.setStatus(403);
-				response.getWriter().write("You do not have permission for this resource");
-				return;
-			}
-			response.setStatus(200);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		R record = restConfiguration.getRecord(request);
+		if(record == null){
+			response.setStatus(404);
+			response.getWriter().write("Nothing to see here.");
+			return;
 		}
+		if(!restConfiguration.allowShow(request)){
+			response.setStatus(403);
+			response.getWriter().write("You do not have permission for this resource");
+			return;
+		}
+		response.setStatus(200);
+		response.getWriter().write(restConfiguration.serialize(record));
 	}
 
 	/**
@@ -97,42 +93,29 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
-		try{
-			R record = restConfiguration.getRecord(request);
-			if(record == null){
-				response.setStatus(404);
-				response.getWriter().write("Nothing to see here.");
-				return;
-			}
-			if(!restConfiguration.allowUpdate(request)){
-				response.setStatus(403);
-				response.getWriter().write("You do not have permission for this resource");
-				return;
-			}
-			restConfiguration.applyParams(record, request);
-			
-			//Validate it
-			Set<ConstraintViolation<R> > violations = Util.getValidator().validate(record);
-			if(violations.size() > 0){
-				Map<String,Object> resp_json = new Hashtable<String,Object>();
-				resp_json.put("error", "validation error");
-				Set<String> errors = new TreeSet<>();
-				for(ConstraintViolation<R> vio:violations){
-					errors.add(vio.getMessage());
-				}
-				resp_json.put("validation_errors", errors);
-				response.setStatus(400);
-				response.getWriter().write(Util.createGson().toJson(resp_json));
-				return;
-			}
-
-			restConfiguration.doUpdate(record);
-			response.setStatus(202);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		R record = restConfiguration.getRecord(request);
+		if(record == null){
+			response.setStatus(404);
+			response.getWriter().write("Nothing to see here.");
+			return;
 		}
+		if(!restConfiguration.allowUpdate(request)){
+			response.setStatus(403);
+			response.getWriter().write("You do not have permission for this resource");
+			return;
+		}
+		restConfiguration.applyParams(record, request);
+
+		//Validate it
+		Set<ConstraintViolation<R> > violations = Util.getValidator().validate(record);
+		if(violations.size() > 0){
+			throw new ConstraintViolationException(violations);
+		}
+
+		restConfiguration.doUpdate(record);
+		response.setStatus(202);
+		response.getWriter().write(restConfiguration.serialize(record));
+
 	}
 	
 	/**
@@ -150,25 +133,20 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
-		try{
-			R record = restConfiguration.getRecord(request);
-			if(record == null){
-				response.setStatus(404);
-				response.getWriter().write("Nothing to see here.");
-				return;
-			}
-			if(!restConfiguration.allowDestroy(request)){
-				response.setStatus(403);
-				response.getWriter().write("You do not have permission for this resource");
-				return;
-			}
-			restConfiguration.doDestroy(record);
-			response.setStatus(204);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		R record = restConfiguration.getRecord(request);
+		if(record == null){
+			response.setStatus(404);
+			response.getWriter().write("Nothing to see here.");
+			return;
 		}
+		if(!restConfiguration.allowDestroy(request)){
+			response.setStatus(403);
+			response.getWriter().write("You do not have permission for this resource");
+			return;
+		}
+		restConfiguration.doDestroy(record);
+		response.setStatus(204);
+		response.getWriter().write(restConfiguration.serialize(record));
 	}
 	
 }

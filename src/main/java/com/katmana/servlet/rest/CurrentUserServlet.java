@@ -9,18 +9,17 @@ import java.util.TreeSet;
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import com.katmana.Util;
 import com.katmana.model.User;
-import com.katmana.model.rest.EntityRestConfiguration;
 import com.katmana.model.rest.UserRestConfiguration;
 
 @WebServlet("/user/me")
-public class CurrentUserServlet extends HttpServlet {
+public class CurrentUserServlet extends BaseRestServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -43,32 +42,18 @@ public class CurrentUserServlet extends HttpServlet {
 			return;
 		}
 		UserRestConfiguration restConfiguration = new UserRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
-		try{
-			User record = currentUser;
-			restConfiguration.applyParams(record, request);
-			
-			//Validate it
-			Set<ConstraintViolation<User> > violations = Util.getValidator().validate(record);
-			if(violations.size() > 0){
-				Map<String,Object> resp_json = new Hashtable<String,Object>();
-				resp_json.put("error", "validation error");
-				Set<String> errors = new TreeSet<>();
-				for(ConstraintViolation<User> vio:violations){
-					errors.add(vio.getMessage());
-				}
-				resp_json.put("validation_errors", errors);
-				response.setStatus(400);
-				response.getWriter().write(Util.createGson().toJson(resp_json));
-				return;
-			}
+		User record = currentUser;
+		restConfiguration.applyParams(record, request);
 
-			restConfiguration.doUpdate(record);
-			response.setStatus(202);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		//Validate it
+		Set<ConstraintViolation<User> > violations = Util.getValidator().validate(record);
+		if(violations.size() > 0){
+			throw new ConstraintViolationException(violations);
 		}
+
+		restConfiguration.doUpdate(record);
+		response.setStatus(202);
+		response.getWriter().write(restConfiguration.serialize(record));
 	}
 	
 	/**

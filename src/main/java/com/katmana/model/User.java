@@ -2,14 +2,15 @@ package com.katmana.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.katmana.model.annotation.ExcludeJson;
+import com.katmana.model.validation.UniqueEmail;
 
 /**
  * A class that model a user.
@@ -19,6 +20,7 @@ import com.katmana.model.annotation.ExcludeJson;
  */
 @Entity
 @Table(name="users")
+@UniqueEmail()
 public class User extends BaseModel{
 
 	@NotBlank(message="Name must not be blank")
@@ -26,6 +28,7 @@ public class User extends BaseModel{
 
 	@NotBlank(message="Email must not be blank")
 	@Email(message="Email must be an email")
+	@Column(unique=true)
 	protected String email;
 	
 	@ExcludeJson
