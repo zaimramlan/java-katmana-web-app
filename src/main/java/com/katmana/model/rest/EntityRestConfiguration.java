@@ -53,7 +53,11 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public String serialize(List<T> list){
-		return Util.createGson().toJson(list);
+		List<Object> repr = new ArrayList<>();
+		for(T t:list){
+			repr.add(dao.getListJsonableObjectRepresentation(t));
+		}
+		return Util.createGson().toJson(repr);
 	}
 	
 	/**
@@ -62,7 +66,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public String serialize(T record){
-		return Util.createGson().toJson(record);
+		return Util.createGson().toJson(dao.getJsonableObjectRepresentation(record));
 	}
 	
 	/**

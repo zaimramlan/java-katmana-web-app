@@ -3,12 +3,13 @@ package com.katmana.model.daoimpl;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.apache.commons.beanutils.ConversionException;
@@ -110,5 +111,27 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 		query.setFirstResult(offset);
 		u = query.getResultList();
 		return u;
+	}
+	
+	@Override
+	public Object getJsonableObjectRepresentation(T record){
+		return record;
+	}
+
+	@Override
+	public Object getListJsonableObjectRepresentation(T record){
+		return record;
+	}
+	
+	public static class BaseJsonableRepresentation{
+		protected Long id;
+		protected Date created_at = new Date(Calendar.getInstance().getTimeInMillis());
+		protected Date updated_at = new Date(Calendar.getInstance().getTimeInMillis());
+		public BaseJsonableRepresentation(BaseModel record){
+			id = record.getId();
+			created_at = record.getCreatedAt();
+			updated_at = record.getUpdatedAt();
+		}
+	
 	}
 }

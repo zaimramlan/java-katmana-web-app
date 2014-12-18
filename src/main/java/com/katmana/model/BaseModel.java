@@ -72,5 +72,7 @@ public abstract class BaseModel {
 		public boolean update(T record); //Update the db with record
 		public boolean delete(T record); //Delete the record return true if success. False otherwise
 		public List<T> basicWhereQuery(Map<String,Object> params, int offset, int count);
+		public Object getJsonableObjectRepresentation(T record);
+		public Object getListJsonableObjectRepresentation(T record);
 	}
 }

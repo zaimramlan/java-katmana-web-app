@@ -1,5 +1,4 @@
 package com.katmana.model;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import org.hibernate.search.annotations.Latitude;
 import org.hibernate.search.annotations.Longitude;
 import org.hibernate.search.annotations.Spatial;
 
-import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
 import com.katmana.model.annotation.ExcludeJson;
 
 /**
@@ -126,22 +124,7 @@ public class Point extends BaseModel{
 	public void setContexts(List<Context> contexts) {
 		this.contexts = contexts;
 	}
-
-	@ExposeMethodResult("submitterIds")
-	public List<Long> getSubmitterIds(){
-		List<Long> ids = new ArrayList<Long>();
-		for(Context c:contexts){
-			ids.add(c.getId());
-		}
-		return ids;
-	}
 	
-	/*
-	@ExposeMethodResult("rating")
-	public PointRating.Summary getRatingSummary(){
-		return DAOProvider.getInstance(em).getPointRatingDAO().getRatingSummary(getId());
-	}
-	*/
 	
 	/**
 	 * DAO for Point
