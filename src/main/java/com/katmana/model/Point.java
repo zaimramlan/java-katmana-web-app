@@ -3,9 +3,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -76,6 +78,9 @@ public class Point extends BaseModel{
 			)
 	protected List<Context> contexts;
 	
+	@OneToMany(fetch=FetchType.LAZY)
+	protected List<PointPhoto> photos;
+	
 	/*
 	 * Additional description on the location. Like, under the desk
 	 * or behind the door or on the third floor.
@@ -134,6 +139,13 @@ public class Point extends BaseModel{
 	public void setContexts(List<Context> contexts) {
 		this.contexts = contexts;
 	}
+	public List<PointPhoto> getPhotos() {
+		return photos;
+	}
+	public void setPhotos(List<PointPhoto> photos) {
+		this.photos = photos;
+	}
+	
 	
 	
 	/**
@@ -146,5 +158,6 @@ public class Point extends BaseModel{
 		public List<Point> searchPoint(Map<String,String> params);
 		public void index(Point p);
 	}
-	
+
+
 }
