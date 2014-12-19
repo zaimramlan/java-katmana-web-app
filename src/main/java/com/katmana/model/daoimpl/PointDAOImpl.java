@@ -57,6 +57,9 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 				.should(qb.phrase().withSlop(10).onField("contexts.description").boostedTo(0.3F).sentence(term).createQuery()) // Less weight with context description
 				.should(qb.phrase().withSlop(10).onField("contexts.name").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with context name
 				.should(qb.phrase().withSlop(10).onField("description").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with description
+				.should(qb.keyword().fuzzy().onField("name").andField("description").boostedTo(0.3F).matching(term).createQuery()) //If query on multiple field
+				.should(qb.keyword().onField("name").andField("description").boostedTo(0.5F).matching(term).createQuery()) //If query on multiple field
+				.should(qb.keyword().onField("name").andField("description").andField("contexts.name").andField("contexts.description").boostedTo(0.5F).matching(term).createQuery()) //If query on multiple field
 				.should(qb.phrase().withSlop(10).onField("location_description").boostedTo(0.5F).sentence(term).createQuery()); //Even less weight with location_description
 		}
 		
