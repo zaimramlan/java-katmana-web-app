@@ -3,8 +3,9 @@ package com.katmana.model.rest;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpServletRequest;
 
+import com.katmana.model.DAOProvider;
+import com.katmana.model.SubmitterRating;
 import com.katmana.model.User;
 
 public class UserRestConfiguration extends EntityRestConfiguration<User> {
@@ -62,6 +63,36 @@ public class UserRestConfiguration extends EntityRestConfiguration<User> {
 		List<String> resp = super.getWritableRecordProperties();
 		resp.remove("encrypted_password");
 		return resp;
+	}
+	
+	@Override
+	public Object getJsonableObjectRepresentation(User record){
+		return new JsonableObjectRepresentation(record,em);
+	}
+
+	@Override
+	public Object getListJsonableObjectRepresentation(User record){
+		return new JsonableObjectRepresentation(record,em);
+	}
+
+	/**
+	 * Its this object that will be jsonified.
+	 * @author asdacap
+	 */
+	public static class JsonableObjectRepresentation extends EntityRestConfiguration.BaseJsonableRepresentation{
+		protected String name;
+		protected String email;
+		protected SubmitterRating.Summary rating;
+	
+		public JsonableObjectRepresentation(User p,EntityManager em){
+			super(p);
+			name = p.getName();
+			email = p.getEmail();
+			
+			DAOProvider daoprov = new DAOProvider(em);
+			
+			rating = daoprov.getSubmitterRatingDAO().getRatingSummary(id);
+		}
 	}
 	
 }

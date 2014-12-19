@@ -42,34 +42,4 @@ public class UserDAOImpl extends BaseDAOImpl<User> implements User.DAO{
 		return save(user);
 	}
 
-	@Override
-	public Object getJsonableObjectRepresentation(User record){
-		return new JsonableObjectRepresentation(record,em);
-	}
-
-	@Override
-	public Object getListJsonableObjectRepresentation(User record){
-		return new JsonableObjectRepresentation(record,em);
-	}
-
-	/**
-	 * Its this object that will be jsonified.
-	 * @author asdacap
-	 */
-	public static class JsonableObjectRepresentation extends BaseDAOImpl.BaseJsonableRepresentation{
-		protected String name;
-		protected String email;
-		protected SubmitterRating.Summary rating;
-	
-		public JsonableObjectRepresentation(User p,EntityManager em){
-			super(p);
-			name = p.getName();
-			email = p.getEmail();
-			
-			DAOProvider daoprov = new DAOProvider(em);
-			
-			rating = daoprov.getSubmitterRatingDAO().getRatingSummary(id);
-		}
-	}
-	
 }

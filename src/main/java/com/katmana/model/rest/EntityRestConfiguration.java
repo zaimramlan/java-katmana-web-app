@@ -4,6 +4,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +57,13 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	public String serialize(List<T> list){
 		List<Object> repr = new ArrayList<>();
 		for(T t:list){
-			repr.add(dao.getListJsonableObjectRepresentation(t));
+			repr.add(getListJsonableObjectRepresentation(t));
 		}
 		return Util.createGson().toJson(repr);
+	}
+	
+	public Object getListJsonableObjectRepresentation(T record){
+		return record;
 	}
 	
 	/**
@@ -66,7 +72,11 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public String serialize(T record){
-		return Util.createGson().toJson(dao.getJsonableObjectRepresentation(record));
+		return Util.createGson().toJson(getJsonableObjectRepresentation(record));
+	}
+	
+	public Object getJsonableObjectRepresentation(T record){
+		return record;
 	}
 	
 	/**
@@ -397,5 +407,17 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 			return status_code;
 		}
 		
+	}
+	
+	public static class BaseJsonableRepresentation{
+		protected Long id;
+		protected Date created_at = new Date(Calendar.getInstance().getTimeInMillis());
+		protected Date updated_at = new Date(Calendar.getInstance().getTimeInMillis());
+		public BaseJsonableRepresentation(BaseModel record){
+			id = record.getId();
+			created_at = record.getCreatedAt();
+			updated_at = record.getUpdatedAt();
+		}
+	
 	}
 }
