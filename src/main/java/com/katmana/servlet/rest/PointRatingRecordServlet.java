@@ -59,7 +59,7 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 
 			restConfiguration.doCreate(pr);
 			response.setStatus(201);
-			response.getWriter().write(restConfiguration.serialize(record));
+			response.getWriter().write(restConfiguration.serialize(record,request));
 
 		}
 		if(!restConfiguration.allowUpdate(request)){
@@ -77,7 +77,7 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 
 		restConfiguration.doUpdate(record);
 		response.setStatus(202);
-		response.getWriter().write(restConfiguration.serialize(record));
+		response.getWriter().write(restConfiguration.serialize(record,request));
 	}
 	
 	

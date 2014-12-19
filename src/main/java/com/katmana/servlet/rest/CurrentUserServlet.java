@@ -31,7 +31,7 @@ public class CurrentUserServlet extends BaseRestServlet {
 			return;
 		}
 		EntityManager em = (EntityManager)req.getAttribute("EntityManager");
-		resp.getWriter().write(new UserRestConfiguration(em).serialize(currentUser));
+		resp.getWriter().write(new UserRestConfiguration(em).serialize(currentUser,req));
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public class CurrentUserServlet extends BaseRestServlet {
 
 		restConfiguration.doUpdate(record);
 		response.setStatus(202);
-		response.getWriter().write(restConfiguration.serialize(record));
+		response.getWriter().write(restConfiguration.serialize(record,request));
 	}
 	
 	/**

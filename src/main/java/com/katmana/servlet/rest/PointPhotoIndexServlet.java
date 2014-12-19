@@ -58,7 +58,7 @@ public class PointPhotoIndexServlet extends BaseIndexServlet<PointPhoto, PointPh
     	photo.write(savePath + File.separator + record.getId() + File.separator + record.getFileName());
 
     	response.setStatus(201);
-    	response.getWriter().write(restConfiguration.serialize(record));
+    	response.getWriter().write(restConfiguration.serialize(record,request));
     }
 
 }

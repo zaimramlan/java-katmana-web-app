@@ -66,12 +66,12 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 	}
 
 	@Override
-	public Object getJsonableObjectRepresentation(Point record){
-		return new JsonableObjectRepresentation(record,em);
+	public Object getJsonableObjectRepresentation(Point record,HttpServletRequest request){
+		return new JsonableObjectRepresentation(record,em,request);
 	}
 
 	@Override
-	public Object getListJsonableObjectRepresentation(Point record){
+	public Object getListJsonableObjectRepresentation(Point record,HttpServletRequest request){
 		return new ListJsonableObjectRepresentation(record,em);
 	}
 
@@ -90,7 +90,7 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 		protected List<Object> contexts;
 		protected PointRating.Summary rating;
 	
-		public JsonableObjectRepresentation(Point p,EntityManager em){
+		public JsonableObjectRepresentation(Point p,EntityManager em,HttpServletRequest request){
 			super(p);
 			submitter_id = p.getSubmitterId();
 			latitude = p.getLatitude();
@@ -106,7 +106,7 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 			
 			contexts = new ArrayList<>();
 			for(Context c:p.getContexts()){
-				contexts.add(crestconf.getListJsonableObjectRepresentation(c));
+				contexts.add(crestconf.getListJsonableObjectRepresentation(c,request));
 			}
 			
 			rating = daoprov.getPointRatingDAO().getRatingSummary(id);

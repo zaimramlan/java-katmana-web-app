@@ -47,7 +47,7 @@ public class PointContextIndexServlet extends BaseIndexServlet<PointContext,Poin
 		DAOProvider.getInstance(em).getPointDAO().index( DAOProvider.getInstance(em).getPointDAO().get(association.getPointId() ));
 		restConfiguration.doDestroy(association);
 		resp.setStatus(200);
-		resp.getWriter().write(restConfiguration.serialize(association));
+		resp.getWriter().write(restConfiguration.serialize(association,req));
 	}
 	
 	

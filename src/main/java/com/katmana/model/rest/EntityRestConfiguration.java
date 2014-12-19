@@ -54,15 +54,15 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param list
 	 * @return
 	 */
-	public String serialize(List<T> list){
+	public String serialize(List<T> list,HttpServletRequest request){
 		List<Object> repr = new ArrayList<>();
 		for(T t:list){
-			repr.add(getListJsonableObjectRepresentation(t));
+			repr.add(getListJsonableObjectRepresentation(t,request));
 		}
 		return Util.createGson().toJson(repr);
 	}
 	
-	public Object getListJsonableObjectRepresentation(T record){
+	public Object getListJsonableObjectRepresentation(T record,HttpServletRequest request){
 		return record;
 	}
 	
@@ -71,11 +71,11 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param record
 	 * @return
 	 */
-	public String serialize(T record){
-		return Util.createGson().toJson(getJsonableObjectRepresentation(record));
+	public String serialize(T record,HttpServletRequest request){
+		return Util.createGson().toJson(getJsonableObjectRepresentation(record,request));
 	}
 	
-	public Object getJsonableObjectRepresentation(T record){
+	public Object getJsonableObjectRepresentation(T record,HttpServletRequest request){
 		return record;
 	}
 	

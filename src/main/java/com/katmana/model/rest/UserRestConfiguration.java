@@ -3,6 +3,7 @@ package com.katmana.model.rest;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 
 import com.katmana.model.DAOProvider;
 import com.katmana.model.SubmitterRating;
@@ -66,12 +67,12 @@ public class UserRestConfiguration extends EntityRestConfiguration<User> {
 	}
 	
 	@Override
-	public Object getJsonableObjectRepresentation(User record){
+	public Object getJsonableObjectRepresentation(User record,HttpServletRequest request){
 		return new JsonableObjectRepresentation(record,em);
 	}
 
 	@Override
-	public Object getListJsonableObjectRepresentation(User record){
+	public Object getListJsonableObjectRepresentation(User record,HttpServletRequest request){
 		return new JsonableObjectRepresentation(record,em);
 	}
 
