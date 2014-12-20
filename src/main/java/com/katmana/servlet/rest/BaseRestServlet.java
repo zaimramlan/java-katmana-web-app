@@ -47,6 +47,7 @@ public class BaseRestServlet extends HttpServlet{
 		}catch(Exception e){
 			e.printStackTrace();
 			em.getTransaction().rollback();
+			throw e;
 		}
 	}
 
