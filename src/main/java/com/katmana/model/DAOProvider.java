@@ -1,12 +1,11 @@
 package com.katmana.model;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import com.katmana.model.daoimpl.ContextDAOImpl;
 import com.katmana.model.daoimpl.PointContextDAOImpl;
 import com.katmana.model.daoimpl.PointDAOImpl;
+import com.katmana.model.daoimpl.PointPhotoDAOImpl;
 import com.katmana.model.daoimpl.PointRatingDAOImpl;
 import com.katmana.model.daoimpl.SubmitterRatingDAOImpl;
 import com.katmana.model.daoimpl.UserDAOImpl;
@@ -25,6 +24,7 @@ public class DAOProvider {
 	private Context.DAO contextDAO;
 	private Point.DAO pointDAO;
 	private PointContext.DAO pointContextDAO;
+	private PointPhoto.DAO pointPhotoDAO;
 	private PointRating.DAO pointRatingDAO;
 	private SubmitterRating.DAO submitterRatingDAO;
 
@@ -34,6 +34,7 @@ public class DAOProvider {
 		contextDAO = new ContextDAOImpl(em);
 		pointContextDAO = new PointContextDAOImpl(em);
 		pointDAO = new PointDAOImpl(em);
+		pointPhotoDAO = new PointPhotoDAOImpl(em);
 		pointRatingDAO = new PointRatingDAOImpl(em);
 		submitterRatingDAO = new SubmitterRatingDAOImpl(em);
 	}
@@ -48,6 +49,10 @@ public class DAOProvider {
 
 	public Point.DAO getPointDAO(){
 		return pointDAO;
+	}
+
+	public PointPhoto.DAO getPointPhotoDAO(){
+		return pointPhotoDAO;
 	}
 
 	public PointContext.DAO getPointContextDAO(){
@@ -71,6 +76,9 @@ public class DAOProvider {
 		}
 		if(recordType.equals(Point.class)){
 			return getPointDAO();
+		}
+		if(recordType.equals(PointPhoto.class)){
+			return getPointPhotoDAO();
 		}
 		if(recordType.equals(PointContext.class)){
 			return getPointContextDAO();

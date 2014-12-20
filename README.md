@@ -82,6 +82,7 @@ Endpoints
         - DELETE endpoint `DELETE /point_contexts?point_id=<pointid>&context_id=<contextid>`
     - PointRating and SubmitterRating endpoint do not have create and index endpoints. The update endpoint act as a create endpoint.
     - User endpoint has an additional endpoint `/user/me` which will return current user if logged in and 404 of not. You can also use POST/PUT on the url to update current user.
+    - PointPhoto endpoint do not have index endpoint. Index it from points show.
 - The point INDEX endpoint can be used to search for endpoints.
 	- It accept two additional parameter `search` and `context_id`
 - There is one helper endpoint at `POST /reindex_points` . This will reindex all point into the search engine.

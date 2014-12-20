@@ -23,9 +23,9 @@ public class BaseRestServlet extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		EntityManager em = (EntityManager) request.getAttribute("EntityManager");
 		try{
 			super.service(request, response);
-			EntityManager em = (EntityManager) request.getAttribute("EntityManager");
 			em.getTransaction().commit();
 		}catch(ConstraintViolationException ex){
 			Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
@@ -44,6 +44,10 @@ public class BaseRestServlet extends HttpServlet{
 		}catch(EntityRestConfiguration.RequestException e){
 			response.setStatus(e.getStatusCode());
 			response.getWriter().write(e.getMessage());
+		}catch(Exception e){
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			throw e;
 		}
 	}
 

@@ -42,8 +42,9 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 				throw new EntityRestConfiguration.RequestException("You must be logged in.",403);
 			}
 			Long point_id = restConfiguration.getId(request);
+			String positive_str = Util.getParameter(request, "positive");
 			boolean positive = true;
-			if(request.getParameter("positive") != null && request.getParameter("positive").equals("false")){
+			if(positive_str != null && positive_str.equals("false")){
 				positive = false;
 			}
 			PointRating pr = new PointRating();
@@ -59,7 +60,7 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 
 			restConfiguration.doCreate(pr);
 			response.setStatus(201);
-			response.getWriter().write(restConfiguration.serialize(record));
+			response.getWriter().write(restConfiguration.serialize(record,request));
 
 		}
 		if(!restConfiguration.allowUpdate(request)){
@@ -77,7 +78,7 @@ public class PointRatingRecordServlet extends BaseRecordServlet<PointRating,Poin
 
 		restConfiguration.doUpdate(record);
 		response.setStatus(202);
-		response.getWriter().write(restConfiguration.serialize(record));
+		response.getWriter().write(restConfiguration.serialize(record,request));
 	}
 	
 	

@@ -79,7 +79,7 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
     	}
     	List<R> records = restConfiguration.indexRecords(request);
     	response.setStatus(200);
-    	response.getWriter().write(restConfiguration.serialize(records));
+    	response.getWriter().write(restConfiguration.serialize(records,request));
     }
 
 	/**
@@ -111,7 +111,7 @@ public abstract class BaseIndexServlet<R extends BaseModel,T extends EntityRestC
 
     	restConfiguration.doCreate(record);
     	response.setStatus(201);
-    	response.getWriter().write(restConfiguration.serialize(record));
+    	response.getWriter().write(restConfiguration.serialize(record,request));
     }
 
 }

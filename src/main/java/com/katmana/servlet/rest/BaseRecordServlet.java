@@ -77,7 +77,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
 		}
 		response.setStatus(200);
-		response.getWriter().write(restConfiguration.serialize(record));
+		response.getWriter().write(restConfiguration.serialize(record,request));
 	}
 
 	/**
@@ -103,7 +103,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 
 		restConfiguration.doUpdate(record);
 		response.setStatus(202);
-		response.getWriter().write(restConfiguration.serialize(record));
+		response.getWriter().write(restConfiguration.serialize(record,request));
 
 	}
 	
@@ -131,7 +131,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 		}
 		restConfiguration.doDestroy(record);
 		response.setStatus(204);
-		response.getWriter().write(restConfiguration.serialize(record));
+		response.getWriter().write(restConfiguration.serialize(record,request));
 	}
 	
 }

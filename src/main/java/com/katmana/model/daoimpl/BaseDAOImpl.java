@@ -113,25 +113,4 @@ public class BaseDAOImpl<T extends BaseModel> implements BaseModel.DAO<T>  {
 		return u;
 	}
 	
-	@Override
-	public Object getJsonableObjectRepresentation(T record){
-		return record;
-	}
-
-	@Override
-	public Object getListJsonableObjectRepresentation(T record){
-		return record;
-	}
-	
-	public static class BaseJsonableRepresentation{
-		protected Long id;
-		protected Date created_at = new Date(Calendar.getInstance().getTimeInMillis());
-		protected Date updated_at = new Date(Calendar.getInstance().getTimeInMillis());
-		public BaseJsonableRepresentation(BaseModel record){
-			id = record.getId();
-			created_at = record.getCreatedAt();
-			updated_at = record.getUpdatedAt();
-		}
-	
-	}
 }

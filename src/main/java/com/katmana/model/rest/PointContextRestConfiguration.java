@@ -27,8 +27,8 @@ public class PointContextRestConfiguration extends EntityRestConfiguration<Point
 		User currentUser = Util.getCurrentUser(request);
 		if(currentUser == null)return false;
 		
-		Point point = DAOProvider.getInstance(em).getPointDAO().get(Long.valueOf(request.getParameter("point_id")));
-		Context context = DAOProvider.getInstance(em).getContextDAO().get(Long.valueOf(request.getParameter("context_id")));
+		Point point = DAOProvider.getInstance(em).getPointDAO().get(Long.valueOf(Util.getParameter(request, "point_id")));
+		Context context = DAOProvider.getInstance(em).getContextDAO().get(Long.valueOf(Util.getParameter(request, "context_id")));
 		
 		if(!point.getSubmitterId().equals(currentUser.getId())) return false;
 		if(!context.getSubmitterId().equals(currentUser.getId())) return false;
