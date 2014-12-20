@@ -36,6 +36,7 @@ public class AuthenticationFilter implements Filter {
                                 "/context",
                                 "/point_context",
                                 "/point_rating",
+                                "/point_photo",
                                 "/submitter_rating"
                               };
 

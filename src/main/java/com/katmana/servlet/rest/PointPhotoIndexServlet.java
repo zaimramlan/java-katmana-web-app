@@ -25,6 +25,7 @@ import com.katmana.model.rest.PointPhotoRestConfiguration;
 @WebServlet("point_photos")
 @MultipartConfig(maxFileSize = 10*1024*1024,maxRequestSize = 20*1024*1024,fileSizeThreshold = 5*1024*1024)
 public class PointPhotoIndexServlet extends BaseIndexServlet<PointPhoto, PointPhotoRestConfiguration>{
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Do create.
@@ -69,5 +70,13 @@ public class PointPhotoIndexServlet extends BaseIndexServlet<PointPhoto, PointPh
     	response.setStatus(201);
     	response.getWriter().write(restConfiguration.serialize(record,request));
     }
+
+
+
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.sendError(404, "Nothing to see here. Move along.");
+	}
 
 }
