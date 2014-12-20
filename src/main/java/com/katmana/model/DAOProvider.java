@@ -1,5 +1,6 @@
 package com.katmana.model;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -19,7 +20,7 @@ import com.katmana.model.daoimpl.UserDAOImpl;
  */
 public class DAOProvider {
 	
-	private EntityManagerFactory mFactory;
+	private EntityManager em;
 	private User.DAO userDAO;
 	private Context.DAO contextDAO;
 	private Point.DAO pointDAO;
@@ -27,14 +28,14 @@ public class DAOProvider {
 	private PointRating.DAO pointRatingDAO;
 	private SubmitterRating.DAO submitterRatingDAO;
 
-	private DAOProvider(){
-		mFactory = Persistence.createEntityManagerFactory("KatManaDB");
-		userDAO = new UserDAOImpl(mFactory);
-		contextDAO = new ContextDAOImpl(mFactory);
-		pointContextDAO = new PointContextDAOImpl(mFactory);
-		pointDAO = new PointDAOImpl(mFactory);
-		pointRatingDAO = new PointRatingDAOImpl(mFactory);
-		submitterRatingDAO = new SubmitterRatingDAOImpl(mFactory);
+	public DAOProvider(EntityManager em){
+		this.em = em;
+		userDAO = new UserDAOImpl(em);
+		contextDAO = new ContextDAOImpl(em);
+		pointContextDAO = new PointContextDAOImpl(em);
+		pointDAO = new PointDAOImpl(em);
+		pointRatingDAO = new PointRatingDAOImpl(em);
+		submitterRatingDAO = new SubmitterRatingDAOImpl(em);
 	}
 	
 	public User.DAO getUserDAO(){
@@ -82,17 +83,8 @@ public class DAOProvider {
 		}
 		return null;
 	}
-
-	public EntityManagerFactory getEntityManagerFactory() {
-		return mFactory;
-	}
 	
-	private static DAOProvider singleton = null;
-	public synchronized static DAOProvider getInstance(){
-		if(singleton == null){
-			singleton = new DAOProvider();
-		}
-		return singleton;
+	public static DAOProvider getInstance(EntityManager em){
+		return new DAOProvider(em);
 	}
-
 }

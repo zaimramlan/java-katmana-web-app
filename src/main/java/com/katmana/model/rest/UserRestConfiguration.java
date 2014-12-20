@@ -2,11 +2,16 @@ package com.katmana.model.rest;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import com.katmana.model.User;
 
 public class UserRestConfiguration extends EntityRestConfiguration<User> {
+
+	public UserRestConfiguration(EntityManager em) {
+		super(em);
+	}
 
 	@Override
 	public boolean allowShow(User record, User currentUser) {

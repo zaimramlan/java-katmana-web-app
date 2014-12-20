@@ -7,9 +7,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.katmana.model.annotation.ExcludeJson;
 
@@ -27,10 +29,15 @@ import com.katmana.model.annotation.ExcludeJson;
 public class Context extends BaseModel {
 
 	@Field
+	@NotBlank(message="Name must not be blank")
 	protected String name;
+
 	@Field
+	@NotBlank(message="Description must not be blank")
 	protected String description;
+
 	@Field
+	@NotNull(message="Submitter id must not be null")
 	protected Long submitter_id;
 	
 	@ExcludeJson
@@ -60,6 +67,9 @@ public class Context extends BaseModel {
 	}
 	public void setSubmitterId(Long submitter_id) {
 		this.submitter_id = submitter_id;
+	}
+	public List<Point> getPoints(){
+		return points;
 	}
 	
 	public static interface DAO extends BaseModel.DAO<Context>{

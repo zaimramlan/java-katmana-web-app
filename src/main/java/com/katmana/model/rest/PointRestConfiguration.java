@@ -5,10 +5,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.katmana.Util;
 import com.katmana.model.Point;
 import com.katmana.model.User;
@@ -17,8 +16,8 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 	
 	Point.DAO pointDAO;
 	
-	public PointRestConfiguration() {
-		super();
+	public PointRestConfiguration(EntityManager em) {
+		super(em);
 		pointDAO = (Point.DAO)dao;
 	}
 	

@@ -1,5 +1,6 @@
 package com.katmana.model.rest;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import com.katmana.Util;
@@ -7,6 +8,10 @@ import com.katmana.model.Context;
 import com.katmana.model.User;
 
 public class ContextRestConfiguration extends EntityRestConfiguration<Context> {
+
+	public ContextRestConfiguration(EntityManager em) {
+		super(em);
+	}
 
 	@Override
 	public void applyParams(Context record, HttpServletRequest request) {

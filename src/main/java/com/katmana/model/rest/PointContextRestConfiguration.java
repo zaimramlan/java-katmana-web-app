@@ -14,8 +14,8 @@ public class PointContextRestConfiguration extends EntityRestConfiguration<Point
 	
 	PointContext.DAO point_contextDAO;
 	
-	public PointContextRestConfiguration() {
-		super();
+	public PointContextRestConfiguration(EntityManager em) {
+		super(em);
 		point_contextDAO = (PointContext.DAO)dao;
 	}
 
@@ -27,8 +27,8 @@ public class PointContextRestConfiguration extends EntityRestConfiguration<Point
 		User currentUser = Util.getCurrentUser(request);
 		if(currentUser == null)return false;
 		
-		Point point = DAOProvider.getInstance().getPointDAO().get(Long.valueOf(request.getParameter("point_id")));
-		Context context = DAOProvider.getInstance().getContextDAO().get(Long.valueOf(request.getParameter("context_id")));
+		Point point = DAOProvider.getInstance(em).getPointDAO().get(Long.valueOf(request.getParameter("point_id")));
+		Context context = DAOProvider.getInstance(em).getContextDAO().get(Long.valueOf(request.getParameter("context_id")));
 		
 		if(!point.getSubmitterId().equals(currentUser.getId())) return false;
 		if(!context.getSubmitterId().equals(currentUser.getId())) return false;
@@ -42,7 +42,7 @@ public class PointContextRestConfiguration extends EntityRestConfiguration<Point
 			throw new RequestException("The point and context has alread been associated", 400);
 		}
 		super.doCreate(record);
-		DAOProvider.getInstance().getPointDAO().index( DAOProvider.getInstance().getPointDAO().get(record.getPointId() ));
+		DAOProvider.getInstance(em).getPointDAO().index( DAOProvider.getInstance(em).getPointDAO().get(record.getPointId() ));
 	}
 	
 }

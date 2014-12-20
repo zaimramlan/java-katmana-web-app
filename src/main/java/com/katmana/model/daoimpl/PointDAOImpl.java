@@ -1,10 +1,10 @@
 package com.katmana.model.daoimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.hibernate.search.exception.AssertionFailure;
@@ -13,12 +13,16 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
+import com.github.julman99.gsonfire.annotations.ExposeMethodResult;
+import com.katmana.model.Context;
+import com.katmana.model.DAOProvider;
 import com.katmana.model.Point;
+import com.katmana.model.PointRating;
 
 public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 
-	public PointDAOImpl(EntityManagerFactory eFactory) {
-		super(eFactory);
+	public PointDAOImpl(EntityManager em) {
+		super(em);
 	}
 
 	@Override
@@ -39,10 +43,7 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 			offset = Integer.valueOf(offsetString);
 		}
 		
-		EntityManager em = eFactory.createEntityManager();
 		FullTextEntityManager fulTextEM = Search.getFullTextEntityManager(em);
-		
-		em.getTransaction().begin();
 		
 		QueryBuilder qb = fulTextEM.getSearchFactory().buildQueryBuilder().forEntity(Point.class).get();
 		
@@ -56,6 +57,9 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 				.should(qb.phrase().withSlop(10).onField("contexts.description").boostedTo(0.3F).sentence(term).createQuery()) // Less weight with context description
 				.should(qb.phrase().withSlop(10).onField("contexts.name").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with context name
 				.should(qb.phrase().withSlop(10).onField("description").boostedTo(0.8F).sentence(term).createQuery()) //Less weight with description
+				.should(qb.keyword().fuzzy().onField("name").andField("description").boostedTo(0.3F).matching(term).createQuery()) //If query on multiple field
+				.should(qb.keyword().onField("name").andField("description").boostedTo(0.5F).matching(term).createQuery()) //If query on multiple field
+				.should(qb.keyword().onField("name").andField("description").andField("contexts.name").andField("contexts.description").boostedTo(0.5F).matching(term).createQuery()) //If query on multiple field
 				.should(qb.phrase().withSlop(10).onField("location_description").boostedTo(0.5F).sentence(term).createQuery()); //Even less weight with location_description
 		}
 		
@@ -82,21 +86,92 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		
 		List<Point> results = query.setMaxResults(count).setFirstResult(offset).getResultList();
 		
-		em.getTransaction().commit();
-		em.close();
 		
 		return results;
 	}
 
 	@Override
 	public void index(Point p) {
-		EntityManager em = eFactory.createEntityManager();
 		FullTextEntityManager ftem = Search.getFullTextEntityManager(em);
-		ftem.getTransaction().begin();
 		p = ftem.merge(p);
 		ftem.index(p);
-		ftem.getTransaction().commit();
-		em.close();
+	}
+	
+	
+	@Override
+	public Object getJsonableObjectRepresentation(Point record){
+		return new JsonableObjectRepresentation(record,em);
+	}
+
+	@Override
+	public Object getListJsonableObjectRepresentation(Point record){
+		return new ListJsonableObjectRepresentation(record,em);
+	}
+
+	/**
+	 * Its this object that will be jsonified.
+	 * @author asdacap
+	 */
+	public static class JsonableObjectRepresentation extends BaseDAOImpl.BaseJsonableRepresentation{
+		protected Long submitter_id;
+		protected Double latitude;
+		protected Double longitude;
+		protected Double altitude;
+		protected String name;
+		protected String description;
+		protected String location_description;
+		protected List<Object> contexts;
+		protected PointRating.Summary rating;
+	
+		public JsonableObjectRepresentation(Point p,EntityManager em){
+			super(p);
+			submitter_id = p.getSubmitterId();
+			latitude = p.getLatitude();
+			longitude = p.getLongitude();
+			altitude = p.getAltitude();
+			name = p.getName();
+			description = p.getDescription();
+			location_description = p.getLocationDescription();
+			
+			DAOProvider daoprov = new DAOProvider(em);
+			
+			contexts = new ArrayList<>();
+			for(Context c:p.getContexts()){
+				contexts.add(daoprov.getContextDAO().getListJsonableObjectRepresentation(c));
+			}
+			
+			rating = daoprov.getPointRatingDAO().getRatingSummary(id);
+		}
+	}
+	
+	/**
+	 * Its this object that will be jsonified too. But this one is for list.
+	 * @author asdacap
+	 */
+	public static class ListJsonableObjectRepresentation extends BaseDAOImpl.BaseJsonableRepresentation{
+		protected Long submitter_id;
+		protected Double latitude;
+		protected Double longitude;
+		protected Double altitude;
+		protected String name;
+		protected String description;
+		protected String location_description;
+		protected PointRating.Summary rating;
+	
+		public ListJsonableObjectRepresentation(Point p,EntityManager em){
+			super(p);
+			submitter_id = p.getSubmitterId();
+			latitude = p.getLatitude();
+			longitude = p.getLongitude();
+			altitude = p.getAltitude();
+			name = p.getName();
+			description = p.getDescription();
+			location_description = p.getLocationDescription();
+			
+			DAOProvider daoprov = new DAOProvider(em);
+			
+			rating = daoprov.getPointRatingDAO().getRatingSummary(id);
+		}
 	}
 
 }

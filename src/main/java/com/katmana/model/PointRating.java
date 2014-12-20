@@ -2,6 +2,7 @@ package com.katmana.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * A point rating class represent rating submissions for a Point
@@ -17,16 +18,19 @@ public class PointRating extends BaseModel {
 	/*
 	 * The point which is being liked
 	 */
+	@NotNull
 	private Long point_id;
 
 	/*
 	 * The one who is liking
 	 */
+	@NotNull
 	private Long rater_id;
 
 	/*
 	 * Like or not?
 	 */
+	@NotNull
 	private Boolean positive = true;
 
 	public Long getPointId() {

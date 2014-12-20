@@ -2,13 +2,17 @@ package com.katmana.servlet.rest;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
+import com.katmana.Util;
 import com.katmana.model.BaseModel;
 import com.katmana.model.rest.EntityRestConfiguration;
 
@@ -22,10 +26,9 @@ import com.katmana.model.rest.EntityRestConfiguration;
  * @author asdacap
  * 
  */
-public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRestConfiguration<R> > extends HttpServlet {
+public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRestConfiguration<R> > extends BaseRestServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected T restConfiguration;
 	protected Class<R> recordClass;
 	
     /**
@@ -33,7 +36,6 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
      */
     public BaseRecordServlet() {
         super();
-        restConfiguration = getInstanceOfT();
         
         /*
          * These two create a recordClass so that we can instantiate it.
@@ -46,13 +48,13 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
      * Copied from stackoverflow, this create a new instance of T
      * @return
      */
-    protected T getInstanceOfT()
+    protected T getInstanceOfRestConfiguration(EntityManager em)
     {
         ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
         Class<T> type = (Class<T>) superClass.getActualTypeArguments()[1]; //1 as in the second parameter
         try
         {
-            return type.newInstance();
+            return type.getDeclaredConstructor(EntityManager.class).newInstance(em);
         }
         catch (Exception e)
         {
@@ -66,24 +68,16 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			R record = restConfiguration.getRecord(request);
-			if(record == null){
-				response.setStatus(404);
-				response.getWriter().write("Nothing to see here.");
-				return;
-			}
-			if(!restConfiguration.allowShow(request)){
-				response.setStatus(403);
-				response.getWriter().write("You do not have permission for this resource");
-				return;
-			}
-			response.setStatus(200);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
+		R record = restConfiguration.getRecord(request);
+		if(record == null){
+			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
+		if(!restConfiguration.allowShow(request)){
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
+		}
+		response.setStatus(200);
+		response.getWriter().write(restConfiguration.serialize(record));
 	}
 
 	/**
@@ -91,26 +85,26 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			R record = restConfiguration.getRecord(request);
-			if(record == null){
-				response.setStatus(404);
-				response.getWriter().write("Nothing to see here.");
-				return;
-			}
-			if(!restConfiguration.allowUpdate(request)){
-				response.setStatus(403);
-				response.getWriter().write("You do not have permission for this resource");
-				return;
-			}
-			restConfiguration.applyParams(record, request);
-			restConfiguration.doUpdate(record);
-			response.setStatus(202);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
+		R record = restConfiguration.getRecord(request);
+		if(record == null){
+			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
+		if(!restConfiguration.allowUpdate(request)){
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
+		}
+		restConfiguration.applyParams(record, request);
+
+		//Validate it
+		Set<ConstraintViolation<R> > violations = Util.getValidator().validate(record);
+		if(violations.size() > 0){
+			throw new ConstraintViolationException(violations);
+		}
+
+		restConfiguration.doUpdate(record);
+		response.setStatus(202);
+		response.getWriter().write(restConfiguration.serialize(record));
+
 	}
 	
 	/**
@@ -127,25 +121,17 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try{
-			R record = restConfiguration.getRecord(request);
-			if(record == null){
-				response.setStatus(404);
-				response.getWriter().write("Nothing to see here.");
-				return;
-			}
-			if(!restConfiguration.allowDestroy(request)){
-				response.setStatus(403);
-				response.getWriter().write("You do not have permission for this resource");
-				return;
-			}
-			restConfiguration.doDestroy(record);
-			response.setStatus(204);
-			response.getWriter().write(restConfiguration.serialize(record));
-		}catch(EntityRestConfiguration.RequestException e){
-			response.setStatus(e.getStatusCode());
-			response.getWriter().write(e.getMessage());
+		T restConfiguration = getInstanceOfRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
+		R record = restConfiguration.getRecord(request);
+		if(record == null){
+			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
+		if(!restConfiguration.allowDestroy(request)){
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
+		}
+		restConfiguration.doDestroy(record);
+		response.setStatus(204);
+		response.getWriter().write(restConfiguration.serialize(record));
 	}
 	
 }

@@ -12,8 +12,8 @@ import com.katmana.model.PointRating.Summary;
 
 public class PointRatingDAOImpl extends BaseDAOImpl<PointRating> implements PointRating.DAO{
 
-	public PointRatingDAOImpl(EntityManagerFactory eFactory) {
-		super(eFactory);
+	public PointRatingDAOImpl(EntityManager em) {
+		super(em);
 	}
 
 	@Override
@@ -33,8 +33,6 @@ public class PointRatingDAOImpl extends BaseDAOImpl<PointRating> implements Poin
 		int positive = 0;
 		int negative = 0;
 		
-		EntityManager em = eFactory.createEntityManager();
-		
 		List<Object[]> results = em.createQuery("SELECT count(*) as total, r.positive FROM PointRating r WHERE r.point_id = :point_id GROUP BY r.positive")
 				.setParameter("point_id", point_id).getResultList();
 		
@@ -48,7 +46,6 @@ public class PointRatingDAOImpl extends BaseDAOImpl<PointRating> implements Poin
 			}
 		}
 		
-		em.close();
 		return new Summary(positive, negative);
 	}
 

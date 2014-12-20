@@ -269,3 +269,13 @@ databaseChangeLog:
             tableName: submitter_ratings
             columnName: positive
             newDataType: boolean
+            
+  - changeSet: 
+      id: 4 
+      author: asdacap 
+      comment: Add unique constraint on user's email. 
+      changes: 
+        - addUniqueConstraint: 
+            tableName: users 
+            columnNames: 
+              - email
