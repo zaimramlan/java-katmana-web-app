@@ -13,6 +13,7 @@ import com.katmana.Util;
 import com.katmana.model.Context;
 import com.katmana.model.DAOProvider;
 import com.katmana.model.Point;
+import com.katmana.model.PointPhoto;
 import com.katmana.model.PointRating;
 import com.katmana.model.User;
 
@@ -89,6 +90,7 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 		protected String location_description;
 		protected List<Object> contexts;
 		protected PointRating.Summary rating;
+		protected List<Object> photos;
 	
 		public JsonableObjectRepresentation(Point p,EntityManager em,HttpServletRequest request){
 			super(p);
@@ -110,6 +112,13 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 			}
 			
 			rating = daoprov.getPointRatingDAO().getRatingSummary(id);
+			
+			PointPhotoRestConfiguration prestconf = new PointPhotoRestConfiguration(em);
+			
+			photos = new ArrayList<>();
+			for(PointPhoto pp:p.getPhotos()){
+				photos.add(prestconf.getListJsonableObjectRepresentation(pp, request));
+			}
 		}
 	}
 	

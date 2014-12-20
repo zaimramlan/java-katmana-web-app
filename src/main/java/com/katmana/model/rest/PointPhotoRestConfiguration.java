@@ -59,8 +59,6 @@ public class PointPhotoRestConfiguration extends EntityRestConfiguration<PointPh
 	public static class PointPhotoJsonableRepresentation extends EntityRestConfiguration.BaseJsonableRepresentation{
 
 		protected String name;
-		protected Long point_id;
-		protected Long submitter_id;
 		protected String description;
 		protected String url;
 

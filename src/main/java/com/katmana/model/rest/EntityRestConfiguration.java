@@ -63,7 +63,7 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	}
 	
 	public Object getListJsonableObjectRepresentation(T record,HttpServletRequest request){
-		return record;
+		return getJsonableObjectRepresentation(record, request);
 	}
 	
 	/**
