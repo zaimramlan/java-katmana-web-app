@@ -3,6 +3,7 @@ var map, isAdding = false, active_context = null, markers = new Array(), infowin
 function initialize() {
   var mapOptions = {
     center: { lat: 3.25106, lng: 101.735866},
+    styles: [{"featureType":"water","stylers":[{"color":"#46bcec"},{"visibility":"on"}]},{"featureType":"landscape","stylers":[{"color":"#f2f2f2"}]},{"featureType":"road","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]}]
     zoom: 18
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
