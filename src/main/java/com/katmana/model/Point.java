@@ -77,7 +77,6 @@ public class Point extends BaseModel{
 			inverseJoinColumns=@JoinColumn(name="context_id", referencedColumnName="id")
 			)
 	protected List<Context> contexts;
-	
 	@OneToMany(fetch=FetchType.LAZY)
 	protected List<PointPhoto> photos;
 	

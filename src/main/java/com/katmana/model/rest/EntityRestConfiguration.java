@@ -89,13 +89,13 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @param request
 	 */
 	public void applyParams(T record, HttpServletRequest request){
-		Map<String,String[] > params = request.getParameterMap();
 		for(String property:getWritableRecordProperties()){
 			//To set it in beans, we need the camelCase property
 			String propName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, property);
-			if(params.containsKey(property)){
+			String param = Util.getParameter(request, property);
+			if(param != null){
 				try {
-					BeanUtils.setProperty(record, propName, params.get(property)[0]);
+					BeanUtils.setProperty(record, propName, param);
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
@@ -139,14 +139,14 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 	 * @return
 	 */
 	public List<T> indexRecords(HttpServletRequest request){
-		String countString = request.getParameter("count");
+		String countString = Util.getParameter(request, "count");
 		int count;
 		if(countString == null || countString.isEmpty()){
 			count = 100; // Default count
 		}else{
 			count = Integer.valueOf(countString);
 		}
-		String offsetString = request.getParameter("offset");
+		String offsetString = Util.getParameter(request, "offset");
 		int offset;
 		if(offsetString == null || offsetString.isEmpty()){
 			offset = 0; // Default offset
@@ -158,8 +158,9 @@ public abstract class EntityRestConfiguration<T extends BaseModel> {
 		Map<String,Object> query = new Hashtable<String,Object>();
 		
 		for(String str:qableProp){
-			if(request.getParameter(str) != null && !request.getParameter(str).isEmpty()){
-				query.put(str, request.getParameter(str));
+			String par = Util.getParameter(request, str);
+			if(par != null){
+				query.put(str, par);
 			}
 		}
 		

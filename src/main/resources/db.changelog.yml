@@ -279,3 +279,59 @@ databaseChangeLog:
             tableName: users 
             columnNames: 
               - email
+              
+  - changeSet: 
+      id: 5 
+      author: asdacap 
+      comment: Add point photo
+      changes: 
+        - createTable:
+            tableName: point_photos
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: point_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: submitter_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: file_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false

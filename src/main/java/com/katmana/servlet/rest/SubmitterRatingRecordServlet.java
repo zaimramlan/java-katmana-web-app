@@ -43,8 +43,9 @@ public class SubmitterRatingRecordServlet extends BaseRecordServlet<SubmitterRat
 				throw new EntityRestConfiguration.RequestException("You must be logged in.",403);
 			}
 			Long submitter_id = restConfiguration.getId(request);
+			String positive_str = Util.getParameter(request, "positive");
 			boolean positive = true;
-			if(request.getParameter("positive") != null && request.getParameter("positive").equals("false")){
+			if(positive_str != null && positive_str.equals("false")){
 				positive = false;
 			}
 			SubmitterRating pr = new SubmitterRating();

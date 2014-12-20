@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.katmana.Util;
 import com.katmana.model.DAOProvider;
 import com.katmana.model.PointContext;
 import com.katmana.model.rest.EntityRestConfiguration;
@@ -34,12 +35,14 @@ public class PointContextIndexServlet extends BaseIndexServlet<PointContext,Poin
 			throws ServletException, IOException {
 		EntityManager em = (EntityManager)req.getAttribute("EntityManager");
 		PointContextRestConfiguration restConfiguration = getInstanceOfRestConfiguration(em);
-		if(req.getParameter("point_id") == null || req.getParameter("context_id") == null){
+		String point_id = Util.getParameter(req, "point_id");
+		String context_id = Util.getParameter(req, "context_id");
+		if(point_id == null || context_id == null){
 			resp.setStatus(400);
 			resp.getWriter().write("Parameter point_id and context_id is required");
 			return;
 		}
-		PointContext association = DAOProvider.getInstance(em).getPointContextDAO().getAssociation(Long.valueOf(req.getParameter("point_id")), Long.valueOf(req.getParameter("context_id")));
+		PointContext association = DAOProvider.getInstance(em).getPointContextDAO().getAssociation(Long.valueOf(point_id), Long.valueOf(context_id));
 		if(association == null){
 			resp.setStatus(404);
 			return;

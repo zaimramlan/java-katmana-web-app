@@ -1,11 +1,17 @@
 package com.katmana;
+import java.io.IOException;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorContext;
 import javax.validation.ValidatorFactory;
+
+import org.apache.commons.io.IOUtils;
 
 import com.github.julman99.gsonfire.GsonFireBuilder;
 import com.google.gson.Gson;
@@ -74,6 +80,36 @@ public class Util {
 			createValidator();
 		}
 		return validator;
+	}
+	
+	/**
+	 * Servlet like to make our life harder. If the form is a multipart form, how to get the parameter?
+	 * We can't! Why? I don't know. So using this, it will first try to get the part. If available, convert it to string.
+	 * Note that the multipart config need to be available, or this will just fallback to Request.getParameter.
+	 * 
+	 * @param request
+	 * @param param
+	 * @return
+	 */
+	public static String getParameter(HttpServletRequest request,String param){
+		String res = "";
+		try {
+			Part part = request.getPart(param);
+			if(part != null){
+				res = IOUtils.toString(part.getInputStream());
+			}else{
+				res = request.getParameter(param);
+			}
+		} catch (IOException | ServletException | IllegalStateException e) {
+			res = request.getParameter(param);
+		}
+		if(res == null){
+			return null;
+		}
+		if(res.isEmpty()){
+			return null;
+		}
+		return res;
 	}
 
 }

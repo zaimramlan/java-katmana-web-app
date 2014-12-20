@@ -2,8 +2,10 @@ package com.katmana.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -22,8 +24,14 @@ public class PointPhoto extends BaseModel {
 	protected String name;
 	protected String description;
 	
+	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="point_id")
 	protected Point point;
+
+	@NotNull
+	@ManyToOne(fetch=FetchType.LAZY)
+	protected User submitter;
 	
 	public String getFileName() {
 		return file_name;
@@ -55,7 +63,14 @@ public class PointPhoto extends BaseModel {
 	public void setPoint(Point point) {
 		this.point = point;
 	}
+	public User getSubmitter() {
+		return submitter;
+	}
+	public void setSubmitter(User submitter) {
+		this.submitter = submitter;
+	}
 	
 	public static interface DAO extends BaseModel.DAO<PointPhoto>{
 	}
+
 }

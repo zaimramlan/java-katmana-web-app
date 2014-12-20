@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +15,15 @@ import javax.servlet.http.Part;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.commons.io.FileUtils;
+
 import com.katmana.Util;
 import com.katmana.model.PointPhoto;
-import com.katmana.model.daoimpl.PointPhotoRestConfiguration;
 import com.katmana.model.rest.EntityRestConfiguration;
+import com.katmana.model.rest.PointPhotoRestConfiguration;
 
+@WebServlet("point_photos")
+@MultipartConfig(maxFileSize = 10*1024*1024,maxRequestSize = 20*1024*1024,fileSizeThreshold = 5*1024*1024)
 public class PointPhotoIndexServlet extends BaseIndexServlet<PointPhoto, PointPhotoRestConfiguration>{
 
 	/**
@@ -42,6 +48,9 @@ public class PointPhotoIndexServlet extends BaseIndexServlet<PointPhoto, PointPh
     	
     	restConfiguration.applyParams(record, request);
     	Part photo = request.getPart("photo");
+    	if(photo == null){
+    		throw new EntityRestConfiguration.RequestException("No image uploaded",400);
+    	}
     	record.setContentType(photo.getContentType());
     	record.setFileName(photo.getSubmittedFileName());
     	
@@ -55,7 +64,7 @@ public class PointPhotoIndexServlet extends BaseIndexServlet<PointPhoto, PointPh
 
     	restConfiguration.doCreate(record);
 
-    	photo.write(savePath + File.separator + record.getId() + File.separator + record.getFileName());
+    	FileUtils.copyInputStreamToFile(photo.getInputStream(), new File(savePath + File.separator + record.getId() + File.separator + record.getFileName()));
 
     	response.setStatus(201);
     	response.getWriter().write(restConfiguration.serialize(record,request));
