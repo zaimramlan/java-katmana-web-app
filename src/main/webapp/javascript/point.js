@@ -55,7 +55,7 @@ function Point(param){
   self.node.appendChild(self.container_name_description); 
 
   this.getContentString = function(){
-    return get_template('point-content-string')(param);
+    return get_template('point-content-string')(self.point_obj);
   }
 
   this.placeMarker = function() {
@@ -124,6 +124,7 @@ function Point(param){
         self.marker.title = self.name_field.value
         self.submitted = true;
       }
+      self.point_obj = response;
       defer.resolve(self);
     }).fail(function(){
       defer.reject();
