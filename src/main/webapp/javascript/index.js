@@ -1,4 +1,4 @@
-var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null;
+var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null, current_user = null;
 
 function initialize() {
   var mapOptions = {
@@ -140,6 +140,7 @@ function populateMarkers(param){
       description: point.description,
       active_context: active_context,
       parentElement: param.parentElement,
+      point_obj: point,
       delay: i * 100,
       infowindow: infowindow
     });
@@ -382,3 +383,10 @@ var toContextPage = function(){
 var toggleCanvasDisabler = function(){
   $('.canvas-disabler').toggleClass('exit-off-canvas');
 }
+
+//Check if logged in
+$.getJSON('user/me').success(function(user){
+  current_user = user;
+}).error(function(){
+  //Not logged in I guess
+});

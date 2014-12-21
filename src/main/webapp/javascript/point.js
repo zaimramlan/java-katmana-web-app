@@ -22,6 +22,7 @@ function Point(param){
   this.submitted = param.submitted;
   this.position = param.position;
   this.map = param.map;
+  this.point_obj = param.point;
   this.draggable = param.draggable;
   this.active_context = param.active_context;
   this.parentElement = param.parentElement;
@@ -59,7 +60,12 @@ function Point(param){
   self.row_description.appendChild(self.container_description);
   self.container_name_description.appendChild(self.row_name);
   self.container_name_description.appendChild(self.row_description);
-  self.container_close.appendChild(self.remove_button);
+
+  if(current_user == null || current_user.id != self.point_obj.submitter_id){
+    //No permission for this point
+  }else{
+    self.container_close.appendChild(self.remove_button);
+  }
   self.node.appendChild(self.container_close); 
   self.node.appendChild(self.container_name_description); 
 
