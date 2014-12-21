@@ -10,22 +10,24 @@ var SelectPoints = function(point){
 var CutPoints = function(){
   console.log(selected.length)
   for (var i = 0; i < selected.length; i++) {
-    console.log(selected[i].id)
-    cut.push(selected[i]);
-    var ii = markers.indexOf(selected[i]);
-    if(ii != -1){
-      var m = markers[ii];
-      if(m.deleted == false){
-        m.node.parentNode.removeChild(m.node);
-        m.map = null;
-        if(m.marker != undefined)
-          m.marker.setMap(null);
+    var new_cut = (cut.indexOf(selected[i]) == -1);
+    if(new_cut){
+      console.log(selected[i].id)
+      cut.push(selected[i]);
+      var ii = markers.indexOf(selected[i]);
+      if(ii != -1){
+        var m = markers[ii];
+        if(m.deleted == false){
+          m.node.parentNode.removeChild(m.node);
+          m.map = null;
+          if(m.marker != undefined)
+            m.marker.setMap(null);
+        }
+        m.deleted = true;
+        m = null;
+        markers.splice(ii, 1);
       }
-      m.deleted = true;
-      m = null;
-      markers.splice(ii, 1);
     }
-    // console.log("removed")
   };
   selected = [];
   // console.log("cut")
@@ -33,7 +35,10 @@ var CutPoints = function(){
 
 var CopyPoints = function(){
   for (var i = 0; i < selected.length; i++) {
-    copied.push(selected[i]);
+    var new_copy = (copy.indexOf(selected[i]) == -1);
+    if(new_copy){
+      copied.push(selected[i]);
+    }
   };
   selected = [];
 
