@@ -1,9 +1,16 @@
-function linkContains(param) {
+function linkContains(param){
   var link = window.location.pathname;
   var result = link.indexOf(param);
 
   if(result === -1) { return false; }
   else { return true; }
+}
+
+function strMatches(param, parem){
+  var result = param.localeCompare(parem);
+
+  if(result === 0) return true;
+  else return false;
 }
 
 function Point(param){
@@ -19,16 +26,42 @@ function Point(param){
   this.active_context = param.active_context;
   this.parentElement = param.parentElement;
   this.node = document.createElement("div");
+  this.container_close = document.createElement("div");
+  this.container_name_description = document.createElement("div");
   this.container_name = document.createElement("div");
+  this.row_name = document.createElement("div");
   this.container_description = document.createElement("div");
-  this.set_button = document.createElement("img");
-  this.save_button = document.createElement("img");
-  this.remove_button = document.createElement("img");
+  this.row_description = document.createElement("div");
+  this.set_button = document.createElement("img"); /*not used*/
+  this.save_button = document.createElement("img"); /*not used*/
+  this.remove_button = document.createElement("i");
+  this.name_field = document.createElement("input");
+  this.description_field = document.createElement("input");
 
   self.node.className = "points row";
   self.container_name.className = "small-12 columns";
+  self.row_name.className = "row";
   self.container_description.className = "small-12 columns";
-  self.set_button.src = "media/view.png";
+  self.row_description.className = "row";
+  self.container_name_description.className = "small-10 small-centered columns";
+  self.container_close.className = "small-12 columns";
+  self.name_field.name = "name";
+  self.description_field.name = "description";
+  self.name_field.value = param.name;
+  self.description_field.value = param.description;
+  self.set_button.src = "media/view.png"; /*not used*/
+  self.save_button.src = "media/add.png"; /*not used*/
+  self.remove_button.className = "fi-x";
+
+  self.container_name.appendChild(self.name_field);
+  self.row_name.appendChild(self.container_name);
+  self.container_description.appendChild(self.description_field);
+  self.row_description.appendChild(self.container_description);
+  self.container_name_description.appendChild(self.row_name);
+  self.container_name_description.appendChild(self.row_description);
+  self.container_close.appendChild(self.remove_button);
+  self.node.appendChild(self.container_close); 
+  self.node.appendChild(self.container_name_description); 
 
   // self.node.appendChild(self.name_field);
   // self.node.appendChild(self.description_field);
@@ -36,58 +69,39 @@ function Point(param){
   // self.node.appendChild(self.set_button);
   // self.node.appendChild(self.remove_button);
 
-  if(linkContains("main.html")) {
-    this.container_main = document.createElement("div");
-    this.container_set_button = document.createElement("div");
-    this.container_both_name_description = document.createElement("div");
-    this.container_outer_name = document.createElement("div");
-    this.container_name = document.createElement("div");
-    this.name_field = document.createElement("span");
-    this.container_outer_description = document.createElement("div");
-    this.description_field = document.createElement("span");
+  // if(linkContains("main.html")) {
+  //   this.container_main = document.createElement("div");
+  //   this.container_set_button = document.createElement("div");
+  //   this.container_both_name_description = document.createElement("div");
+  //   this.container_outer_name = document.createElement("div");
+  //   this.container_name = document.createElement("div");
+  //   this.name_field = document.createElement("span");
+  //   this.container_outer_description = document.createElement("div");
+  //   this.description_field = document.createElement("span");
 
-    self.container_main.className = "small-12 columns";
-    self.container_set_button.className = "small-4 columns";
-    self.container_both_name_description.className = "small-8 columns";
-    self.container_outer_name.className = "row";
-    self.container_name.className = "points-name small-12 columns";
-    self.name_field.innerHTML = param.name;
-    self.container_outer_description.className = "row";
-    self.container_description.className = "points-description small-12 columns";
-    self.description_field.innerHTML = param.description;
+  //   self.container_main.className = "small-12 columns";
+  //   self.container_set_button.className = "small-4 columns";
+  //   self.container_both_name_description.className = "small-8 columns";
+  //   self.container_outer_name.className = "row";
+  //   self.container_name.className = "points-name small-12 columns";
+  //   self.name_field.innerHTML = param.name;
+  //   self.container_outer_description.className = "row";
+  //   self.container_description.className = "points-description small-12 columns";
+  //   self.description_field.innerHTML = param.description;
 
-    self.container_set_button.appendChild(self.set_button);
-    self.container_name.appendChild(self.name_field);
-    self.container_outer_name.appendChild(self.container_name);
-    self.container_description.appendChild(self.description_field);
-    self.container_outer_description.appendChild(self.container_description);
-    self.container_both_name_description.appendChild(self.container_outer_name);
-    self.container_both_name_description.appendChild(self.container_outer_description);
-    self.container_main.appendChild(self.container_set_button);
-    self.container_main.appendChild(self.container_both_name_description);
-    self.node.appendChild(self.container_main);
-  } else {
-    this.container_menu = document.createElement("div");  
-    this.name_field = document.createElement("input");
-    this.description_field = document.createElement("input");
- 
-    self.container_menu.className = "small-12 columns";  
-    self.name_field.name = "name"
-    self.description_field.name = "description"
-    self.name_field.value = param.name;
-    self.description_field.value = param.description;
-    self.save_button.src = "media/add.png";
-    self.remove_button.src = "media/rem.png";
+  //   self.container_set_button.appendChild(self.set_button);
+  //   self.container_name.appendChild(self.name_field);
+  //   self.container_outer_name.appendChild(self.container_name);
+  //   self.container_description.appendChild(self.description_field);
+  //   self.container_outer_description.appendChild(self.container_description);
+  //   self.container_both_name_description.appendChild(self.container_outer_name);
+  //   self.container_both_name_description.appendChild(self.container_outer_description);
+  //   self.container_main.appendChild(self.container_set_button);
+  //   self.container_main.appendChild(self.container_both_name_description);
+  //   self.node.appendChild(self.container_main);
+  // } else {
 
-    self.container_name.appendChild(self.name_field);
-    self.container_description.appendChild(self.description_field);
-    self.container_menu.appendChild(self.save_button);
-    self.container_menu.appendChild(self.set_button);
-    self.container_menu.appendChild(self.remove_button);
-    self.node.appendChild(self.container_name);
-    self.node.appendChild(self.container_description);
-    self.node.appendChild(self.container_menu); 
-  }
+  // }
 
   this.getContentString = function(){
     return '<div id="content">'+
@@ -168,6 +182,7 @@ function Point(param){
       defer.reject();
     });
 
+    debug("point saved!");
     return defer;
   }
 
@@ -189,7 +204,8 @@ function Point(param){
     self.displayInfo();
   }
 
-  // set button onclick
+  self.name_field.addEventListener("change", self.save, false);
+  self.description_field.addEventListener("change", self.save, false);
   self.save_button.addEventListener("click", self.save, false);
   self.set_button.addEventListener("click", self.showLoc, false);
   self.remove_button.addEventListener("click", self.destroy, false);
@@ -197,4 +213,8 @@ function Point(param){
   if(self.submitted){
     self.parentElement.appendChild(self.node);
   }
+}
+
+var debug = function(msg){
+  console.log(msg);
 }
