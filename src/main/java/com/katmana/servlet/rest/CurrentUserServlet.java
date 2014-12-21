@@ -27,7 +27,7 @@ public class CurrentUserServlet extends BaseRestServlet {
 			throws ServletException, IOException {
 		User currentUser = Util.getCurrentUser(req);
 		if(currentUser == null){
-			resp.setStatus(404, "You are not logged in");
+			resp.setStatus(403, "You are not logged in");
 			return;
 		}
 		EntityManager em = (EntityManager)req.getAttribute("EntityManager");
@@ -38,7 +38,7 @@ public class CurrentUserServlet extends BaseRestServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User currentUser = Util.getCurrentUser(request);
 		if(currentUser == null){
-			response.setStatus(404, "You are not logged in");
+			response.setStatus(403, "You are not logged in");
 			return;
 		}
 		UserRestConfiguration restConfiguration = new UserRestConfiguration((EntityManager)request.getAttribute("EntityManager"));
