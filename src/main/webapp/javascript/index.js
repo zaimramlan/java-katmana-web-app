@@ -153,7 +153,9 @@ function populateMarkers(param){
     markers.push(p);
     bounds.extend(latLng);
   };
-  map.fitBounds(bounds);
+  if(param.points.length != 0){
+    map.fitBounds(bounds);
+  }
 }
 
 function Context(param){
