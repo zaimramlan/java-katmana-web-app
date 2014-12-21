@@ -62,7 +62,15 @@
 	    }	    
     </style>
     <script id="no-point-notice" type="text/x-handlebars-template">
-      <span style="color:white;">Sorry, no points is available.</span>
+      <span style="color:white;" class="notice">Sorry, no points is available.</span>
+    </script>
+    <script id="point-content-string" type="text/x-handlebars-template">
+      <div id="content">
+        <p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">{{name}}</p>
+        <div id="bodyContent">
+        <p style="margin:0">{{description}}</p>
+        </div>
+      </div>
     </script>
 </head>
 <body>

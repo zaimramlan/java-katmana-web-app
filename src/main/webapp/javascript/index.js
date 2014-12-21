@@ -86,6 +86,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   google.maps.event.addListener(map, 'click', function(event) {
     if(isAdding){
+      $('#points .notice').remove();
       var p = new Point({
         active: false,
         deleted: false,
@@ -130,7 +131,7 @@ function populateMarkers(param){
   clearPoints();
 
   //Clear the point list first.
-  $(param.parentElement).html("");
+  $(param.parentElement).find('.notice').remove();
 
   if(param.points.length != 0){
     var bounds = new google.maps.LatLngBounds();
@@ -149,7 +150,7 @@ function populateMarkers(param){
         description: point.description,
         active_context: active_context,
         parentElement: param.parentElement,
-        point_obj: point,
+        point: point,
         delay: i * 100,
         infowindow: infowindow
       });
@@ -165,7 +166,7 @@ function populateMarkers(param){
     };
     map.fitBounds(bounds);
   }else{
-    $(param.parentElement).html(get_template('no-point-notice')());
+    $(param.parentElement).append(get_template('no-point-notice')());
   }
 }
 
@@ -264,15 +265,12 @@ function Context(param){
     }).done(function(response){
       self.points = response;
       clearPoints();
-      if(points.length > 0){
-        populateMarkers({
-          draggable: true,
-          points: self.points,
-          parentElement: document.getElementById("points")
-        });
-      }else{
-        $('#points').html(get_template('no-context-display')());
-      }
+
+      populateMarkers({
+        draggable: true,
+        points: self.points,
+        parentElement: document.getElementById("points")
+      });
     })
 
     passContext(param);

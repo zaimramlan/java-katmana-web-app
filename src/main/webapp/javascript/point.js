@@ -61,7 +61,7 @@ function Point(param){
   self.container_name_description.appendChild(self.row_name);
   self.container_name_description.appendChild(self.row_description);
 
-  if(current_user == null || current_user.id != self.point_obj.submitter_id){
+  if(self.point_obj != undefined && (current_user == null || current_user.id != self.point_obj.submitter_id) ){
     //No permission for this point
   }else{
     self.container_close.appendChild(self.remove_button);
@@ -110,12 +110,7 @@ function Point(param){
   // }
 
   this.getContentString = function(){
-    return '<div id="content">'+
-      '<p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">'+param.name+'</p>'+
-      '<div id="bodyContent">'+
-      '<p style="margin:0">'+param.description+'</p>'+
-      '</div>'+
-      '</div>';
+    return get_template('point-content-string')(param);
   }
 
   this.placeMarker = function() {
@@ -173,6 +168,7 @@ function Point(param){
       if(!self.submitted){
         self.placeMarker();
         self.parentElement.appendChild(self.node);
+        self.point_obj = response;
         self.id = response.id;
         request = $.ajax({
           type: method,
