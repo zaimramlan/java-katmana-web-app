@@ -1,9 +1,11 @@
+<!DOCTYPE>
 <html>
 <head>
-	<title>Home | KatMana(R)</title>
+	<title>Main | KatMana(R)</title>
 	<link rel="stylesheet" type="text/css" href="stylesheet/foundation.min.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet/normalize.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet/icons/foundation-icons.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet/public.css">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="javascript/jquery-2.1.1.min.js"></script>
     <script src="javascript/jquery-ui.min.js"></script>
@@ -12,108 +14,55 @@
     <script type="text/javascript" src="javascript/foundation.dropdown.js"></script>
     <script type="text/javascript" src="javascript/index.js"></script>
     <script type="text/javascript" src="javascript/point.js"></script>
-    <style type="text/css">
-	    #map-canvas {
-	    	width: 100%;
-	    	height: 94%;
-	    }
-
-	    #map-canvas img {
-	    	max-width: initial;
-	    }
-
-	    .search-text {
-	    	text-align: center;
-	    	color: #fff;
-	    	font-size: 20px;	    	
-	    }
-
-	    .tab-bar img {
-	    	width: 73px;
-	    }
-
-	    .fi-braille, .fi-arrow-right, .fi-arrow-left {
-	    	font-size: 40px;
-	    }
-
-	    .fi-wrench, .fi-list {
-	    	font-size: 28px;
-	    }
-
-	    input {
-	    	width: 100%;
-	    }
-
-	    i:hover {
-	    	cursor: pointer;
-	    }
-
-	    .login-dropdown {
-	    	margin-left:-170px!important;
-	    }
-
-	    .login-dropdown::before {
-	    	left:93%!important;
-	    }
-
-	    .login-dropdown::after {
-	    	left:92.5%!important;
-	    }	    
-    </style>
 </head>
 <body>
 	<div class="off-canvas-wrap" data-offcanvas>
 		<div class="inner-wrap">
-			<nav class="tab-bar">
-				<div class="row">
-					<div id="drop2" data-dropdown-content class="login-dropdown f-dropdown content small" aria-hidden="true" tabindex="-1">
-						<div class="row">
-							<div class="header small-12 columns">
-								<span style="color:#000">members area</span>
-							</div>
-						    <form id="login-form" action="login" method="post">
-								<div class="small-12 columns">
-							        <input type="text" name="email" placeholder="email">
-								</div>
-								<div class="small-12 columns">
-							        <input type="password" name="password" placeholder="pasword">
-								</div>
-								<div class="small-12 columns">
-							        <input class="login-btn" type="submit" value="login">
-								</div>
-						    </form>
-					    	<div class="register-header small-12 columns">
-					    		NOT A MEMBER?	
-					    	</div>
-					    	<div class="small-12 columns">
-					    		<a href="register.html">Sign Up!</a>
-					    	</div>
-						</div>
-					</div>	
-					<div class="small-2 columns">
+			<nav class="top-bar" data-topbar role="navigation">
+				<section class="top-bar-section">
+
+					<div class="left">
 						<img src="media/logo.png">
 					</div>
-					<div class="small-6 columns"><div class="row">.</div></div>
-					<div class="small-2 columns">
-						<div class="row login-dropdown-button" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
-							<div class="small-8 columns">
-								LOGIN
+				
+					<div class="right">
+						<div class="small-5 small-offset-2 columns">
+							<!-- 
+							TOPBAR FOR SMALL-ONLY SCREEN
+							-->						
+							<div class="row topbar-button show-for-small-only" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
+								<div class="show-for-medium-up small-8 columns">
+									LOGIN
+								</div>
+								<div class="small-4 columns">
+									<i class="fi-torso"></i>
+								</div>	
 							</div>
-							<div class="small-4 columns">					
-								<i class="fi-wrench"></i>
-							</div>	
+
+							<!-- 
+							TOPBAR FOR MEDIUM-UP SCREEN
+							-->
+							<div class="row topbar-button show-for-medium-up" data-options="align:left" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
+								<div class="show-for-medium-up small-8 columns">
+									LOGIN
+								</div>
+								<div class="small-4 columns">
+									<i class="fi-torso"></i>
+								</div>	
+							</div>							
+						</div>
+						<div class="small-5 columns right-off-canvas-toggle">
+							<div class="row topbar-button">
+								<div class="show-for-medium-up small-8 columns">
+									SEARCH
+								</div>
+								<div class="small-4 columns">
+									<i class="search-icon fi-magnifying-glass"></i>
+								</div>	
+							</div>						
 						</div>						
 					</div>
-					<div class="small-2 columns">
-						<div class="row right-off-canvas-toggle">
-							<div class="small-8 columns">
-								SEARCH
-							</div>
-							<div class="small-4 columns">
-								<i class="fi-magnifying-glass"></i>
-							</div>							
-					</div>
-				</div>
+				</section>
 			</nav>
 
 			<aside class="right-off-canvas-menu">
@@ -144,13 +93,13 @@
 				        				draggable: false
 				        			});
 				        		})
-				        		// $('.search-page').addClass('move-left');
-								toggleCanvasDisabler();
+
+								toggleCanvasDisabler("isSearching");
 				        		return false;
 				        	}
 
 				        	$("#search-form").submit(search);
-				        	$(document).on('click','.fi-magnifying-glass',search);
+				        	$(document).on('click','.search-text',search);
 				        </script>				        
 					</div>
 				</div>
@@ -158,6 +107,30 @@
 
 			<section class="main-section">
 				<div id="map-canvas"></div>
+				<div id="drop2" data-dropdown-content class="login-dropdown f-dropdown small" aria-hidden="true" tabindex="-1">
+					<div class="row">
+						<div class="header small-12 columns">
+							members area
+						</div>
+					    <form id="login-form" action="login" method="post">
+							<div class="small-12 columns">
+						        <input type="text" name="email" placeholder="email">
+							</div>
+							<div class="small-12 columns">
+						        <input type="password" name="password" placeholder="pasword">
+							</div>
+							<div class="small-12 columns">
+						        <input class="login-btn" type="submit" value="login">
+							</div>
+					    </form>
+				    	<div class="register-header small-12 columns">
+				    		not a member?
+				    	</div>
+				    	<div class="small-12 columns">
+				    		<a href="register.html">Sign Up!</a>
+				    	</div>
+					</div>
+				</div>					
 			</section>
 
 			<a class="canvas-disabler exit-off-canvas"></a>

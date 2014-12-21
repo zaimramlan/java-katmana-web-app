@@ -154,6 +154,8 @@ function populateMarkers(param){
     bounds.extend(latLng);
   };
   map.fitBounds(bounds);
+  /*disable points edit if not admin*/
+  if(linkContains("main.html")) setAttributesOfElements($('.points').find('input'),{"disabled":"disabled"});
 }
 
 function Context(param){
@@ -203,7 +205,7 @@ function Context(param){
   self.back_button.className = "fi-arrow-left";
   self.display_button.className = "fi-arrow-right";
   self.remove_button_link.className = "delete-context-button";
-  self.remove_button_link.innerHTML = "DELETE";
+  self.remove_button_link.innerHTML = "Delete";
   self.menu_button.className = "fi-braille";
 
   setAttributes(self.menu_button, {
@@ -364,6 +366,13 @@ function togglePointsPage(){
   $('.points-page').toggleClass('move-left');
 }
 
+function setAttributesOfElements(els, attrb){
+  for(var i=0; i<els.length; i++) {
+    setAttributes(els[i], attrb);
+  }
+  debug("set finished!");
+}
+
 function setAttributes(el, attrb) {
   for(var key in attrb) {
     el.setAttribute(key, attrb[key]);
@@ -377,6 +386,16 @@ var toContextPage = function(){
   populateContext({parentElement: document.getElementById("context")});
 }
 
-var toggleCanvasDisabler = function(){
-  $('.canvas-disabler').toggleClass('exit-off-canvas');
+var toggleCanvasDisabler = function(param){
+  if(param == "isSearching") {
+    if($('.canvas-disabler').hasClass('exit-off-canvas')) {
+      $('.canvas-disabler').toggleClass('exit-off-canvas');
+    }
+    else {
+      /*do nothing*/
+    }
+  }
+  else {
+    $('.canvas-disabler').toggleClass('exit-off-canvas');
+  }
 }

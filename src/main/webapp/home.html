@@ -1,9 +1,11 @@
+<!DOCTYPE>
 <html>
 <head>
 	<title>Home | KatMana(R)</title>
 	<link rel="stylesheet" type="text/css" href="stylesheet/foundation.min.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet/normalize.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet/icons/foundation-icons.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet/public.css">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="javascript/jquery-2.1.1.min.js"></script>
     <script src="javascript/jquery-ui.min.js"></script>
@@ -12,75 +14,13 @@
     <script type="text/javascript" src="javascript/foundation.dropdown.js"></script>
     <script type="text/javascript" src="javascript/index.js"></script>
     <script type="text/javascript" src="javascript/point.js"></script>
-    <style type="text/css">
-	    #map-canvas {
-	    	width: 100%;
-	    	height: 94%;
-	    }
-
-	    #map-canvas img {
-	    	max-width: initial;
-	    }
-
-	    .search-text {
-	    	text-align: center;
-	    	color: #fff;
-	    	font-size: 20px;	    	
-	    }
-
-	    .tab-bar img {
-	    	width: 73px;
-	    }
-
-	    .fi-braille, .fi-arrow-right, .fi-arrow-left {
-	    	font-size: 40px;
-	    }
-
-	    .fi-wrench, .fi-list {
-	    	font-size: 28px;
-	    }
-
-	    input {
-	    	width: 100%;
-	    }
-
-	    i:hover {
-	    	cursor: pointer;
-	    }
-
-	    .login-dropdown {
-	    	margin-left:-170px!important;
-	    }
-
-	    .login-dropdown::before {
-	    	left:93%!important;
-	    }
-
-	    .login-dropdown::after {
-	    	left:92.5%!important;
-	    }	    
-    </style>
 </head>
 <body>
 	<div class="off-canvas-wrap" data-offcanvas>
 		<div class="inner-wrap">
 			<nav class="tab-bar">
-				<div class="row">
-					<div id="drop2" data-dropdown-content class="login-dropdown f-dropdown content small" aria-hidden="true" tabindex="-1">
-						<div class="row">
-							<div class="header small-12 columns">
-								<span style="color:#000">members area</span>
-							</div>
-							<div class="small-12 columns">
-								<a href="edit_account.html">update account</a>
-							</div>
-							<div class="small-12 columns">
-								<form action="logout">
-									<button type="submit">logout</button>
-								</form>
-							</div>
-						</div>
-					</div>	
+				<div class="middle tab-bar-section top-bar-section">
+	
 					<div class="small-2 columns">
 						<img src="media/logo.png">
 					</div>
@@ -205,7 +145,22 @@
 			</aside>
 
 			<section class="main-section">
-				<div id="map-canvas"></div>
+			<div id="map-canvas"></div>
+				<div id="drop2" data-dropdown-content class="login-dropdown f-dropdown content small" aria-hidden="true" tabindex="-1">
+					<div class="row">
+						<div class="header small-12 columns">
+							<span style="color:#000">members area</span>
+						</div>
+						<div class="small-12 columns">
+							<a href="edit_account.html">update account</a>
+						</div>
+						<div class="small-12 columns">
+							<form action="logout">
+								<button type="submit">logout</button>
+							</form>
+						</div>
+					</div>
+				</div>				
 			</section>
 
 			<a class="canvas-disabler exit-off-canvas"></a>

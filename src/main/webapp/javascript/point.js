@@ -46,12 +46,15 @@ function Point(param){
   self.container_name_description.className = "small-10 small-centered columns";
   self.container_close.className = "small-12 columns";
   self.name_field.name = "name";
+  self.name_field.className = "name";
   self.description_field.name = "description";
+  self.description_field.className = "description";
   self.name_field.value = param.name;
   self.description_field.value = param.description;
   self.set_button.src = "media/view.png"; /*not used*/
   self.save_button.src = "media/add.png"; /*not used*/
   self.remove_button.className = "fi-x";
+
 
   self.container_name.appendChild(self.name_field);
   self.row_name.appendChild(self.container_name);
@@ -59,49 +62,16 @@ function Point(param){
   self.row_description.appendChild(self.container_description);
   self.container_name_description.appendChild(self.row_name);
   self.container_name_description.appendChild(self.row_description);
-  self.container_close.appendChild(self.remove_button);
-  self.node.appendChild(self.container_close); 
+
+  if(linkContains("main.html")) {
+    self.node.appendChild(self.container_close); 
+  }
+  else {
+    self.container_close.appendChild(self.remove_button);
+    self.node.appendChild(self.container_close); 
+  }
+  
   self.node.appendChild(self.container_name_description); 
-
-  // self.node.appendChild(self.name_field);
-  // self.node.appendChild(self.description_field);
-  // self.node.appendChild(self.save_button);
-  // self.node.appendChild(self.set_button);
-  // self.node.appendChild(self.remove_button);
-
-  // if(linkContains("main.html")) {
-  //   this.container_main = document.createElement("div");
-  //   this.container_set_button = document.createElement("div");
-  //   this.container_both_name_description = document.createElement("div");
-  //   this.container_outer_name = document.createElement("div");
-  //   this.container_name = document.createElement("div");
-  //   this.name_field = document.createElement("span");
-  //   this.container_outer_description = document.createElement("div");
-  //   this.description_field = document.createElement("span");
-
-  //   self.container_main.className = "small-12 columns";
-  //   self.container_set_button.className = "small-4 columns";
-  //   self.container_both_name_description.className = "small-8 columns";
-  //   self.container_outer_name.className = "row";
-  //   self.container_name.className = "points-name small-12 columns";
-  //   self.name_field.innerHTML = param.name;
-  //   self.container_outer_description.className = "row";
-  //   self.container_description.className = "points-description small-12 columns";
-  //   self.description_field.innerHTML = param.description;
-
-  //   self.container_set_button.appendChild(self.set_button);
-  //   self.container_name.appendChild(self.name_field);
-  //   self.container_outer_name.appendChild(self.container_name);
-  //   self.container_description.appendChild(self.description_field);
-  //   self.container_outer_description.appendChild(self.container_description);
-  //   self.container_both_name_description.appendChild(self.container_outer_name);
-  //   self.container_both_name_description.appendChild(self.container_outer_description);
-  //   self.container_main.appendChild(self.container_set_button);
-  //   self.container_main.appendChild(self.container_both_name_description);
-  //   self.node.appendChild(self.container_main);
-  // } else {
-
-  // }
 
   this.getContentString = function(){
     return '<div id="content">'+
@@ -209,6 +179,10 @@ function Point(param){
   self.save_button.addEventListener("click", self.save, false);
   self.set_button.addEventListener("click", self.showLoc, false);
   self.remove_button.addEventListener("click", self.destroy, false);
+
+  if(linkContains("main.html")) {
+    self.node.addEventListener("click", self.showLoc, false);
+  }
 
   if(self.submitted){
     self.parentElement.appendChild(self.node);

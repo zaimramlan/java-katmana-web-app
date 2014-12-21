@@ -1,0 +1,174 @@
+/* 
+COLOUR-THEME
+ */
+/* 
+ELEMENT-SPECIFIC COLOURS
+*/
+/* 0, 640px */
+/* 641px, 1024px */
+/* 1025px, 1440px */
+/* 1441px, 1920px */
+/* 1921px */
+@import url("http://fonts.googleapis.com/css?family=Raleway:600,400,300");
+@import url("http://fonts.googleapis.com/css?family=Roboto:400,300");
+/* 
+GLOBAL ELEMENTS STYLING
+*/
+body {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300; }
+
+input {
+  width: 100%; }
+
+/* 
+FOUNDATION ICONS STYLING
+*/
+.fi-braille, .fi-arrow-right, .fi-arrow-left {
+  font-size: 40px; }
+
+.fi-torso, .search-icon {
+  font-size: 28px; }
+
+i:hover {
+  cursor: pointer; }
+
+/* 
+GOOGLE MAP STYLING
+*/
+#map-canvas {
+  width: 100%;
+  height: 94%; }
+  #map-canvas img {
+    max-width: initial; }
+
+/* 
+TOP BAR ELEMENT STYLING
+*/
+.top-bar {
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+  color: #fff; }
+  .top-bar i {
+    display: block;
+    margin-top: 7px;
+    text-align: left; }
+  .top-bar img {
+    width: 73px;
+    margin-left: 8px; }
+  .top-bar .topbar-button:hover {
+    background: #0099dd; }
+
+.login-dropdown {
+  background: #ecf0f1;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+  .login-dropdown a:hover {
+    text-decoration: underline; }
+  .login-dropdown input {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
+  .login-dropdown input.login-btn {
+    background: #0099dd;
+    border: none;
+    padding: 10px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    .login-dropdown input.login-btn:hover {
+      background: #0587c0; }
+  .login-dropdown .header {
+    background: #0099dd;
+    margin-bottom: 10px;
+    padding: 20px 10px;
+    padding-right: 20px;
+    color: #fff;
+    font-size: 18px;
+    text-align: right;
+    text-transform: capitalize;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -o-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0; }
+  .login-dropdown .register-header {
+    margin-top: 7px;
+    margin-bottom: -2px;
+    color: #95a5a6;
+    text-transform: capitalize; }
+
+/* 
+SIDEBAR ELEMENT STYLING
+*/
+.right-off-canvas-menu {
+  background: #ecf0f1; }
+
+.off-canvas-list {
+  background: #ecf0f1;
+  margin-top: 6px; }
+  .off-canvas-list input {
+    background: #fff;
+    border: 1px solid #bdc3c7;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #000;
+    text-transform: capitalize;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
+  .off-canvas-list #search-form input {
+    width: 120% !important; }
+  .off-canvas-list .search-text {
+    text-align: center;
+    color: #bdc3c7;
+    font-size: 36px; }
+  .off-canvas-list .points {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    .off-canvas-list .points:hover {
+      background: #fff; }
+    .off-canvas-list .points::after {
+      content: "";
+      height: 1px;
+      width: 80%;
+      margin: 10px auto;
+      background: #bdc3c7; }
+    .off-canvas-list .points input {
+      background: none;
+      border: none;
+      margin-bottom: -5px;
+      font-size: 14px;
+      text-transform: capitalize;
+      cursor: pointer;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px; }
+      .off-canvas-list .points input:focus {
+        background: #fff;
+        padding: 5px 10px;
+        border: 1px solid #bdc3c7; }
+    .off-canvas-list .points .name {
+      font-weight: 600; }
+    .off-canvas-list .points .description {
+      font-size: 13px;
+      color: #95a5a6; }

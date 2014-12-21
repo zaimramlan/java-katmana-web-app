@@ -35,6 +35,7 @@ public class AuthenticationFilter implements Filter {
                                 "/stylesheet/icons/foundation-icons.css",
                                 "/stylesheet/foundation.min.css",
                                 "/stylesheet/normalize.css",
+                                "/stylesheet/public.css",
                                 "/stylesheet/context_style.css",
                                 "/stylesheet/registration_style.css",
                                 "/media/map_user.png",
