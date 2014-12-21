@@ -150,7 +150,7 @@
 								        <script>
 								        	var search = function(event) {
 								        		event.preventDefault();
-								        		$.get("points?"+$("#points-search-form").serialize())
+								        		$.get("points?context_id="+active_context+"&"+$("#points-search-form").serialize())
 								        		.done(function(points){
 								        			clearPoints();
 								        			points = JSON.parse(points);
