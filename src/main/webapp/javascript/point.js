@@ -1,18 +1,3 @@
-function linkContains(param){
-  var link = window.location.pathname;
-  var result = link.indexOf(param);
-
-  if(result === -1) { return false; }
-  else { return true; }
-}
-
-function strMatches(param, parem){
-  var result = param.localeCompare(parem);
-
-  if(result === 0) return true;
-  else return false;
-}
-
 function Point(param){
   var self = this;
   this.id = param.id;
@@ -61,7 +46,7 @@ function Point(param){
   self.container_name_description.appendChild(self.row_name);
   self.container_name_description.appendChild(self.row_description);
 
-  if(self.point_obj != undefined && (current_user == null || current_user.id != self.point_obj.submitter_id) ){
+  if(self.point_obj != undefined && (user == null || user.id != self.point_obj.submitter_id) ){
     //No permission for this point
   }else{
     self.container_close.appendChild(self.remove_button);
@@ -69,66 +54,26 @@ function Point(param){
   self.node.appendChild(self.container_close); 
   self.node.appendChild(self.container_name_description); 
 
-  // self.node.appendChild(self.name_field);
-  // self.node.appendChild(self.description_field);
-  // self.node.appendChild(self.save_button);
-  // self.node.appendChild(self.set_button);
-  // self.node.appendChild(self.remove_button);
-
-  // if(linkContains("main.html")) {
-  //   this.container_main = document.createElement("div");
-  //   this.container_set_button = document.createElement("div");
-  //   this.container_both_name_description = document.createElement("div");
-  //   this.container_outer_name = document.createElement("div");
-  //   this.container_name = document.createElement("div");
-  //   this.name_field = document.createElement("span");
-  //   this.container_outer_description = document.createElement("div");
-  //   this.description_field = document.createElement("span");
-
-  //   self.container_main.className = "small-12 columns";
-  //   self.container_set_button.className = "small-4 columns";
-  //   self.container_both_name_description.className = "small-8 columns";
-  //   self.container_outer_name.className = "row";
-  //   self.container_name.className = "points-name small-12 columns";
-  //   self.name_field.innerHTML = param.name;
-  //   self.container_outer_description.className = "row";
-  //   self.container_description.className = "points-description small-12 columns";
-  //   self.description_field.innerHTML = param.description;
-
-  //   self.container_set_button.appendChild(self.set_button);
-  //   self.container_name.appendChild(self.name_field);
-  //   self.container_outer_name.appendChild(self.container_name);
-  //   self.container_description.appendChild(self.description_field);
-  //   self.container_outer_description.appendChild(self.container_description);
-  //   self.container_both_name_description.appendChild(self.container_outer_name);
-  //   self.container_both_name_description.appendChild(self.container_outer_description);
-  //   self.container_main.appendChild(self.container_set_button);
-  //   self.container_main.appendChild(self.container_both_name_description);
-  //   self.node.appendChild(self.container_main);
-  // } else {
-
-  // }
-
   this.getContentString = function(){
     return get_template('point-content-string')(param);
   }
 
   this.placeMarker = function() {
-      self.marker = new google.maps.Marker({
-        position: self.position,
-        map: self.map,
-        draggable:self.draggable,
-        title: self.name_field.value
-      });
-      self.marker.setAnimation(google.maps.Animation.DROP);
-      
-      google.maps.event.addListener(self.marker, 'dragend', function(event) {
-        self.save();
-      });
+    self.marker = new google.maps.Marker({
+      position: self.position,
+      map: self.map,
+      draggable:self.draggable,
+      title: self.name_field.value
+    });
+    self.marker.setAnimation(google.maps.Animation.DROP);
+    
+    google.maps.event.addListener(self.marker, 'dragend', function(event) {
+      self.save();
+    });
 
-      google.maps.event.addListener(self.marker, 'click', function() {
-        self.displayInfo();
-      });
+    google.maps.event.addListener(self.marker, 'click', function() {
+      self.displayInfo();
+    });
   }
 
   this.displayInfo = function(){
@@ -140,7 +85,7 @@ function Point(param){
     });
     infowindow.content = self.getContentString();
     infowindow.open(self.map, self.marker);
-    self.infowindow.height(self.infowindow.height());
+    // self.infowindow.height(self.infowindow.height());
   }
 
   this.save = function(){
@@ -206,11 +151,21 @@ function Point(param){
     self.displayInfo();
   }
 
+  this.select = function(){
+    self.showLoc();
+    // console.log(self.node)
+    // console.log("weird, huh?!")
+  }
+
   self.name_field.addEventListener("change", self.save, false);
   self.description_field.addEventListener("change", self.save, false);
   self.save_button.addEventListener("click", self.save, false);
-  self.set_button.addEventListener("click", self.showLoc, false);
+  self.node.addEventListener("click", self.select, false);
   self.remove_button.addEventListener("click", self.destroy, false);
+
+  $(self.node).click(function(){
+    SelectPoint(self);
+  })
 
   if(self.submitted){
     self.parentElement.appendChild(self.node);

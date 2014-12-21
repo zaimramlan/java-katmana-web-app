@@ -74,7 +74,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
 		if(!restConfiguration.allowShow(request)){
-			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",401);
 		}
 		response.setStatus(200);
 		response.getWriter().write(restConfiguration.serialize(record,request));
@@ -91,7 +91,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
 		if(!restConfiguration.allowUpdate(request)){
-			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",401);
 		}
 		restConfiguration.applyParams(record, request);
 
@@ -127,7 +127,7 @@ public abstract class BaseRecordServlet<R extends BaseModel,T extends EntityRest
 			throw new EntityRestConfiguration.RequestException("Nothing to see here.",404);
 		}
 		if(!restConfiguration.allowDestroy(request)){
-			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",403);
+			throw new EntityRestConfiguration.RequestException("You do not have permission for this resource",401);
 		}
 		restConfiguration.doDestroy(record);
 		response.setStatus(204);

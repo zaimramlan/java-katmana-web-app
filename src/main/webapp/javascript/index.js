@@ -1,4 +1,11 @@
-var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null, current_user = null;
+var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null;
+var user = null;
+var current_context = null;
+
+$.get("user/me").done(function(response){
+  user = JSON.parse(response);
+  populateContext({parentElement: document.getElementById("context")});
+});
 
 function get_template(name){
   return Handlebars.compile($('#'+name).html());
@@ -71,16 +78,15 @@ function initialize() {
                 "visibility": "off"
             }
         ]
-    },
-    {
-        "featureType": "poi",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    }
-],
+    // },
+    // {
+    //     "featureType": "poi",
+    //     "stylers": [
+    //         {
+    //             "visibility": "off"
+    //         }
+    //     ]
+    }],
     zoom: 18
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -107,12 +113,11 @@ function initialize() {
       infowindow.close();
   });
 
-  populateContext({parentElement: document.getElementById("context")});
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function clearPoints(){
-  console.log(markers)
+  // console.log(markers)
   for(var i=0; i<markers.length; i++){
     var m = markers[i];
     if(m.deleted == false){
@@ -173,6 +178,7 @@ function populateMarkers(param){
 function Context(param){
   var self = this;
 
+  this.param = param;
   this.points = param.points;
   this.id = param.id;
   this.submitted = param.submitted;
@@ -273,6 +279,7 @@ function Context(param){
       });
     })
 
+    current_context = self;
     passContext(param);
     toggleCanvasDisabler();
     togglePointsPage();
@@ -298,6 +305,7 @@ function Context(param){
       dataType: "json"
     }).done(function(response){
       self.id = response.id;
+      active_context = self.id;
       self.submitted = true;
     });
 
@@ -356,9 +364,11 @@ function passContext(param){
 }
 
 function populateContext(parem){
+  // console.log(user.id)
   var request = $.ajax({
     type: "GET",
     url: "contexts",
+    data: {submitter_id: user.id},
     dataType: "json"
   }).done(function(contexts){
     for (var i = 0; i < contexts.length; i++) {
@@ -396,9 +406,21 @@ var toggleCanvasDisabler = function(){
   $('.canvas-disabler').toggleClass('exit-off-canvas');
 }
 
-//Check if logged in
-$.getJSON('user/me').success(function(user){
-  current_user = user;
-}).error(function(){
-  //Not logged in I guess
-});
+function linkContains(param){
+  var link = window.location.pathname;
+  var result = link.indexOf(param);
+
+  if(result === -1) { return false; }
+  else { return true; }
+}
+
+function strMatches(param, parem){
+  var result = param.localeCompare(parem);
+
+  if(result === 0) return true;
+  else return false;
+}
+
+var debug = function(msg){
+  console.log(msg);
+}
