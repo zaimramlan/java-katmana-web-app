@@ -97,6 +97,8 @@ function initialize() {
         active: false,
         deleted: false,
         submitted: false,
+        name: 'New point',
+        description: 'description',
         position: event.latLng,
         map: map,
         draggable: true,
@@ -343,6 +345,8 @@ function createContext(el){
   else parent = document.getElementById("context");
 
   var c = new Context({
+    name: 'New context',
+    description: 'description',
     destination: "toPointsPage",
     submitted: false,
     parentElement: parent
