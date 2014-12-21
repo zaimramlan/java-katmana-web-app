@@ -1,8 +1,10 @@
 package com.katmana.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -15,10 +17,10 @@ public class PointPhoto extends BaseModel {
 	
 	public static final String UPLOAD_FOLDER = "point_photos";
 
-	@NotBlank
+	@NotBlank(message="Filename must not be blank. Have you uploaded a photo?.")
 	protected String file_name;
 
-	@NotBlank
+	@NotBlank(message="Content type must not be blank. Have you uploaded a photo?.")
 	protected String content_type;
 	
 	protected String name;
@@ -28,6 +30,10 @@ public class PointPhoto extends BaseModel {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="point_id")
 	protected Point point;
+	
+	@NotNull(message="Photo must not be null")
+	@Basic(fetch = FetchType.LAZY)
+	protected byte[] photo = null;
 
 	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -69,8 +75,15 @@ public class PointPhoto extends BaseModel {
 	public void setSubmitter(User submitter) {
 		this.submitter = submitter;
 	}
+	public byte[] getPhoto() {
+		return photo;
+	}
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
 	
 	public static interface DAO extends BaseModel.DAO<PointPhoto>{
 	}
+
 
 }

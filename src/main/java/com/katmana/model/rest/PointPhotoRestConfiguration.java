@@ -1,7 +1,13 @@
 package com.katmana.model.rest;
 
+import java.io.IOException;
+
 import javax.persistence.EntityManager;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
 
 import com.katmana.Util;
 import com.katmana.model.DAOProvider;
@@ -41,6 +47,17 @@ public class PointPhotoRestConfiguration extends EntityRestConfiguration<PointPh
 			throw new EntityRestConfiguration.RequestException("You do not have permission on this photo",403);
 		}
 		record.setPoint(point);
+		try {
+			Part photo = request.getPart("photo");
+			if(photo != null){
+				record.setContentType(photo.getContentType());
+				record.setFileName(photo.getSubmittedFileName());
+				record.setPhoto(IOUtils.toByteArray(photo.getInputStream()));
+			}
+		} catch (IOException | ServletException e) {
+			e.printStackTrace();
+			throw new EntityRestConfiguration.RequestException("Error",500);
+		}
 	}
 
 	@Override
@@ -66,7 +83,7 @@ public class PointPhotoRestConfiguration extends EntityRestConfiguration<PointPh
 			super(record);
 			this.name = record.getName();
 			this.description = record.getDescription();
-			this.url = request.getContextPath() + "/" + PointPhoto.UPLOAD_FOLDER + "/" + record.getId() + "/" + record.getFileName();
+			this.url = request.getContextPath() + "/point_photo/fetch/" + record.getId();
 		}
 		
 	}
