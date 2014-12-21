@@ -374,11 +374,11 @@ SPECIFIC ELEMENTS IN ADMIN UI
       .right-submenu #points .add-point-button:hover {
         background: #03a678; }
   .right-submenu .points-options {
-    background: rgba(0, 0, 0, 0.4);
-    position: fixed;
+    //background: rgba(0, 0, 0, 0.4);
+    //position: fixed;
     width: 100%;
-    bottom: 0px;
-    right: 0px;
+    //bottom: 0px;
+    //right: 0px;
     text-align: center; }
     .right-submenu .points-options .button {
       background: #fff;
