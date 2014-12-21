@@ -1,5 +1,9 @@
 var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null, current_user = null;
 
+function get_template(name){
+  return Handlebars.compile($('#'+name).html());
+}
+
 function initialize() {
   var mapOptions = {
     center: { lat: 3.25106, lng: 101.735866},
@@ -124,38 +128,44 @@ function clearPoints(){
 
 function populateMarkers(param){
   clearPoints();
-  var bounds = new google.maps.LatLngBounds();
-  for (var i = 0; i < param.points.length; i++) {
-    var point = param.points[i];
-    var latLng = new google.maps.LatLng(point.latitude,point.longitude);
-    var p = new Point({
-      id: point.id,
-      active: false,
-      deleted: false,
-      submitted: true,
-      position: latLng,
-      map: map,
-      draggable: param.draggable,
-      name: point.name,
-      description: point.description,
-      active_context: active_context,
-      parentElement: param.parentElement,
-      point_obj: point,
-      delay: i * 100,
-      infowindow: infowindow
-    });
-    function deferPlace(point){
-      return function(){
-        if(markers.indexOf(point) != -1)
-          point.placeMarker();
-      }
-    }
-    setTimeout(deferPlace(p),i*100);
-    markers.push(p);
-    bounds.extend(latLng);
-  };
+
+  //Clear the point list first.
+  $(param.parentElement).html("");
+
   if(param.points.length != 0){
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < param.points.length; i++) {
+      var point = param.points[i];
+      var latLng = new google.maps.LatLng(point.latitude,point.longitude);
+      var p = new Point({
+        id: point.id,
+        active: false,
+        deleted: false,
+        submitted: true,
+        position: latLng,
+        map: map,
+        draggable: param.draggable,
+        name: point.name,
+        description: point.description,
+        active_context: active_context,
+        parentElement: param.parentElement,
+        point_obj: point,
+        delay: i * 100,
+        infowindow: infowindow
+      });
+      function deferPlace(point){
+        return function(){
+          if(markers.indexOf(point) != -1)
+            point.placeMarker();
+        }
+      }
+      setTimeout(deferPlace(p),i*100);
+      markers.push(p);
+      bounds.extend(latLng);
+    };
     map.fitBounds(bounds);
+  }else{
+    $(param.parentElement).html(get_template('no-point-notice')());
   }
 }
 
@@ -254,11 +264,15 @@ function Context(param){
     }).done(function(response){
       self.points = response;
       clearPoints();
-      populateMarkers({
-        draggable: true,
-        points: self.points,
-        parentElement: document.getElementById("points")
-      });
+      if(points.length > 0){
+        populateMarkers({
+          draggable: true,
+          points: self.points,
+          parentElement: document.getElementById("points")
+        });
+      }else{
+        $('#points').html(get_template('no-context-display')());
+      }
     })
 
     passContext(param);
