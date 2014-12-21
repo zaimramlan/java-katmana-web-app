@@ -61,7 +61,8 @@ public class SubmitterRatingRecordServlet extends BaseRecordServlet<SubmitterRat
 
 			restConfiguration.doCreate(pr);
 			response.setStatus(201);
-			response.getWriter().write(restConfiguration.serialize(record,request));
+			response.getWriter().write(restConfiguration.serialize(pr,request));
+			return;
 
 		}
 		if(!restConfiguration.allowUpdate(request)){
