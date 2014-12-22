@@ -153,6 +153,18 @@
 	</div>
 	<script>
 		$(document).foundation();
+    if(window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        // hash found
+        var regex = /context\/([0-9]+)/;
+        var res = regex.exec(hash);
+        if(res){
+          var context_id = parseInt(res[1],0);
+          $('#search-form').append('<input type="hidden" name="context_id" value="'+context_id+'">');
+        }
+    } else {
+        // No hash found
+    }
 	</script>
 </body>
 </html>
