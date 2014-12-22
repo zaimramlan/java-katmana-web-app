@@ -89,7 +89,6 @@
 								<div class="small-2 columns search-text">
 									<i class="fi-magnifying-glass"></i>
 								</div>
-<<<<<<< HEAD
 							</form>							
 						</div>
 				        <div id="points" class="small-12 columns">
@@ -114,34 +113,9 @@
 
 				        	$("#search-form").submit(search);
 				        	$(document).on('click','.search-text',search);
-				        </script>				        
-=======
-							</form>		
-			        <script>
-			        	var search = function(event) {
-			        		event.preventDefault();
-			        		$.get("points?"+$("#search-form").serialize())
-			        		.done(function(points){
-			        			clearPoints();
-			        			points = JSON.parse(points);
-			        			populateMarkers({
-			        				points:points,
-			        				parentElement: document.getElementById("points"),
-			        				draggable: false
-			        			});
-			        		})
-			        		// $('.search-page').addClass('move-left');
-								toggleCanvasDisabler();
-			        		return false;
-			        	}
-
-			        	$("#search-form").submit(search);
-			        	$(document).on('click','.fi-magnifying-glass',search);
-			        </script>						
-						</div>
+				        </script>		
 				        <div id="points" class="small-12 columns">
 				        </div>		        
->>>>>>> master
 					</div>
 				</div>
 			</aside>

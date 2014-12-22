@@ -167,7 +167,6 @@ function populateMarkers(param){
             point.placeMarker();
         }
       }
-    }
       setTimeout(deferPlace(p),i*100);
       markers.push(p);
       bounds.extend(latLng);
@@ -420,7 +419,7 @@ var toContextPage = function(){
   populateContext({parentElement: document.getElementById("context")});
 }
 
-var toggleCanvasDisabler = function(){
+var toggleCanvasDisabler = function(param){
   if(param == "isSearching") {
     if($('.canvas-disabler').hasClass('exit-off-canvas')) {
       $('.canvas-disabler').toggleClass('exit-off-canvas');
