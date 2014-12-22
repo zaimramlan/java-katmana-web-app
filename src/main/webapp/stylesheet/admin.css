@@ -1,0 +1,350 @@
+/* 
+COLOUR-THEME
+ */
+/* 
+ELEMENT-SPECIFIC COLOURS
+*/
+/* 0, 640px */
+/* 641px, 1024px */
+/* 1025px, 1440px */
+/* 1441px, 1920px */
+/* 1921px */
+@import url("http://fonts.googleapis.com/css?family=Raleway:600,400,300");
+@import url("http://fonts.googleapis.com/css?family=Roboto:400,300");
+/* 
+GLOBAL ELEMENTS STYLING
+*/
+body {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300; }
+
+input {
+  width: 100%; }
+
+/* 
+FOUNDATION ICONS STYLING
+*/
+.fi-braille, .fi-arrow-right, .fi-arrow-left {
+  font-size: 25px; }
+
+.fi-torso, .search-icon {
+  font-size: 28px; }
+
+.fi-list {
+  margin-left: -10px; }
+
+.fi-wrench {
+  margin-left: 5px; }
+
+i:hover {
+  cursor: pointer; }
+
+/* 
+GOOGLE MAP STYLING
+*/
+#map-canvas {
+  width: 100%;
+  height: 94%; }
+  #map-canvas img {
+    max-width: initial; }
+
+/* 
+TOP BAR ELEMENT STYLING
+*/
+.top-bar {
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+  color: #fff; }
+  .top-bar i {
+    display: block;
+    margin-top: 10px;
+    font-size: 23px; }
+  .top-bar img {
+    width: 73px;
+    margin-left: 8px; }
+  .top-bar .topbar-button {
+    min-height: 100%; }
+    .top-bar .topbar-button:hover {
+      background: #0099dd; }
+
+.login-dropdown {
+  background: #ecf0f1;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+  .login-dropdown a:hover {
+    text-decoration: underline; }
+  .login-dropdown input {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
+  .login-dropdown a {
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid #ecf0f1;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+  .login-dropdown input.login-btn {
+    background: #0099dd;
+    border: none;
+    padding: 10px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    .login-dropdown input.login-btn:hover {
+      background: #0587c0; }
+  .login-dropdown a.update-btn {
+    background: #fff;
+    color: #95a5a6; }
+    .login-dropdown a.update-btn:hover {
+      background: #0099dd;
+      color: white; }
+  .login-dropdown a.logout-btn {
+    background: #fff;
+    color: #95a5a6; }
+    .login-dropdown a.logout-btn:hover {
+      background: #e74c3c;
+      color: white; }
+  .login-dropdown .header {
+    background: #0099dd;
+    margin-bottom: 10px;
+    padding: 20px 10px;
+    padding-right: 20px;
+    color: #fff;
+    font-size: 18px;
+    text-align: right;
+    text-transform: capitalize;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -o-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0; }
+  .login-dropdown .register-header {
+    margin-top: 7px;
+    margin-bottom: -2px;
+    color: #95a5a6;
+    text-transform: capitalize; }
+
+/* 
+SIDEBAR ELEMENT STYLING
+*/
+.right-off-canvas-menu {
+  background: #ecf0f1; }
+
+.off-canvas-list {
+  background: #ecf0f1;
+  margin-top: 6px; }
+  .off-canvas-list input {
+    background: #fff;
+    border: 1px solid #bdc3c7;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #000;
+    text-transform: capitalize;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
+  .off-canvas-list #search-form input {
+    width: 120% !important; }
+  .off-canvas-list .search-text {
+    text-align: center;
+    color: #bdc3c7;
+    font-size: 36px; }
+  .off-canvas-list .points {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    .off-canvas-list .points:hover {
+      background: #fff; }
+    .off-canvas-list .points::after {
+      content: "";
+      height: 1px;
+      width: 80%;
+      margin: 10px auto;
+      background: #bdc3c7; }
+    .off-canvas-list .points input {
+      background: none;
+      border: none;
+      margin-bottom: -5px;
+      font-size: 14px;
+      text-transform: capitalize;
+      cursor: pointer;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px; }
+      .off-canvas-list .points input:focus {
+        background: #fff;
+        padding: 5px 10px;
+        border: 1px solid #bdc3c7; }
+    .off-canvas-list .points .name {
+      font-weight: 600; }
+    .off-canvas-list .points .description {
+      font-size: 13px;
+      color: #95a5a6; }
+
+.right-submenu {
+  background: #ecf0f1; }
+
+/* 
+OVERWRITE EXISTING STYLE
+*/
+.off-canvas-list #search-form input {
+  width: 95% !important;
+  margin-left: 9px; }
+.off-canvas-list #search-form .search-text {
+  text-align: initial;
+  color: #bdc3c7; }
+
+/* 
+SPECIFIC ELEMENTS IN ADMIN UI
+*/
+#context {
+  text-align: center; }
+  #context .add-context-button {
+    background: #2ecc71;
+    padding: 5px 15px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    #context .add-context-button:hover {
+      background: #03a678; }
+
+.contexts {
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+  cursor: pointer;
+  -webkit-border-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms; }
+  .contexts:hover {
+    background: #fff; }
+  .contexts::after {
+    content: "";
+    height: 1px;
+    width: 80%;
+    margin: 10px auto;
+    background: #bdc3c7; }
+  .contexts input {
+    background: none;
+    border: none;
+    margin-bottom: -5px;
+    font-size: 14px;
+    text-transform: capitalize;
+    cursor: pointer;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
+    .contexts input:focus {
+      background: #fff;
+      padding: 5px 10px;
+      border: 1px solid #bdc3c7; }
+  .contexts .name {
+    text-align: right;
+    font-size: 20px;
+    font-weight: 300;
+    color: #aaaaaa; }
+    .contexts .name:hover {
+      color: #bdc3c7; }
+  .contexts .description {
+    display: none;
+    font-size: 13px;
+    color: #95a5a6; }
+
+.right-submenu .close {
+  text-align: right; }
+.right-submenu #points-search-form input {
+  margin-left: -7px;
+  width: 110%; }
+.right-submenu .points-search-button {
+  color: #000;
+  -webkit-border-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms; }
+  .right-submenu .points-search-button:hover {
+    -webkit-filter: opacity(0.7);
+    -moz-filter: opacity(0.7);
+    -o-filter: opacity(0.7);
+    filter: opacity(0.7); }
+.right-submenu .contexts::after {
+  height: 0; }
+.right-submenu .contexts input {
+  background: none;
+  border: none;
+  margin-bottom: -5px;
+  font-size: 14px;
+  text-transform: capitalize;
+  cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
+  .right-submenu .contexts input:focus {
+    background: #fff;
+    padding: 5px 10px;
+    border: 1px solid #bdc3c7; }
+.right-submenu .contexts .name {
+  text-align: left; }
+.right-submenu .contexts .description {
+  display: block; }
+.right-submenu #points {
+  margin-top: 5px;
+  text-align: center; }
+  .right-submenu #points .add-point-button {
+    background: #2ecc71;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-border-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    .right-submenu #points .add-point-button:hover {
+      background: #03a678; }

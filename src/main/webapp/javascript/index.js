@@ -175,6 +175,9 @@ function populateMarkers(param){
   }else{
     $(param.parentElement).append(get_template('no-point-notice')());
   }
+
+  /*disable points edit if not admin*/
+  if(linkContains("main.html")) setAttributesOfElements($('.points').find('input'),{"disabled":"disabled"});
 }
 
 function Context(param){
@@ -220,14 +223,16 @@ function Context(param){
   self.container_view.className = "small-2 columns";
 
   self.name_field.name = "name";
+  self.name_field.className = "name";
   self.description_field.name = "description";
+  self.description_field.className = "description";
   self.name_field.value = param.name;
   self.description_field.value = param.description;
   // self.save_button.src = "media/add.png"; // NOT RESOLVED
   self.back_button.className = "fi-arrow-left";
   self.display_button.className = "fi-arrow-right";
   self.remove_button_link.className = "delete-context-button";
-  self.remove_button_link.innerHTML = "DELETE";
+  self.remove_button_link.innerHTML = "Delete";
   self.link_button_link.className = "link-context-button";
   self.link_button_link.innerHTML = "Get link";
   self.menu_button.className = "fi-braille";
@@ -244,6 +249,8 @@ function Context(param){
   })
 
   if(strMatches(this.destination,"toContextPage")){
+    self.container_name_description.className = "small-9 columns";
+    self.container_view.className = "small-2 end columns";
 
     self.row_node.appendChild(self.container_name_description);
     self.row_node.appendChild(self.container_view);
@@ -258,7 +265,6 @@ function Context(param){
     self.row_node.appendChild(self.container_view);
     self.row_node.appendChild(self.container_name_description);
     self.row_node.appendChild(self.container_menu);
-
   }
 
   self.container_name.appendChild(self.name_field);
@@ -412,6 +418,13 @@ function togglePointsPage(){
   $('.points-page').toggleClass('move-left');
 }
 
+function setAttributesOfElements(els, attrb){
+  for(var i=0; i<els.length; i++) {
+    setAttributes(els[i], attrb);
+  }
+  debug("set finished!");
+}
+
 function setAttributes(el, attrb) {
   for(var key in attrb) {
     el.setAttribute(key, attrb[key]);
@@ -425,8 +438,18 @@ var toContextPage = function(){
   populateContext({parentElement: document.getElementById("context")});
 }
 
-var toggleCanvasDisabler = function(){
-  $('.canvas-disabler').toggleClass('exit-off-canvas');
+var toggleCanvasDisabler = function(param){
+  if(param == "isSearching") {
+    if($('.canvas-disabler').hasClass('exit-off-canvas')) {
+      $('.canvas-disabler').toggleClass('exit-off-canvas');
+    }
+    else {
+      /*do nothing*/
+    }
+  }
+  else {
+    $('.canvas-disabler').toggleClass('exit-off-canvas');
+  }
 }
 
 function linkContains(param){

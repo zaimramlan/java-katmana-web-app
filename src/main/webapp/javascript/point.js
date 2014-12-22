@@ -30,14 +30,17 @@ function Point(param){
   self.container_description.className = "small-12 columns";
   self.row_description.className = "row";
   self.container_name_description.className = "small-10 small-centered columns";
-  self.container_close.className = "small-12 columns";
+  self.container_close.className = "small-12 columns close";
   self.name_field.name = "name";
+  self.name_field.className = "name";
   self.description_field.name = "description";
+  self.description_field.className = "description";
   self.name_field.value = param.name;
   self.description_field.value = param.description;
   self.set_button.src = "media/view.png"; /*not used*/
   self.save_button.src = "media/add.png"; /*not used*/
   self.remove_button.className = "fi-x";
+
 
   self.container_name.appendChild(self.name_field);
   self.row_name.appendChild(self.container_name);
@@ -51,6 +54,7 @@ function Point(param){
   }else{
     self.container_close.appendChild(self.remove_button);
   }
+
   self.node.appendChild(self.container_close); 
   self.node.appendChild(self.container_name_description); 
 
@@ -164,6 +168,10 @@ function Point(param){
   self.node.addEventListener("click", self.select, false);
   self.remove_button.addEventListener("click", self.destroy, false);
 
+  // if(linkContains("main.html")) {
+  //   self.node.addEventListener("click", self.showLoc, false);
+  // }
+  
   $(self.node).click(function(){
     SelectPoint(self);
   })
