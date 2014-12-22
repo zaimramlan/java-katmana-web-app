@@ -39,7 +39,10 @@
 					</div>
 
 					<div class="right">
-						<div class="small-5 small-offset-2 columns topbar-button">
+						<!-- 
+						OPTIONS MENU FOR SMALL-SCREEN
+						-->
+						<div class="small-5 small-offset-2 columns topbar-button show-for-small-only">
 							<div class="row" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
 								<div class="medium-8 show-for-medium-up columns">
 									OPTIONS
@@ -49,6 +52,21 @@
 								</div>	
 							</div>						
 						</div>
+
+						<!-- 
+						OPTIONS MENU FOR MEDIUM-UP SCREN
+						-->
+						<div class="small-5 small-offset-2 columns topbar-button show-for-medium-up">
+							<div class="row" data-options="align:left" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
+								<div class="medium-8 show-for-medium-up columns">
+									OPTIONS
+								</div>
+								<div class="small-12 medium-4 columns">								
+									<i class="fi-wrench"></i>
+								</div>	
+							</div>						
+						</div>
+
 						<div class="small-5 columns right-off-canvas-toggle topbar-button">
 							<div class="row">
 								<div class="medium-8 show-for-medium-up columns">
@@ -100,7 +118,7 @@
 
 				        <div class="search-page right-submenu">
 					        <div class="small-12 columns">
-					        	<a onclick="$('.search-page').removeClass('move-left');">back</a>
+					        	<a class="search-page-back-button" onclick="$('.search-page').removeClass('move-left');">back</a>
 				        	</div>
 					        <div class="small-12 columns">
 					        	<div id="points-search"></div>
@@ -154,7 +172,6 @@
 							        <div class="small-12 columns">
 							        	<div id="context-header"></div>
 							        	<ul id="drop" class="f-dropdown" data-dropdown-content>
-											<!-- <li><a href="#">Get link</a></li> -->
 										</ul>
 							        </div>
 							        <div id="points" class="small-12 columns">
@@ -165,15 +182,18 @@
 								        </div>
 								        <div class="point-list">
 				                        </div>
-							        </div>
-			                        <div class="sticky">
-										<button onclick="SelectPoints()">Select</button>
-										<button onclick="CutPoints()">cut</button>
-										<button onclick="CopyPoints()">copy</button>
-										<button onclick="PastePoints()">paste</button>				                        	
-			                        </div>							     
+							        </div>							     
 						        </div>
 					        </div>
+	                        <div class="points-options">
+								<a href="#" data-options="align:top" data-dropdown="points-options" class="button">actions</a>
+								<ul id="points-options" class="f-dropdown large content" data-dropdown-content>
+									<li><a href="#" onclick="SelectPoints()">select</a></li>
+									<li><a href="#" onclick="CutPoints()">cut</a></li>
+									<li><a href="#" onclick="CopyPoints()">copy</a></li>
+									<li><a href="#" onclick="PastePoints()">paste</a></li>
+								</ul>			                        	
+	                        </div>
 				        </div>
 					</div>
 				</div>

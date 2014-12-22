@@ -236,7 +236,7 @@ OVERWRITE EXISTING STYLE
   margin-left: 9px; }
 .off-canvas-list #search-form .search-text {
   text-align: initial;
-  color: #bdc3c7; }
+  color: #000; }
 
 /* 
 SPECIFIC ELEMENTS IN ADMIN UI
@@ -295,8 +295,8 @@ SPECIFIC ELEMENTS IN ADMIN UI
       border: 1px solid #bdc3c7; }
   .contexts .name {
     text-align: right;
-    font-size: 20px;
-    font-weight: 300;
+    font-size: 17px;
+    font-weight: 400;
     color: #aaaaaa; }
     .contexts .name:hover {
       color: #bdc3c7; }
@@ -305,6 +305,9 @@ SPECIFIC ELEMENTS IN ADMIN UI
     font-size: 13px;
     color: #95a5a6; }
 
+/* 
+1 LEVEL DEEP IN SIDEBAR
+*/
 .right-submenu {
   margin-top: 5px; }
   .right-submenu .close {
@@ -364,3 +367,48 @@ SPECIFIC ELEMENTS IN ADMIN UI
       transition: 300ms; }
       .right-submenu #points .add-point-button:hover {
         background: #03a678; }
+  .right-submenu .points-options {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    right: 0px;
+    text-align: center; }
+    .right-submenu .points-options .button {
+      background: #fff;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      padding: 7px 15px;
+      width: 90%;
+      color: #95a5a6;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px;
+      -webkit-border-transition: 300ms;
+      -moz-transition: 300ms;
+      -o-transition: 300ms;
+      transition: 300ms; }
+      .right-submenu .points-options .button:hover {
+        background: #bdc3c7;
+        color: #fff; }
+
+.search-page {
+  text-align: center; }
+  .search-page .search-page-back-button {
+    display: block;
+    background: #0099dd;
+    padding-top: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    width: 100%;
+    height: 40px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
