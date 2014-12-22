@@ -1,8 +1,12 @@
 /build/
 /bin/
 /indexes/
+/src/main/webapp/WEB-INF/
 .gradle/*
 jettyJar/*.jar
 jetty-env.xml
 .classpath
 .settings/
+.gitconfig.swp
+.project.sublime-workspace
+*.scss

@@ -270,7 +270,6 @@ SPECIFIC ELEMENTS IN ADMIN UI
 
 .contexts {
   margin-bottom: 10px !important;
-  margin-top: 10px !important;
   cursor: pointer;
   -webkit-border-transition: 300ms;
   -moz-transition: 300ms;
@@ -299,7 +298,10 @@ SPECIFIC ELEMENTS IN ADMIN UI
       background: #fff;
       padding: 5px 10px;
       border: 1px solid #bdc3c7; }
+  .contexts i {
+    margin-top: 15px; }
   .contexts .name {
+    margin-top: 15px;
     text-align: right;
     font-size: 17px;
     font-weight: 400;
