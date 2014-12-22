@@ -50,7 +50,7 @@ public class PointDAOImpl extends BaseDAOImpl<Point> implements Point.DAO{
 		//Basic term query must match at least one.
 		BooleanJunction<BooleanJunction> bjunc = qb.bool();
 		
-		if(params.containsKey("search")){
+		if(params.containsKey("search") && !params.get("search").isEmpty()){
 			String term = params.get("search");
 			bjunc = bjunc
 				.should(qb.phrase().withSlop(5).onField("name").boostedTo(5).sentence(term).createQuery())

@@ -1,18 +1,3 @@
-function linkContains(param){
-  var link = window.location.pathname;
-  var result = link.indexOf(param);
-
-  if(result === -1) { return false; }
-  else { return true; }
-}
-
-function strMatches(param, parem){
-  var result = param.localeCompare(parem);
-
-  if(result === 0) return true;
-  else return false;
-}
-
 function Point(param){
   var self = this;
   this.id = param.id;
@@ -22,6 +7,7 @@ function Point(param){
   this.submitted = param.submitted;
   this.position = param.position;
   this.map = param.map;
+  this.point_obj = param.point;
   this.draggable = param.draggable;
   this.active_context = param.active_context;
   this.parentElement = param.parentElement;
@@ -63,41 +49,35 @@ function Point(param){
   self.container_name_description.appendChild(self.row_name);
   self.container_name_description.appendChild(self.row_description);
 
-  if(linkContains("main.html")) {
-    self.node.appendChild(self.container_close); 
-  }
-  else {
+  if(self.point_obj != undefined && (user == null || user.id != self.point_obj.submitter_id) ){
+    //No permission for this point
+  }else{
     self.container_close.appendChild(self.remove_button);
-    self.node.appendChild(self.container_close); 
   }
-  
+
+  self.node.appendChild(self.container_close); 
   self.node.appendChild(self.container_name_description); 
 
   this.getContentString = function(){
-    return '<div id="content">'+
-      '<p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">'+param.name+'</p>'+
-      '<div id="bodyContent">'+
-      '<p style="margin:0">'+param.description+'</p>'+
-      '</div>'+
-      '</div>';
+    return get_template('point-content-string')(self.point_obj);
   }
 
   this.placeMarker = function() {
-      self.marker = new google.maps.Marker({
-        position: self.position,
-        map: self.map,
-        draggable:self.draggable,
-        title: self.name_field.value
-      });
-      self.marker.setAnimation(google.maps.Animation.DROP);
-      
-      google.maps.event.addListener(self.marker, 'dragend', function(event) {
-        self.save();
-      });
+    self.marker = new google.maps.Marker({
+      position: self.position,
+      map: self.map,
+      draggable:self.draggable,
+      title: self.name_field.value
+    });
+    self.marker.setAnimation(google.maps.Animation.DROP);
+    
+    google.maps.event.addListener(self.marker, 'dragend', function(event) {
+      self.save();
+    });
 
-      google.maps.event.addListener(self.marker, 'click', function() {
-        self.displayInfo();
-      });
+    google.maps.event.addListener(self.marker, 'click', function() {
+      self.displayInfo();
+    });
   }
 
   this.displayInfo = function(){
@@ -109,7 +89,7 @@ function Point(param){
     });
     infowindow.content = self.getContentString();
     infowindow.open(self.map, self.marker);
-    self.infowindow.height(self.infowindow.height());
+    // self.infowindow.height(self.infowindow.height());
   }
 
   this.save = function(){
@@ -137,6 +117,7 @@ function Point(param){
       if(!self.submitted){
         self.placeMarker();
         self.parentElement.appendChild(self.node);
+        self.point_obj = response;
         self.id = response.id;
         request = $.ajax({
           type: method,
@@ -147,6 +128,7 @@ function Point(param){
         self.marker.title = self.name_field.value
         self.submitted = true;
       }
+      self.point_obj = response;
       defer.resolve(self);
     }).fail(function(){
       defer.reject();
@@ -174,15 +156,25 @@ function Point(param){
     self.displayInfo();
   }
 
+  this.select = function(){
+    self.showLoc();
+    // console.log(self.node)
+    // console.log("weird, huh?!")
+  }
+
   self.name_field.addEventListener("change", self.save, false);
   self.description_field.addEventListener("change", self.save, false);
   self.save_button.addEventListener("click", self.save, false);
-  self.set_button.addEventListener("click", self.showLoc, false);
+  self.node.addEventListener("click", self.select, false);
   self.remove_button.addEventListener("click", self.destroy, false);
 
-  if(linkContains("main.html")) {
-    self.node.addEventListener("click", self.showLoc, false);
-  }
+  // if(linkContains("main.html")) {
+  //   self.node.addEventListener("click", self.showLoc, false);
+  // }
+  
+  $(self.node).click(function(){
+    SelectPoint(self);
+  })
 
   if(self.submitted){
     self.parentElement.appendChild(self.node);

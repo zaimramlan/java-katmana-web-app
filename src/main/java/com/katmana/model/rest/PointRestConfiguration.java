@@ -36,7 +36,9 @@ public class PointRestConfiguration extends EntityRestConfiguration<Point> {
 		Enumeration<String> names = request.getParameterNames();
 		for(;names.hasMoreElements();){
 			String parName = names.nextElement();
-			params.put(parName, request.getParameter(parName));
+			if(!request.getParameter(parName).isEmpty()){
+				params.put(parName, request.getParameter(parName));
+			}
 		}
 		
 		return pointDAO.searchPoint(params);

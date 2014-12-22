@@ -39,6 +39,13 @@ FOUNDATION ICONS STYLING
 i:hover {
   cursor: pointer; }
 
+.right-off-canvas-menu {
+  -webkit-transform: translate3d(100%, 0, 0);
+  -moz-transform: translate3d(100%, 0, 0);
+  -ms-transform: translate3d(100%, 0, 0);
+  -o-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0); }
+
 /* 
 GOOGLE MAP STYLING
 */
@@ -169,10 +176,11 @@ SIDEBAR ELEMENT STYLING
     -o-border-radius: 4px;
     border-radius: 4px; }
   .off-canvas-list #search-form input {
-  width: 112% !important; }
+    width: 120% !important; }
   .off-canvas-list .search-text {
     text-align: center;
-    font-size: 30px; }
+    color: #bdc3c7;
+    font-size: 36px; }
   .off-canvas-list .points {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -211,5 +219,4 @@ SIDEBAR ELEMENT STYLING
       color: #95a5a6; }
 
 .right-submenu {
-  background: #ecf0f1;
-  margin-top: 6px; }
+  background: #ecf0f1; }

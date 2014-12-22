@@ -9,11 +9,24 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="javascript/jquery-2.1.1.min.js"></script>
     <script src="javascript/jquery-ui.min.js"></script>
+    <script src="javascript/handlebars-v2.0.0.js"></script>
     <script type="text/javascript" src="javascript/foundation.min.js"></script>
     <script type="text/javascript" src="javascript/foundation.offcanvas.js"></script>
     <script type="text/javascript" src="javascript/foundation.dropdown.js"></script>
     <script type="text/javascript" src="javascript/index.js"></script>
     <script type="text/javascript" src="javascript/point.js"></script>
+    
+    <script id="no-point-notice" type="text/x-handlebars-template">
+      <span style="color:white;" class="notice">Sorry, no points is available.</span>
+    </script>
+    <script id="point-content-string" type="text/x-handlebars-template">
+      <div id="content">
+        <p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">{{name}}</p>
+        <div id="bodyContent">
+        <p style="margin:0">{{description}}</p>
+        </div>
+      </div>
+    </script>
 </head>
 <body>
 	<div class="off-canvas-wrap" data-offcanvas>
@@ -71,11 +84,12 @@
 						<div class="small-12 columns">
 							<form id="search-form" action="points">
 								<div class="small-10 columns">
-									<input type="text" name="search" placeholder="search points">
+									<input type="text" name="search" placeholder="search points">	
 								</div>
 								<div class="small-2 columns search-text">
 									<i class="fi-magnifying-glass"></i>
 								</div>
+<<<<<<< HEAD
 							</form>							
 						</div>
 				        <div id="points" class="small-12 columns">
@@ -101,6 +115,33 @@
 				        	$("#search-form").submit(search);
 				        	$(document).on('click','.search-text',search);
 				        </script>				        
+=======
+							</form>		
+			        <script>
+			        	var search = function(event) {
+			        		event.preventDefault();
+			        		$.get("points?"+$("#search-form").serialize())
+			        		.done(function(points){
+			        			clearPoints();
+			        			points = JSON.parse(points);
+			        			populateMarkers({
+			        				points:points,
+			        				parentElement: document.getElementById("points"),
+			        				draggable: false
+			        			});
+			        		})
+			        		// $('.search-page').addClass('move-left');
+								toggleCanvasDisabler();
+			        		return false;
+			        	}
+
+			        	$("#search-form").submit(search);
+			        	$(document).on('click','.fi-magnifying-glass',search);
+			        </script>						
+						</div>
+				        <div id="points" class="small-12 columns">
+				        </div>		        
+>>>>>>> master
 					</div>
 				</div>
 			</aside>

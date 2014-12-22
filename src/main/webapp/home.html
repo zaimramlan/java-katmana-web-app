@@ -9,11 +9,24 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="javascript/jquery-2.1.1.min.js"></script>
     <script src="javascript/jquery-ui.min.js"></script>
+    <script src="javascript/handlebars-v2.0.0.js"></script>
     <script type="text/javascript" src="javascript/foundation.min.js"></script>
     <script type="text/javascript" src="javascript/foundation.offcanvas.js"></script>
     <script type="text/javascript" src="javascript/foundation.dropdown.js"></script>
     <script type="text/javascript" src="javascript/index.js"></script>
+    <script type="text/javascript" src="javascript/copy-cut-paste.js"></script>
     <script type="text/javascript" src="javascript/point.js"></script>
+    <script id="no-point-notice" type="text/x-handlebars-template">
+      <span style="color:white;" class="notice">Sorry, no points is available.</span>
+    </script>
+    <script id="point-content-string" type="text/x-handlebars-template">
+      <div id="content">
+        <p style="font-weight: bold; margin:0" id="firstHeading" class="firstHeading">{{name}}</p>
+        <div id="bodyContent">
+        <p style="margin:0">{{description}}</p>
+        </div>
+      </div>
+    </script>
 </head>
 <body>
 	<div class="off-canvas-wrap" data-offcanvas>
@@ -144,12 +157,23 @@
 											<li><a href="#">Get link</a></li>
 										</ul>
 							        </div>
+
+											<button onclick="SelectPoints()">Select</button>
+											<button onclick="CutPoints()">cut</button>
+											<button onclick="CopyPoints()">copy</button>
+											<button onclick="PastePoints()">paste</button>
 							        <div id="points" class="small-12 columns">
+<<<<<<< HEAD
 							        	<div class="row">
 							        		<div class="small-11 small-centered columns">
 										        <a class="add-point-button small-12 columns" onclick="isAdding=true; return false">add point</a>
 									        </div>
 								        </div>
+=======
+								        <a class="add-point-button" onclick="isAdding=true; return false">add point</a>
+                        <div class="point-list">
+                        </div>
+>>>>>>> master
 							        </div>
 						        </div>
 					        </div>

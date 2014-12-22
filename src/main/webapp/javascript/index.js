@@ -1,4 +1,15 @@
 var map, isAdding = false, active_context = null, markers = new Array(), infowindow = null;
+var user = null;
+var current_context = null;
+
+$.get("user/me").done(function(response){
+  user = JSON.parse(response);
+  populateContext({parentElement: document.getElementById("context")});
+});
+
+function get_template(name){
+  return Handlebars.compile($('#'+name).html());
+}
 
 function initialize() {
   var mapOptions = {
@@ -67,25 +78,27 @@ function initialize() {
                 "visibility": "off"
             }
         ]
-    },
-    {
-        "featureType": "poi",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    }
-],
+    // },
+    // {
+    //     "featureType": "poi",
+    //     "stylers": [
+    //         {
+    //             "visibility": "off"
+    //         }
+    //     ]
+    }],
     zoom: 18
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   google.maps.event.addListener(map, 'click', function(event) {
     if(isAdding){
+      $('#points .notice').remove();
       var p = new Point({
         active: false,
         deleted: false,
         submitted: false,
+        name: 'New point',
+        description: 'description',
         position: event.latLng,
         map: map,
         draggable: true,
@@ -102,12 +115,11 @@ function initialize() {
       infowindow.close();
   });
 
-  populateContext({parentElement: document.getElementById("context")});
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function clearPoints(){
-  console.log(markers)
+  // console.log(markers)
   for(var i=0; i<markers.length; i++){
     var m = markers[i];
     if(m.deleted == false){
@@ -124,36 +136,47 @@ function clearPoints(){
 
 function populateMarkers(param){
   clearPoints();
-  var bounds = new google.maps.LatLngBounds();
-  for (var i = 0; i < param.points.length; i++) {
-    var point = param.points[i];
-    var latLng = new google.maps.LatLng(point.latitude,point.longitude);
-    var p = new Point({
-      id: point.id,
-      active: false,
-      deleted: false,
-      submitted: true,
-      position: latLng,
-      map: map,
-      draggable: param.draggable,
-      name: point.name,
-      description: point.description,
-      active_context: active_context,
-      parentElement: param.parentElement,
-      delay: i * 100,
-      infowindow: infowindow
-    });
-    function deferPlace(point){
-      return function(){
-        if(markers.indexOf(point) != -1)
-          point.placeMarker();
+
+  //Clear the point list first.
+  $(param.parentElement).find('.notice').remove();
+
+  if(param.points.length != 0){
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < param.points.length; i++) {
+      var point = param.points[i];
+      var latLng = new google.maps.LatLng(point.latitude,point.longitude);
+      var p = new Point({
+        id: point.id,
+        active: false,
+        deleted: false,
+        submitted: true,
+        position: latLng,
+        map: map,
+        draggable: param.draggable,
+        name: point.name,
+        description: point.description,
+        active_context: active_context,
+        parentElement: param.parentElement,
+        point: point,
+        delay: i * 100,
+        infowindow: infowindow
+      });
+      function deferPlace(point){
+        return function(){
+          if(markers.indexOf(point) != -1)
+            point.placeMarker();
+        }
       }
     }
-    setTimeout(deferPlace(p),i*100);
-    markers.push(p);
-    bounds.extend(latLng);
-  };
-  map.fitBounds(bounds);
+      setTimeout(deferPlace(p),i*100);
+      markers.push(p);
+      bounds.extend(latLng);
+    };
+    map.fitBounds(bounds);
+  }else{
+    $(param.parentElement).append(get_template('no-point-notice')());
+  }
+
   /*disable points edit if not admin*/
   if(linkContains("main.html")) setAttributesOfElements($('.points').find('input'),{"disabled":"disabled"});
 }
@@ -161,6 +184,7 @@ function populateMarkers(param){
 function Context(param){
   var self = this;
 
+  this.param = param;
   this.points = param.points;
   this.id = param.id;
   this.submitted = param.submitted;
@@ -256,6 +280,7 @@ function Context(param){
     }).done(function(response){
       self.points = response;
       clearPoints();
+
       populateMarkers({
         draggable: true,
         points: self.points,
@@ -263,6 +288,7 @@ function Context(param){
       });
     })
 
+    current_context = self;
     passContext(param);
     toggleCanvasDisabler();
     togglePointsPage();
@@ -288,6 +314,7 @@ function Context(param){
       dataType: "json"
     }).done(function(response){
       self.id = response.id;
+      active_context = self.id;
       self.submitted = true;
     });
 
@@ -325,6 +352,8 @@ function createContext(el){
   else parent = document.getElementById("context");
 
   var c = new Context({
+    name: 'New context',
+    description: 'description',
     destination: "toPointsPage",
     submitted: false,
     parentElement: parent
@@ -346,9 +375,11 @@ function passContext(param){
 }
 
 function populateContext(parem){
+  // console.log(user.id)
   var request = $.ajax({
     type: "GET",
     url: "contexts",
+    data: {submitter_id: user.id},
     dataType: "json"
   }).done(function(contexts){
     for (var i = 0; i < contexts.length; i++) {
@@ -389,7 +420,7 @@ var toContextPage = function(){
   populateContext({parentElement: document.getElementById("context")});
 }
 
-var toggleCanvasDisabler = function(param){
+var toggleCanvasDisabler = function(){
   if(param == "isSearching") {
     if($('.canvas-disabler').hasClass('exit-off-canvas')) {
       $('.canvas-disabler').toggleClass('exit-off-canvas');
@@ -401,4 +432,23 @@ var toggleCanvasDisabler = function(param){
   else {
     $('.canvas-disabler').toggleClass('exit-off-canvas');
   }
+}
+
+function linkContains(param){
+  var link = window.location.pathname;
+  var result = link.indexOf(param);
+
+  if(result === -1) { return false; }
+  else { return true; }
+}
+
+function strMatches(param, parem){
+  var result = param.localeCompare(parem);
+
+  if(result === 0) return true;
+  else return false;
+}
+
+var debug = function(msg){
+  console.log(msg);
 }
