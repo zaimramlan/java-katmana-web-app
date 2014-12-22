@@ -24,22 +24,31 @@ Please put any tools that you use that may be hard to figureout what here.
     - JPA is like an ORM that interface JDBC for us.
     - Be careful to differentiate between implementation and specification. JPA is specification, Hibernate is an ORM that provide its implementation.
 - Hibernate-Search
-	- Hibernate search is the search engine.
-	- It is basically a frontend to lucene similar to elasticsearch or solr but much easier to implement with Hibernate already used.
+    - Hibernate search is the search engine.
+    - It is basically a frontend to lucene similar to elasticsearch or solr but much easier to implement with Hibernate already used.
+- Hibernate-Validator
+    - The thing that helps with validation.
 - Liquibase
     - Liquibase is a database migration library.
     - It should be database independent.
     - All migration should be put in resource/db.changelog.yml
+- SnakeYaml
+    - This is suppose to be liquibase dependency, but for some reason, it have to be included manually.
 - Gson
     - Gson is a library that allow us to generate JSON from Java Object as easy as if we are using PHP or other programming language.
+- gson-fire
+    - Its kinda like a plugin for Gson. 
+    - Added the ability to serialize a method result.
+    - Not used much in the newer serialization structure.
 - commons-beanutils
     - BeanUtils is a part of the Apache Commons java library.
     - It allow us to easily set and get beans property by name.
     - Used by EntityRestConfiguration to set entity properties.
+    - Also include commons-io, which is very helpful for working with streams and such.
 - Guava
-	- Guava, like apache-commons is a java utility library, this time made by Google.
-	- In our case, the utility we are interested in is the CaseFormat enumerator used to convert
-	  java camelCased name to snake_case which is used by http parameters.
+   - Guava, like apache-commons is a java utility library, this time made by Google.
+   - In our case, the utility we are interested in is the CaseFormat enumerator used to convert
+     java camelCased name to snake_case which is used by http parameters.
 
 Directory Structure
 -------------------
@@ -56,11 +65,12 @@ Notices
 -------
 
 - if you get `java.lang.OutOfMemoryError: PermGen space`, the just restart the server. The java process may need to be killed manually in task manager.
+- Or, you could upgrade to java 8.
 
 Endpoints
 ---------
 
-- All endpoints follor basic CRUD mechanism. (resource here is the type of resource such as user or points)
+- All endpoints follow basic CRUD mechanism. (resource here is the type of resource such as user or points)
     - INDEX endpoint at `GET /resources`
         - Will return list of resource in JSON form.
         - By default all index endpoint will return a maximum of 100 record.
