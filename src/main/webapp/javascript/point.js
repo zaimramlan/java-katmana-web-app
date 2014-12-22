@@ -44,7 +44,7 @@ function Point(param){
   self.container_description.className = "small-12 columns";
   self.row_description.className = "row";
   self.container_name_description.className = "small-10 small-centered columns";
-  self.container_close.className = "small-12 columns";
+  self.container_close.className = "small-12 columns close";
   self.name_field.name = "name";
   self.name_field.className = "name";
   self.description_field.name = "description";

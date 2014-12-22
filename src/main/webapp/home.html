@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="stylesheet/foundation.min.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet/normalize.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet/icons/foundation-icons.css">
-	<link rel="stylesheet" type="text/css" href="stylesheet/public.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet/admin.css">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="javascript/jquery-2.1.1.min.js"></script>
     <script src="javascript/jquery-ui.min.js"></script>
@@ -18,33 +18,36 @@
 <body>
 	<div class="off-canvas-wrap" data-offcanvas>
 		<div class="inner-wrap">
-			<nav class="tab-bar">
-				<div class="middle tab-bar-section top-bar-section">
-	
-					<div class="small-2 columns">
+			<nav class="top-bar" data-topbar role="navigation">
+				<section class="top-bar-section">
+
+					<div class="left">
 						<img src="media/logo.png">
 					</div>
-					<div class="small-6 columns"><div class="row">.</div></div>
-					<div class="small-2 columns">
-						<div class="row login-dropdown-button" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
-							<div class="small-8 columns">
-								OPTIONS
-							</div>
-							<div class="small-4 columns">								
-								<i class="fi-wrench"></i>
-							</div>	
-						</div>						
+
+					<div class="right">
+						<div class="small-5 small-offset-2 columns topbar-button">
+							<div class="row" data-dropdown="drop2" aria-controls="drop2" aria-expanded="false">
+								<div class="medium-8 show-for-medium-up columns">
+									OPTIONS
+								</div>
+								<div class="small-12 medium-4 columns">								
+									<i class="fi-wrench"></i>
+								</div>	
+							</div>						
+						</div>
+						<div class="small-5 columns right-off-canvas-toggle topbar-button">
+							<div class="row">
+								<div class="medium-8 show-for-medium-up columns">
+									MENU
+								</div>
+								<div class="small-12 medium-4 columns">
+									<i class="fi-list"></i>
+								</div>	
+							</div>						
+						</div>
 					</div>
-					<div class="small-2 columns">
-						<div class="row right-off-canvas-toggle">
-							<div class="small-8 columns">
-								MENU
-							</div>
-							<div class="small-4 columns">
-								<i class="fi-list"></i>
-							</div>							
-					</div>
-				</div>
+				</section>
 			</nav>
 
 			<aside class="right-off-canvas-menu">
@@ -55,7 +58,9 @@
 								<input type="text" name="search" placeholder="search everything">
 							</div>
 							<div class="small-2 columns search-text">
-								<i class="fi-magnifying-glass"></i>
+								<div class="row">
+									<i class="fi-magnifying-glass"></i>
+								</div>
 							</div>
 						</form>
 				        <script>
@@ -79,6 +84,7 @@
 				        	$("#search-form").submit(search);
 				        	$(document).on('click','.fi-magnifying-glass',search);
 				        </script>
+
 				        <div class="search-page right-submenu">
 					        <div class="small-12 columns">
 					        	<a onclick="$('.search-page').removeClass('move-left');">back</a>
@@ -91,7 +97,11 @@
 
 					<div class="row has-submenu">
 						<div id="context" class="small-12 columns">
-							<a onclick="toContextPage(); createContext($('#context-header')[0]); return false">add context</a>
+							<div class="row">
+								<div class="small-11 small-centered columns">
+									<a class="small-12 columns add-context-button" onclick="toContextPage(); createContext($('#context-header')[0]); return false">add context</a>
+								</div>
+							</div>
 						</div>
 
 						<div class="points-page right-submenu">
@@ -135,7 +145,11 @@
 										</ul>
 							        </div>
 							        <div id="points" class="small-12 columns">
-								        <a class="add-point-button" onclick="isAdding=true; return false">add point</a>
+							        	<div class="row">
+							        		<div class="small-11 small-centered columns">
+										        <a class="add-point-button small-12 columns" onclick="isAdding=true; return false">add point</a>
+									        </div>
+								        </div>
 							        </div>
 						        </div>
 					        </div>
@@ -146,21 +160,21 @@
 
 			<section class="main-section">
 			<div id="map-canvas"></div>
-				<div id="drop2" data-dropdown-content class="login-dropdown f-dropdown content small" aria-hidden="true" tabindex="-1">
-					<div class="row">
-						<div class="header small-12 columns">
-							<span style="color:#000">members area</span>
-						</div>
-						<div class="small-12 columns">
-							<a href="edit_account.html">update account</a>
-						</div>
-						<div class="small-12 columns">
-							<form action="logout">
-								<button type="submit">logout</button>
-							</form>
-						</div>
+			<div id="drop2" data-dropdown-content class="login-dropdown f-dropdown small" aria-hidden="true" tabindex="-1">
+				<div class="row">
+					<div class="header small-12 columns">
+						members area
 					</div>
-				</div>				
+					<div class="small-12 columns">
+						<a href="edit_account.html" class="update-btn">edit account</a>
+					</div>
+					<div class="small-12 columns">
+						<form action="logout">
+							<a class="logout-btn" onclick="this.parentNode.submit()">logout</a>
+						</form>
+					</div>
+				</div>
+			</div>				
 			</section>
 
 			<a class="canvas-disabler exit-off-canvas"></a>

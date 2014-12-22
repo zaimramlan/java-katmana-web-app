@@ -198,7 +198,9 @@ function Context(param){
   self.container_view.className = "small-2 columns";
 
   self.name_field.name = "name";
+  self.name_field.className = "name";
   self.description_field.name = "description";
+  self.description_field.className = "description";
   self.name_field.value = param.name;
   self.description_field.value = param.description;
   // self.save_button.src = "media/add.png"; // NOT RESOLVED
@@ -215,6 +217,8 @@ function Context(param){
   })
 
   if(strMatches(this.destination,"toContextPage")){
+    self.container_name_description.className = "small-9 columns";
+    self.container_view.className = "small-2 end columns";
 
     self.row_node.appendChild(self.container_name_description);
     self.row_node.appendChild(self.container_view);
@@ -229,7 +233,6 @@ function Context(param){
     self.row_node.appendChild(self.container_view);
     self.row_node.appendChild(self.container_name_description);
     self.row_node.appendChild(self.container_menu);
-
   }
 
   self.container_name.appendChild(self.name_field);
