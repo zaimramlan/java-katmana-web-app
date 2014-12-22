@@ -204,6 +204,8 @@ function Context(param){
   this.display_button = document.createElement("i");
   this.remove_button = document.createElement("li");
   this.remove_button_link = document.createElement("a");
+  this.link_button = document.createElement("li");
+  this.link_button_link = document.createElement("a");
   this.menu_button = document.createElement("i");
 
   self.node.className = "contexts row";
@@ -226,7 +228,14 @@ function Context(param){
   self.display_button.className = "fi-arrow-right";
   self.remove_button_link.className = "delete-context-button";
   self.remove_button_link.innerHTML = "DELETE";
+  self.link_button_link.className = "link-context-button";
+  self.link_button_link.innerHTML = "Get link";
   self.menu_button.className = "fi-braille";
+
+  setAttributes(self.link_button_link, {
+    "href": "#",
+    "target": "_blank"
+  })
 
   setAttributes(self.menu_button, {
     "href": "#",
@@ -255,6 +264,7 @@ function Context(param){
   self.container_name.appendChild(self.name_field);
   self.container_desc.appendChild(self.description_field);
   self.remove_button.appendChild(self.remove_button_link);
+  self.link_button.appendChild(self.link_button_link);
   self.row_name.appendChild(self.container_name);
   self.row_desc.appendChild(self.container_desc);
   self.container_view.appendChild(self.row_view);
@@ -263,6 +273,11 @@ function Context(param){
   self.container_name_description.appendChild(self.row_desc);
   self.container_name_description_view.appendChild(self.row_node);
   self.node.appendChild(self.container_name_description_view);
+
+  //Put data to html element.
+  this.reapplyData = function(){
+    $(self.link_button_link).attr('href','main.html#context/'+self.id);
+  }
 
   this.display = function(param){
     this.request = $.ajax({
@@ -286,6 +301,8 @@ function Context(param){
     toggleCanvasDisabler();
     togglePointsPage();
     $('.delete-context-button').remove();
+    $('.link-context-button').remove();
+    document.getElementById('drop').appendChild(self.link_button);
     document.getElementById('drop').appendChild(self.remove_button);
     $(document).foundation();
   }
@@ -309,6 +326,7 @@ function Context(param){
       self.id = response.id;
       active_context = self.id;
       self.submitted = true;
+      self.reapplyData();
     });
 
     debug("context saved!");
@@ -337,6 +355,7 @@ function Context(param){
 
   if(self.submitted == false) self.save();
   self.parentElement.appendChild(self.node);
+  self.reapplyData();
 }
 
 function createContext(el){
