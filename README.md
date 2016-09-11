@@ -1,5 +1,6 @@
-KatMana
-=======
+# KatMana Web App
+
+Web app that allows event organizers to plot points-of-interest on a map that is sharable to event attendees.
 
 Installation
 ------------
